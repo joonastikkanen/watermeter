@@ -81,11 +81,13 @@ def root():
 @app.route('/preview')
 def preview():
     take_picture()
+    read_image()
     try:
         return render_template_string("""
             <img src="{{ url_for('last_image') }}" alt="Last image">
             <form action="{{ url_for('take_new_picture') }}" method="post">
-                <button type="submit">Take New Picture</button>
+                <button type="submit">Take New Picture</button><br>
+                Sensor data: {{ url_for('root') }}
             </form>
         """)
     except FileNotFoundError:
