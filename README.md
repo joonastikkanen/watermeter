@@ -26,13 +26,13 @@ Create systemd file:
 
 ```ini
 [Unit]
-Description=My Python Service
+Description=My Watermeter
 
 [Service]
 ExecStart=/usr/bin/python3 /path/to/your/main.py
 
 Restart=always
-User=yourusername
+User=${USER}
 Environment=HOME_ASSISTANT_URL=http://10.20.30.20:8123
 Environment=HOME_ASSISTANT_TOKEN=your_token
 Environment=PICAMERA_IMAGE_PATH=/run/shm/watermeter_last.jpg
