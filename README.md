@@ -1,4 +1,11 @@
-# My configs and scripts for Raspberry PI watermeter
+# Raspberry PI Watermeter using camera
+
+NOT FULLY TESTED YEAT!!
+
+I was inspired by old project nohn's project about using raspberry PI camera as to bring smartness to old school watermeter. 
+
+Links:
+* The nohn's project: https://github.com/nohn/watermeter/tree/main
 
 ## Install dependencies
 
@@ -67,3 +74,16 @@ sudo systemctl start watermeter
 ```
 
 Now, your Python script will run as a systemd service. It will start automatically when your system boots, and if it crashes, systemd will restart it.
+
+## HomeAssistant sensor
+
+```yaml
+sensor:
+  - platform: rest
+    name: Water
+    resource: "http://ip.or.hostname.of.watermeter:3000/"
+    scan_interval: 60
+    unit_of_measurement: 'm³'
+    device_class: water
+    state_class: total_increasing
+```
