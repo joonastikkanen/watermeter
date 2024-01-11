@@ -40,8 +40,6 @@ ExecStart=/usr/bin/python3 /path/to/your/main.py
 
 Restart=always
 User=${USER}
-Environment=HOME_ASSISTANT_URL=http://10.20.30.20:8123
-Environment=HOME_ASSISTANT_TOKEN=your_token
 Environment=PICAMERA_IMAGE_PATH=/run/shm/watermeter_last.jpg
 Environment=PICAMERA_CONFIG='{"size": (1920, 1080)}'
 Environment=TESSERACT_PATH=/usr/bin/tesseract
