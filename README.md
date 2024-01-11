@@ -67,4 +67,3 @@ sudo systemctl start watermeter
 ```
 
 Now, your Python script will run as a systemd service. It will start automatically when your system boots, and if it crashes, systemd will restart it.
-```
