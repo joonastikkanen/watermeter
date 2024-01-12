@@ -1,0 +1,11 @@
+[project]
+name = "watermeter"
+version = "1.0.0"
+description = "Watermeter that captures image using Raspberry Pi camera, reads the values and sends it to the server"
+dependencies = [
+    "flask",
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
