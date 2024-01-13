@@ -1,4 +1,4 @@
-from reader import app
+from flask import app
 import cv2
 import pytesseract
 
