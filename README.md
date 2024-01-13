@@ -10,7 +10,7 @@ Links:
 ## Install dependencies
 
 ```bash
-sudo apt install -y python3-libcamera tesseract-ocr libtesseract-dev python3-pyqt5 python3-prctl libatlas-base-dev ffmpeg python3-pip
+sudo apt install -y python3-libcamera tesseract-ocr libtesseract-dev python3-pyqt5 python3-prctl libatlas-base-dev ffmpeg python3-pip python3-av python3-prctl libcap-dev
 ```
 
 ```bash
