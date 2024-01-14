@@ -19,20 +19,17 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    from app.routes import bp as routes_bp
-    app.register_blueprint(routes_bp)
-
     return app
 
 app = create_app()
 
 # TAKE PICTURE
 def take_picture():
-    picamera_config = app.config['PICAMERA_CONFIG']
-    picamera_image_path = app.config['PICAMERA_IMAGE_PATH']
+    PICAMERA_CONFIG = app.config['PICAMERA_CONFIG']
+    PICAMERA_IMAGE_PATH = app.config['PICAMERA_IMAGE_PATH']
     camera = Picamera2()
-    preview_config = camera.create_preview_configuration(main=picamera_config)
-    camera.configure(preview_config)
+    preview_config = camera.create_preview_configuration(main=PICAMERA_CONFIG)
+    camera.configure(PICAMERA_CONFIG)
     # Turn on LED
     #led.on()
     # Turn on Camera and allow to adjust to brightness
@@ -40,22 +37,22 @@ def take_picture():
     camera.start()
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
-    camera.capture_file(picamera_image_path)
+    camera.capture_file(PICAMERA_IMAGE_PATH)
     camera.close()
     #led.off()
     return True
 
 # READ IMAGE
 def read_image():
-    tesseract_path = app.config['TESSERACT_PATH']
-    tesseract_config = app.config['TESSERACT_CONFIG']
-    picamera_image_path = app.config['PICAMERA_IMAGE_PATH']
-    watermeter_last_value_file = app.config['WATERMETER_LAST_VALUE_FILE']
+    TESSERACT_PATH = app.config['TESSERACT_PATH']
+    TESSERACT_CONFIG = app.config['TESSERACT_CONFIG']
+    PICAMERA_IMAGE_PATH = app.config['PICAMERA_IMAGE_PATH']
+    WATERMETER_LAST_VALUE_FILE = app.config['WATERMETER_LAST_VALUE_FILE']
     # Set the path to the tesseract executable
-    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
 
     # Load the image from file
-    image = cv2.imread(picamera_image_path)
+    image = cv2.imread(PICAMERA_IMAGE_PATH)
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -63,7 +60,7 @@ def read_image():
     # Use Tesseract to do OCR on the image
     sensor_data = pytesseract.image_to_string(gray_image, config=tesseract_config)
     # Wire sensor data to file
-    with open(watermeter_last_value_file, 'w') as f:
+    with open(WATERMETER_LAST_VALUE_FILE, 'w') as f:
         f.write(str(sensor_data))
 
     # Print the text
@@ -72,12 +69,13 @@ def read_image():
 
 # LOAD SENSOR DATA
 def load_sensor_data():
-    watermeter_last_value_file = app.config['WATERMETER_LAST_VALUE_FILE']
+    WATERMETER_LAST_VALUE_FILE = app.config['WATERMETER_LAST_VALUE_FILE']
     try:
-        with open(watermeter_last_value_file, 'r') as f:
+
+        with open(WATERMETER_LAST_VALUE_FILE, 'r') as f:
             sensor_data = int(f.read())
     except FileNotFoundError:
-        print(f"Info: The last value file {watermeter_last_value_file} is not found. Running reader function.")
+        print(f"Info: The last value file {WATERMETER_LAST_VALUE_FILE} is not found. Running reader function.")
         take_picture()
         read_image()
 
@@ -89,6 +87,11 @@ def home():
     sensor_data = load_sensor_data()
     return sensor_data
 
+@app.route('/read_image')
+def read_image():
+    read_image = read_image()
+    return read_image
+
 @app.route('/take_new_picture', methods=['POST'])
 def take_new_picture():
     take_picture()
@@ -96,22 +99,21 @@ def take_new_picture():
 
 @app.route('/last_image')
 def last_image():
-    picamera_image_path = app.config['picamera_image_path']
+    PICAMERA_IMAGE_PATH = app.config['PICAMERA_IMAGE_PATH']
     try:
-        return send_file(picamera_image_path, mimetype='image/jpeg')
+        return send_file(PICAMERA_IMAGE_PATH, mimetype='image/jpeg')
     except FileNotFoundError:
         return "No image found", 404
 
 @app.route('/preview')
 def preview():
-    take_picture()
-    read_image()
     try:
         return render_template_string("""
             <img src="{{ url_for('last_image') }}" alt="Last image">
             <form action="{{ url_for('take_new_picture') }}" method="post">
                 <button type="submit">Take New Picture</button><br>
-                Sensor data: {{ url_for('root') }}
+                Sensor data: {{ url_for('home') }} <br><br>
+                <a href="read_image">Read Image</a><br>
             </form>
         """)
     except FileNotFoundError:
