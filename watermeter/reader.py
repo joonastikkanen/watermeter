@@ -1,12 +1,12 @@
-from flask import app
 import cv2
 import pytesseract
+from app import app
 
 def read_image():
-    tesseract_path = app.config['tesseract_path']
-    tesseract_config = app.config['tesseract_config']
-    picamera_image_path = app.config['picamera_image_path']
-    watermeter_last_value_file = app.config['watermeter_last_value_file']
+    tesseract_path = app.config['TESSERACT_PATH']
+    tesseract_config = app.config['TESSERACT_CONFIG']
+    picamera_image_path = app.config['PICAMERA_IMAGE_PATH']
+    watermeter_last_value_file = app.config['WATERMETER_LAST_VALUE_FILE']
     # Set the path to the tesseract executable
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
