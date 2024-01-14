@@ -14,9 +14,10 @@ sudo apt install -y python3-libcamera tesseract-ocr libtesseract-dev python3-pyq
 ```
 
 ```bash
-python3 -m venv venv
+python3 -m venv --system-site-packages venv
 source venv/bin/activate 
 pip3 install -r requirements.txt
+export PYTHONPATH=$PYTHONPATH:~/Documents/git/watermeter/watermeter
 ```
 
 ## Install to Raspberry

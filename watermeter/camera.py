@@ -1,6 +1,6 @@
 from time import sleep
 from picamera2 import Picamera2, Preview
-from flask import redirect, url_for, app, send_file
+from flask import redirect, url_for, app, send_file, route
 
 def take_picture():
     picamera_config = app.config['picamera_config']
