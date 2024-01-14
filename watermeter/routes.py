@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template_string, redirect, url_for, send_file
-from app import app, load_sensor_data
+from flask import Blueprint, render_template_string, redirect, url_for, send_file, app
 from camera import take_picture
-from reader import read_image
+from reader import read_image, load_sensor_data
 
 bp = Blueprint('routes', __name__)
 

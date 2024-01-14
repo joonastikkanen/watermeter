@@ -13,15 +13,3 @@ def create_app():
     return app
 
 app = create_app()
-
-def load_sensor_data():
-    watermeter_last_value_file = app.config['watermeter_last_value_file']
-    try:
-        with open(watermeter_last_value_file, 'r') as f:
-            sensor_data = int(f.read())
-    except FileNotFoundError:
-        print(f"Info: The last value file {watermeter_last_value_file} is not found. Running reader function.")
-        take_picture()
-        read_image()
-
-    return sensor_data

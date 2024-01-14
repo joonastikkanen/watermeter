@@ -1,6 +1,6 @@
 import cv2
 import pytesseract
-from app import app
+from flask import app
 
 def read_image():
     tesseract_path = app.config['TESSERACT_PATH']
@@ -24,4 +24,16 @@ def read_image():
 
     # Print the text
     print(sensor_data)
+    return sensor_data
+
+def load_sensor_data():
+    watermeter_last_value_file = app.config['watermeter_last_value_file']
+    try:
+        with open(watermeter_last_value_file, 'r') as f:
+            sensor_data = int(f.read())
+    except FileNotFoundError:
+        print(f"Info: The last value file {watermeter_last_value_file} is not found. Running reader function.")
+        take_picture()
+        read_image()
+
     return sensor_data
