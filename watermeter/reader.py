@@ -1,6 +1,7 @@
 import cv2
 import pytesseract
 from app import app
+from camera import take_picture
 
 def read_image():
     tesseract_path = app.config['TESSERACT_PATH']
@@ -27,7 +28,7 @@ def read_image():
     return sensor_data
 
 def load_sensor_data():
-    watermeter_last_value_file = app.config['watermeter_last_value_file']
+    watermeter_last_value_file = app.config['WATERMETER_LAST_VALUE_FILE']
     try:
         with open(watermeter_last_value_file, 'r') as f:
             sensor_data = int(f.read())
