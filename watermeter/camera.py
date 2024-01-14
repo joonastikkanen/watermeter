@@ -1,10 +1,10 @@
 from time import sleep
 from picamera2 import Picamera2, Preview
-from flask import app
+from app import app
 
 def take_picture():
-    picamera_config = app.config['picamera_config']
-    picamera_image_path = app.config['picamera_image_path']
+    picamera_config = app.config['PICAMERA_CONFIG']
+    picamera_image_path = app.config['PICAMERA_IMAGE_PATH']
     camera = Picamera2()
     preview_config = camera.create_preview_configuration(main=picamera_config)
     camera.configure(preview_config)

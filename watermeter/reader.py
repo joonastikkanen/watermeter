@@ -1,6 +1,6 @@
 import cv2
 import pytesseract
-from flask import app
+from app import app
 
 def read_image():
     tesseract_path = app.config['TESSERACT_PATH']

@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template_string, redirect, url_for, send_file, app
+from flask import Blueprint, render_template_string, redirect, url_for, send_file
+from app import app
 from camera import take_picture
 from reader import read_image, load_sensor_data
 
