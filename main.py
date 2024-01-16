@@ -4,6 +4,7 @@ from picamera2 import Picamera2, Preview
 from flask import Flask, render_template_string, send_file, redirect, url_for
 import cv2
 import pytesseract
+import blinkt
 
 # CONFIGURATION
 class Config(object):
@@ -23,6 +24,17 @@ def create_app():
 
 app = create_app()
 
+# LED ON
+def led_on():
+    blinkt.set_clear_on_exit(False)
+    blinkt.set_all(255, 255, 255, 1.0)
+    blinkt.show()
+
+# LED OFF
+def led_off():
+    blinkt.clear()
+    blinkt.show()
+
 # TAKE PICTURE
 def take_picture():
     PICAMERA_CONFIG = app.config['PICAMERA_CONFIG']
@@ -31,7 +43,7 @@ def take_picture():
     preview_config = camera.create_preview_configuration(main=PICAMERA_CONFIG)
     camera.configure(PICAMERA_CONFIG)
     # Turn on LED
-    #led.on()
+    led_on
     # Turn on Camera and allow to adjust to brightness
     camera.start_preview(Preview.NULL)
     camera.start()
@@ -39,7 +51,7 @@ def take_picture():
     # Take an image. I put in in /run/shm to not wear the SD card
     camera.capture_file(PICAMERA_IMAGE_PATH)
     camera.close()
-    #led.off()
+    led_off
     return True
 
 # READ IMAGE
