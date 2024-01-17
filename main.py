@@ -6,13 +6,15 @@ import cv2
 import pytesseract
 import blinkt
 
+# GLOBAL VARIABLES
+picamera_image_path = os.getenv('PICAMERA_IMAGE_PATH', '/run/shm/watermeter_last.jpg')
+picamera_config = os.getenv('PICAMERA_CONFIG', '{"size": (1000, 1000)}')
+tessaract_path = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract')
+tessaract_config = os.getenv('TESSERACT_CONFIG', '--psm 6 -c tessedit_char_whitelist=0123456789')
+watermeter_last_value_file = os.getenv('WATERMETER_LAST_VALUE_FILE', '/run/shm/watermeter_last_value.txt')
+
 # CONFIGURATION
 class Config(object):
-    PICAMERA_IMAGE_PATH = os.getenv('PICAMERA_IMAGE_PATH', '/run/shm/watermeter_last.jpg'),
-    PICAMERA_CONFIG = os.getenv('PICAMERA_CONFIG', '{"size": (1920, 1080)}'),
-    TESSERACT_PATH = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract'),
-    TESSERACT_CONFIG = os.getenv('TESSERACT_CONFIG', '--psm 6 -c tessedit_char_whitelist=0123456789'),
-    WATERMETER_LAST_VALUE_FILE = os.getenv('WATERMETER_LAST_VALUE_FILE', '/run/shm/watermeter_last_value.txt'),
     DEBUG = False
 
 # APP
@@ -37,34 +39,28 @@ def led_off():
 
 # TAKE PICTURE
 def take_picture():
-    PICAMERA_CONFIG = app.config['PICAMERA_CONFIG']
-    PICAMERA_IMAGE_PATH = app.config['PICAMERA_IMAGE_PATH']
     camera = Picamera2()
-    preview_config = camera.create_preview_configuration(main=PICAMERA_CONFIG)
-    camera.configure(PICAMERA_CONFIG)
+    #preview_config = camera.create_preview_configuration(main=picamera_config)
+    #camera.configure(preview_config)
     # Turn on LED
-    led_on
+    led_on()
     # Turn on Camera and allow to adjust to brightness
-    camera.start_preview(Preview.NULL)
+    #camera.start_preview(Preview.NULL)
     camera.start()
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
-    camera.capture_file(PICAMERA_IMAGE_PATH)
+    camera.capture_file(picamera_image_path)
     camera.close()
-    led_off
+    led_off()
     return True
 
 # READ IMAGE
 def read_image():
-    TESSERACT_PATH = app.config['TESSERACT_PATH']
-    TESSERACT_CONFIG = app.config['TESSERACT_CONFIG']
-    PICAMERA_IMAGE_PATH = app.config['PICAMERA_IMAGE_PATH']
-    WATERMETER_LAST_VALUE_FILE = app.config['WATERMETER_LAST_VALUE_FILE']
     # Set the path to the tesseract executable
-    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+    pytesseract.pytesseract.tesseract_cmd = tessaract_path
 
     # Load the image from file
-    image = cv2.imread(PICAMERA_IMAGE_PATH)
+    image = cv2.imread(picamera_image_path)
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -72,7 +68,7 @@ def read_image():
     # Use Tesseract to do OCR on the image
     sensor_data = pytesseract.image_to_string(gray_image, config=tesseract_config)
     # Wire sensor data to file
-    with open(WATERMETER_LAST_VALUE_FILE, 'w') as f:
+    with open(watermeter_last_value_file, 'w') as f:
         f.write(str(sensor_data))
 
     # Print the text
@@ -81,13 +77,12 @@ def read_image():
 
 # LOAD SENSOR DATA
 def load_sensor_data():
-    WATERMETER_LAST_VALUE_FILE = app.config['WATERMETER_LAST_VALUE_FILE']
     try:
 
-        with open(WATERMETER_LAST_VALUE_FILE, 'r') as f:
-            sensor_data = int(f.read())
+        with open(watermeter_last_value_file, 'r') as f:
+            sensor_data = str(f.read())
     except FileNotFoundError:
-        print(f"Info: The last value file {WATERMETER_LAST_VALUE_FILE} is not found. Running reader function.")
+        print(f"Info: The last value file {watermeter_last_value_file} is not found. Running reader function.")
         take_picture()
         read_image()
 
@@ -111,9 +106,8 @@ def take_new_picture():
 
 @app.route('/last_image')
 def last_image():
-    PICAMERA_IMAGE_PATH = app.config['PICAMERA_IMAGE_PATH']
     try:
-        return send_file(PICAMERA_IMAGE_PATH, mimetype='image/jpeg')
+        return send_file(picamera_image_path, mimetype='image/jpeg')
     except FileNotFoundError:
         return "No image found", 404
 

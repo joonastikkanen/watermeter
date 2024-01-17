@@ -18,6 +18,13 @@ python3 -m venv --system-site-packages venv
 source venv/bin/activate 
 pip3 install -r requirements.txt
 export PYTHONPATH=$PYTHONPATH:~/Documents/git/watermeter/watermeter
+export FLASK_APP=main.py
+```
+
+To run flask app
+
+```
+flask run --debug
 ```
 
 ## HomeAssistant sensor
