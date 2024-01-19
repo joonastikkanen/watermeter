@@ -207,10 +207,12 @@ def preview():
 
         # Get the ROIs
         rois = config.get('rois', [])
+        gauge_rois = config.get('gauge_rois', [])
 
         # Render the template
-        return render_template('preview.html', rois=rois)
+        return render_template('preview.html', rois=rois, gauge_rois=gauge_rois)
     except FileNotFoundError:
+        return "No image found", 404
     
 @app.route('/update_config', methods=['POST'])
 def update_config_route():
