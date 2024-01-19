@@ -1,0 +1,82 @@
+<img src="{{ url_for('preview_image') }}" alt="Preview image">
+<form action="{{ url_for('take_new_picture') }}" method="post">
+    <button type="submit">Take New Picture</button><br>
+    Sensor data: {{ url_for('home') }} <br><br>
+    <a href="read_image">Read Image</a><br>
+</form>
+
+<form action="{{ url_for('update_config') }}" method="post" id="roi-form">
+    <b>NUMBER ROIS</b><br>
+    {% for roi in rois %}
+        <label for="roi{{ loop.index }}">ROI {{ loop.index }}:</label><br>
+        <input type="text" id="roi{{ loop.index }}_x" name="roi{{ loop.index }}_x" value="{{ roi[0] }}">
+        <input type="text" id="roi{{ loop.index }}_y" name="roi{{ loop.index }}_y" value="{{ roi[1] }}">
+        <input type="text" id="roi{{ loop.index }}_w" name="roi{{ loop.index }}_w" value="{{ roi[2] }}">
+        <input type="text" id="roi{{ loop.index }}_h" name="roi{{ loop.index }}_h" value="{{ roi[3] }}"><br>
+    {% endfor %}
+    <button type="button" id="add-roi">+</button>
+    <button type="button" id="remove-roi">-</button><br>
+    <input type="submit" value="Apply">
+    <br>
+    <b>GAUGE ROIS</b><br>
+    {% for gauge_roi in gauge_rois %}
+    <label for="gauge_roi{{ loop.index }}">GAUGE ROI {{ loop.index }}:</label><br>
+    <input type="text" id="gauge_roi{{ loop.index }}_x" name="gauge_roi{{ loop.index }}_x" value="{{ gauge_roi[0] }}">
+    <input type="text" id="gauge_roi{{ loop.index }}_y" name="gauge_roi{{ loop.index }}_y" value="{{ gauge_roi[1] }}">
+    <input type="text" id="gauge_roi{{ loop.index }}_w" name="gauge_roi{{ loop.index }}_w" value="{{ gauge_roi[2] }}">
+    <input type="text" id="gauge_roi{{ loop.index }}_h" name="gauge_roi{{ loop.index }}_h" value="{{ gauge_roi[3] }}"><br>
+    {% endfor %}
+    <button type="button" id="add-gauge-roi">+</button>
+    <button type="button" id="remove-gauge-roi">-</button><br>
+    <input type="submit" value="Apply">
+</form>
+
+
+<script>
+    // NUMBER ROIS
+    var roiCount = {{ rois|length }};
+    document.getElementById('add-roi').addEventListener('click', function() {
+        roiCount++;
+        var roiField = document.createElement('div');
+        roiField.innerHTML = `
+            <label for="roi${roiCount}">ROI ${roiCount}:</label><br>
+            <input type="text" id="roi${roiCount}_x" name="roi${roiCount}_x">
+            <input type="text" id="roi${roiCount}_y" name="roi${roiCount}_y">
+            <input type="text" id="roi${roiCount}_w" name="roi${roiCount}_w">
+            <input type="text" id="roi${roiCount}_h" name="roi${roiCount}_h"><br>
+        `;
+        roiField.id = `roi${roiCount}`;
+        document.getElementById('roi-fields').appendChild(roiField);
+    });
+
+    document.getElementById('remove-roi').addEventListener('click', function() {
+        if (roiCount > 0) {
+            var roiField = document.getElementById(`roi${roiCount}`);
+            roiField.parentNode.removeChild(roiField);
+            roiCount--;
+        }
+    });
+    // GAUGE ROIS
+    var gaugeRoiCount = {{ gaugeRois|length }};
+    document.getElementById('add-gauge-roi').addEventListener('click', function() {
+        gaugeRoiCount++;
+        var gaugeRoiField = document.createElement('div');
+        gaugeRoiField.innerHTML = `
+            <label for="gauge_roi${gaugeRoiCount}">ROI ${gaugeRoiCount}:</label><br>
+            <input type="text" id="rgauge_oi${gaugeRoiCount}_x" name="gauge_roi${gaugeRoiCount}_x">
+            <input type="text" id="gauge_roi${gaugeRoiCount}_y" name="gauge_roi${gaugeRoiCount}_y">
+            <input type="text" id="gauge_roi${gaugeRoiCount}_w" name="gauge_roi${gaugeRoiCount}_w">
+            <input type="text" id="gauge_roi${gaugeRoiCount}_h" name="gauge_roi${gaugeRoiCount}_h"><br>
+        `;
+        gaugeRoiField.id = `gauge_roi${gaugeRoiCount}`;
+        document.getElementById('roi-fields').appendChild(gaugeRoiField);
+    });
+
+    document.getElementById('remove-gauge-roi').addEventListener('click', function() {
+        if (roiCount > 0) {
+            var gaugeRoiField = document.getElementById(`gauge_roi${gaugeRoiCount}`);
+            gaugeRoiField.parentNode.removeChild(gaugeRoiField);
+            gaugeRoiCount--;
+        }
+    });
+</script>

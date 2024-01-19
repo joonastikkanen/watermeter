@@ -1,7 +1,8 @@
 import os
+import yaml
 from time import sleep
 from picamera2 import Picamera2, Preview
-from flask import Flask, render_template_string, send_file, redirect, url_for
+from flask import Flask, send_file, redirect, url_for, request, render_template
 import cv2
 import pytesseract
 import numpy as np
@@ -10,30 +11,24 @@ from wand.drawing import Drawing
 from wand.color import Color
 import blinkt
 
-# GLOBAL VARIABLES
-picamera_image_path = os.getenv('PICAMERA_IMAGE_PATH', '/run/shm/watermeter_last.jpg')
-picamera_config = os.getenv('PICAMERA_CONFIG', '{"size": (1000, 1000)}')
-tesseract_path = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract')
-tesseract_config = os.getenv('TESSERACT_CONFIG', '--psm 6 -c tessedit_char_whitelist=0123456789')
-watermeter_last_value_file = os.getenv('WATERMETER_LAST_VALUE_FILE', '/run/shm/watermeter_last_value.txt')
-watermeter_preview_image_path = os.getenv('WATERMETER_PREVIEW_IMAGE_PATH', '/run/shm/watermeter_preview.jpg')
-draw_rois = True
-# Define the ROIs
-rois = [
-    (439, 388, 71, 102),
-    (520, 388, 71, 102),
-    (604, 381, 71, 102),
-    (679, 374, 71, 102),
-    (760, 374, 71, 102),
-    (844, 371, 71, 102),
-    (928, 368, 71, 102),
-    (1015, 408, 71, 102),
-    # Add more ROIs as needed
-]
-gauge_rois = [
-    (967, 602, 265, 291),
-    # Add more ROIs as needed
-]
+# LOAD CONFIG FILE
+def load_config():
+    with open('config.yaml', 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+config = load_config()
+# Convert the lists to tuples
+draw_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]
+gauge_rois = config['gauge_rois']
+picamera_image_path = config['picamera_image_path']
+picamera_config = config['picamera_config']
+rois = config['rois'] = [tuple(roi) for roi in config['rois']]
+tesseract_path = config['tesseract_path']
+tesseract_config = config['tesseract_config']
+watermeter_last_value_file = config['watermeter_last_value_file']
+watermeter_preview_image_path = config['watermeter_preview_image_path']
+
 # CONFIGURATION
 class Config(object):
     DEBUG = False
@@ -197,8 +192,8 @@ def take_new_picture():
     draw_rois()
     return redirect(url_for('preview'))
 
-@app.route('/last_image')
-def last_image():
+@app.route('/preview/image')
+def preview_image():
     try:
         return send_file(watermeter_preview_image_path, mimetype='image/jpeg')
     except FileNotFoundError:
@@ -207,13 +202,93 @@ def last_image():
 @app.route('/preview')
 def preview():
     try:
-        return render_template_string("""
-            <img src="{{ url_for('last_image') }}" alt="Last image">
-            <form action="{{ url_for('take_new_picture') }}" method="post">
-                <button type="submit">Take New Picture</button><br>
-                Sensor data: {{ url_for('home') }} <br><br>
-                <a href="read_image">Read Image</a><br>
-            </form>
-        """)
+        # Load the configuration
+        config = load_config()
+
+        # Get the ROIs
+        rois = config.get('rois', [])
+
+        # Render the template
+        return render_template('preview.html', rois=rois)
     except FileNotFoundError:
-        return "No image found", 404
+    
+@app.route('/update_config', methods=['POST'])
+def update_config_route():
+    if request.method == 'POST':
+        update_config()
+        return "Config updated successfully", 200
+    else:
+        return "Invalid request method", 405
+    # Add an indented block of code here if needed
+
+def update_config():
+    # Initialize an empty list to store the ROIs
+    rois = []
+    gauge_rois = []
+    # Iterate over the form data
+    for key in request.form:
+        # Check if the key starts with 'roi'
+        if key.startswith('roi'):
+            # Split the key into parts
+            parts = key.split('_')
+
+            # Check if the key has the correct format
+            if len(parts) == 3:
+                # Get the ROI number and coordinate
+                roi_number = int(parts[1])
+                coordinate = parts[2]
+
+                # Ensure the ROIs list has enough elements
+                while len(rois) < roi_number:
+                    rois.append([])
+
+                # Get the value from the form data and convert it to an integer
+                value = int(request.form[key])
+
+                # Validate the value
+                if not (0 <= value <= 2000):
+                    return "Invalid input: ROI values must be between 0 and 2000", 400
+
+                # Add the value to the correct ROI
+                rois[roi_number - 1].append(value)
+    
+    for key in request.form:
+        # Check if the key starts with 'roi'
+        if key.startswith('gauge_roi'):
+            # Split the key into parts
+            parts = key.split('_')
+
+            # Check if the key has the correct format
+            if len(parts) == 3:
+                # Get the ROI number and coordinate
+                gauge_roi_number = int(parts[1])
+                coordinate = parts[2]
+
+                # Ensure the ROIs list has enough elements
+                while len(rois) < gauge_roi_number:
+                    rois.append([])
+
+                # Get the value from the form data and convert it to an integer
+                value = int(request.form[key])
+
+                # Validate the value
+                if not (0 <= value <= 2000):
+                    return "Invalid input: ROI values must be between 0 and 2000", 400
+
+                # Add the value to the correct ROI
+                gauge_rois[gauge_roi_number - 1].append(value)
+
+    # Convert the lists to tuples
+    rois = [tuple(roi) for roi in rois]
+    gauge_rois = [tuple(roi) for roi in gauge_rois]
+    config = load_config()
+    config['rois'] = rois
+    config['gauge_rois'] = gauge_rois
+    # Update more values here
+
+    # Write the updated configuration to the YAML file
+    with open('config.yaml', 'w') as file:
+        yaml.dump(config, file)
+
+    # Redirect back to the preview page
+    return redirect(url_for('preview'))
