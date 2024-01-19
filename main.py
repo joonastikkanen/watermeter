@@ -218,7 +218,7 @@ def preview():
 def update_config_route():
     if request.method == 'POST':
         update_config()
-        return "Config updated successfully", 200
+        return redirect(url_for('preview'))
     else:
         return "Invalid request method", 405
     # Add an indented block of code here if needed
