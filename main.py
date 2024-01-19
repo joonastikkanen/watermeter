@@ -19,8 +19,7 @@ def load_config():
 
 config = load_config()
 # Convert the lists to tuples
-draw_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]
-gauge_rois = config['gauge_rois']
+gauge_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]
 picamera_image_path = config['picamera_image_path']
 picamera_config = config['picamera_config']
 rois = config['rois'] = [tuple(roi) for roi in config['rois']]
@@ -254,8 +253,7 @@ def update_config():
                 # Add the value to the correct ROI
                 rois[roi_number - 1].append(value)
     
-    for key in request.form:
-        # Check if the key starts with 'roi'
+        # Check if the key starts with 'gaugeroi'
         if key.startswith('gaugeroi'):
             # Split the key into parts
             parts = key.split('_')
@@ -267,8 +265,8 @@ def update_config():
                 coordinate = parts[2]
 
                 # Ensure the ROIs list has enough elements
-                while len(rois) < gauge_roi_number:
-                    rois.append([])
+                while len(gauge_rois) < gauge_roi_number:
+                    gauge_rois.append([])
 
                 # Get the value from the form data and convert it to an integer
                 value = int(request.form[key])
@@ -283,6 +281,7 @@ def update_config():
     # Convert the lists to tuples
     rois = [tuple(roi) for roi in rois]
     gauge_rois = [tuple(roi) for roi in gauge_rois]
+    
     config = load_config()
     config['rois'] = rois
     config['gauge_rois'] = gauge_rois
@@ -291,6 +290,3 @@ def update_config():
     # Write the updated configuration to the YAML file
     with open('config.yaml', 'w') as file:
         yaml.dump(config, file)
-
-    # Redirect back to the preview page
-    return redirect(url_for('preview'))

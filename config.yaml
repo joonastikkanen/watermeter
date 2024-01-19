@@ -1,5 +1,4 @@
 ---
-draw_rois: true
 gauge_rois:
 - [967, 602, 265, 291]
 picamera_config: '{"size": (1000, 1000)}'
