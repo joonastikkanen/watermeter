@@ -256,7 +256,7 @@ def update_config():
     
     for key in request.form:
         # Check if the key starts with 'roi'
-        if key.startswith('gauge_roi'):
+        if key.startswith('gaugeroi'):
             # Split the key into parts
             parts = key.split('_')
 

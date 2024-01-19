@@ -24,13 +24,13 @@
     <br>
     <div id="gauge-roi-fields">
     <b>GAUGE AREA</b><br>
-    {% for gauge_roi in gauge_rois %}
+    {% for gaugeroi in gaugerois %}
         <div id="roi{{ loop.index }}">
-            <label for="gauge_roi{{ loop.index }}">GAUGE AREA {{ loop.index }}:</label><br>
-            <input type="text" id="gauge_roi{{ loop.index }}_x" name="gauge_roi{{ loop.index }}_x" value="{{ gauge_roi[0] }}">
-            <input type="text" id="gauge_roi{{ loop.index }}_y" name="gauge_roi{{ loop.index }}_y" value="{{ gauge_roi[1] }}">
-            <input type="text" id="gauge_roi{{ loop.index }}_w" name="gauge_roi{{ loop.index }}_w" value="{{ gauge_roi[2] }}">
-            <input type="text" id="gauge_roi{{ loop.index }}_h" name="gauge_roi{{ loop.index }}_h" value="{{ gauge_roi[3] }}"><br>
+            <label for="gaugeroi{{ loop.index }}">GAUGE AREA {{ loop.index }}:</label><br>
+            <input type="text" id="gaugeroi{{ loop.index }}_x" name="gaugeroi{{ loop.index }}_x" value="{{ gaugeroi[0] }}">
+            <input type="text" id="gaugeroi{{ loop.index }}_y" name="gaugeroi{{ loop.index }}_y" value="{{ gaugeroi[1] }}">
+            <input type="text" id="gaugeroi{{ loop.index }}_w" name="gaugeroi{{ loop.index }}_w" value="{{ gaugeroi[2] }}">
+            <input type="text" id="gaugeroi{{ loop.index }}_h" name="gaugeroi{{ loop.index }}_h" value="{{ gaugeroi[3] }}"><br>
         </div>
     {% endfor %}
     </div>
@@ -69,11 +69,11 @@
         gaugeRoiCount++;
         var gaugeRoiField = document.createElement('div');
         gaugeRoiField.innerHTML = `
-            <label for="gauge_roi${gaugeRoiCount}">GAUGE ${gaugeRoiCount}:</label><br>
-            <input type="text" id="gauge_roi${gaugeRoiCount}_x" name="gauge_roi${gaugeRoiCount}_x">
-            <input type="text" id="gauge_roi${gaugeRoiCount}_y" name="gauge_roi${gaugeRoiCount}_y">
-            <input type="text" id="gauge_roi${gaugeRoiCount}_w" name="gauge_roi${gaugeRoiCount}_w">
-            <input type="text" id="gauge_roi${gaugeRoiCount}_h" name="gauge_roi${gaugeRoiCount}_h"><br>
+            <label for="gaugeroi${gaugeRoiCount}">GAUGE ${gaugeRoiCount}:</label><br>
+            <input type="text" id="gaugeroi${gaugeRoiCount}_x" name="gaugeroi${gaugeRoiCount}_x">
+            <input type="text" id="gaugeroi${gaugeRoiCount}_y" name="gaugeroi${gaugeRoiCount}_y">
+            <input type="text" id="gaugeroi${gaugeRoiCount}_w" name="gaugeroi${gaugeRoiCount}_w">
+            <input type="text" id="gaugeroi${gaugeRoiCount}_h" name="gaugeroi${gaugeRoiCount}_h"><br>
         `;
         gaugeRoiField.id = `gauge_roi${gaugeRoiCount}`;
         document.getElementById('gauge-roi-fields').appendChild(gaugeRoiField);
@@ -81,7 +81,7 @@
 
     document.getElementById('remove-gauge-roi').addEventListener('click', function() {
         if (roiCount > 0) {
-            var gaugeRoiField = document.getElementById(`gauge_roi${gaugeRoiCount}`);
+            var gaugeRoiField = document.getElementById(`gaugeroi${gaugeRoiCount}`);
             gaugeRoiField.parentNode.removeChild(gaugeRoiField);
             gaugeRoiCount--;
         }
