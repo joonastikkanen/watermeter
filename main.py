@@ -172,13 +172,36 @@ def load_sensor_data():
 # ROUTES
 @app.route('/')
 def home():
-    sensor_data = load_sensor_data()
-    return sensor_data
+    try:
+        sensor_data = load_sensor_data()
+        return sensor_data
+    except FileNotFoundError:
+        return "Failed to load sensor data", 404
+
+
+@app.route('/take_new_picture')
+def take_new_picture_route():
+    try:
+        take_picture()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to read data from image", 404
 
 @app.route('/read_image')
-def read_image():
-    read_image = read_image()
-    return read_image
+def read_image_route():
+    try:
+        read_image()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to read data from image", 404
+
+@app.route('/draw_rois')
+def draw_rois_route():
+    try:
+        draw_rois()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to draw ROI areas to image", 404
 
 @app.route('/preview/image')
 def preview_image():
@@ -192,24 +215,25 @@ def preview():
     try:
         # Load the configuration
         config = load_config()
-        take_picture()
-        draw_rois()
-        read_image()
         # Get the ROIs
         rois = config.get('rois')
         gauge_rois = config.get('gauge_rois')
+        print(rois)
+        print(gauge_rois)
         sensor_data = load_sensor_data()
 
         # Render the template
         return render_template('preview.html', sensor_data=sensor_data, rois=rois, gauge_rois=gauge_rois)
     except FileNotFoundError:
-        return "No image found", 404
+        return "Failed to render preview page", 404
     
 @app.route('/update_config', methods=['POST'])
 def update_config():
     try:
         rois = []
         gauge_rois = []
+        print(rois)
+        print(gauge_rois)
         if request.method == 'POST':
             # Iterate over the form data
             for key in request.form:
@@ -266,12 +290,14 @@ def update_config():
             # Convert the lists to tuples
             rois = [tuple(roi) for roi in rois]
             gauge_rois = [tuple(roi) for roi in gauge_rois]
-
+            print(rois)
+            print(gauge_rois)
             config = load_config()
             config['rois'] = rois
             config['gauge_rois'] = gauge_rois
             # Update more values here
-
+            print(rois)
+            print(gauge_rois)
             # Write the updated configuration to the YAML file
             with open('config.yaml', 'w') as file:
                 yaml.dump(config, file)

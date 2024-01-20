@@ -1,5 +1,18 @@
-<img src="{{ url_for('preview_image') }}" alt="Preview image"><br><br>
-Sensor data: {{ sensor_data }}<br><br>
+<form action="{{ url_for('take_new_picture') }}" method="post">
+<img src="{{ url_for('preview_image') }}" alt="Preview image">
+    <button type="submit">TAKE NEW PICTURE</button><br>
+</form>
+<br>
+<form action="{{ url_for('draw_rois') }}" method="post">
+    <button type="submit">UPDATE AREAS</button><br>
+</form>
+<br>
+<form action="{{ url_for('read_image') }}" method="post">
+    <button type="submit">READ DATA FROM AREAS</button><br>
+    Sensor data: {{ sensor_data }} <br><br>
+    <a href="read_image">Read Image</a><br>
+</form>
+<br>
 <form action="{{ url_for('update_config') }}" method="post" id="roi-form">
     <div id="roi-fields">
     <b>NUMBER AREA</b><br>
