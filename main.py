@@ -1,7 +1,6 @@
-import os
 import yaml
 from time import sleep
-from picamera2 import Picamera2, Preview
+from picamera2 import Picamera2
 from flask import Flask, send_file, redirect, url_for, request, render_template
 import cv2
 import pytesseract
@@ -55,12 +54,9 @@ def led_off():
 # TAKE PICTURE
 def take_picture():
     camera = Picamera2()
-    #preview_config = camera.create_preview_configuration(main=picamera_config)
-    #camera.configure(preview_config)
     # Turn on LED
     led_on()
     # Turn on Camera and allow to adjust to brightness
-    #camera.start_preview(Preview.NULL)
     camera.start()
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
@@ -164,7 +160,6 @@ def draw_rois():
 # LOAD SENSOR DATA
 def load_sensor_data():
     try:
-
         with open(watermeter_last_value_file, 'r') as f:
             sensor_data = str(f.read())
     except FileNotFoundError:
@@ -185,12 +180,6 @@ def read_image():
     read_image = read_image()
     return read_image
 
-@app.route('/take_new_picture', methods=['POST'])
-def take_new_picture():
-    take_picture()
-    draw_rois()
-    return redirect(url_for('preview'))
-
 @app.route('/preview/image')
 def preview_image():
     try:
@@ -203,19 +192,24 @@ def preview():
     try:
         # Load the configuration
         config = load_config()
-
+        take_picture()
+        draw_rois()
+        read_image()
         # Get the ROIs
-        rois = config.get('rois', [])
-        gauge_rois = config.get('gauge_rois', [])
+        rois = config.get('rois')
+        gauge_rois = config.get('gauge_rois')
+        sensor_data = load_sensor_data()
 
         # Render the template
-        return render_template('preview.html', rois=rois, gauge_rois=gauge_rois)
+        return render_template('preview.html', sensor_data=sensor_data, rois=rois, gauge_rois=gauge_rois)
     except FileNotFoundError:
         return "No image found", 404
     
 @app.route('/update_config', methods=['POST'])
 def update_config():
     try:
+        rois = []
+        gauge_rois = []
         if request.method == 'POST':
             # Iterate over the form data
             for key in request.form:
@@ -243,7 +237,7 @@ def update_config():
 
                         # Add the value to the correct ROI
                         rois[roi_number - 1].append(value)
-            
+
                 # Check if the key starts with 'gaugeroi'
                 if key.startswith('gaugeroi'):
                     # Split the key into parts
@@ -268,12 +262,11 @@ def update_config():
 
                         # Add the value to the correct ROI
                         gauge_rois[gauge_roi_number - 1].append(value)
-                    # Add code to process 'gaugeroi' keys
-                    pass
+
             # Convert the lists to tuples
             rois = [tuple(roi) for roi in rois]
             gauge_rois = [tuple(roi) for roi in gauge_rois]
-            
+
             config = load_config()
             config['rois'] = rois
             config['gauge_rois'] = gauge_rois

@@ -1,10 +1,5 @@
-<img src="{{ url_for('preview_image') }}" alt="Preview image">
-<form action="{{ url_for('take_new_picture') }}" method="post">
-    <button type="submit">Take New Picture</button><br>
-    Sensor data: {{ url_for('home') }} <br><br>
-    <a href="read_image">Read Image</a><br>
-</form>
-
+<img src="{{ url_for('preview_image') }}" alt="Preview image"><br><br>
+Sensor data: {{ sensor_data }}<br><br>
 <form action="{{ url_for('update_config') }}" method="post" id="roi-form">
     <div id="roi-fields">
     <b>NUMBER AREA</b><br>
