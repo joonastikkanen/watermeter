@@ -179,7 +179,7 @@ def home():
         return "Failed to load sensor data", 404
 
 
-@app.route('/take_new_picture')
+@app.route('/take_new_picture', methods=['POST'])
 def take_new_picture_route():
     try:
         take_picture()
@@ -187,7 +187,7 @@ def take_new_picture_route():
     except FileNotFoundError:
         return "Failed to read data from image", 404
 
-@app.route('/read_image')
+@app.route('/read_image', methods=['POST'])
 def read_image_route():
     try:
         read_image()
@@ -195,9 +195,11 @@ def read_image_route():
     except FileNotFoundError:
         return "Failed to read data from image", 404
 
-@app.route('/draw_rois')
+@app.route('/draw_rois', methods=['POST'])
 def draw_rois_route():
     try:
+        # Load the configuration
+        config = load_config()
         draw_rois()
         return redirect(url_for('preview'))
     except FileNotFoundError:

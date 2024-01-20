@@ -1,0 +1,21 @@
+/* Split the screen in half */
+.form {
+  border: 5px solid #555;
+  padding: 10px;
+}
+
+.preview {
+  width: 100%;
+  float: left;
+}
+
+/* Control the left side */
+.controls {
+  width: 30%;
+}
+
+/* Control the right side */
+.image {
+  width: 70%;
+}
+
