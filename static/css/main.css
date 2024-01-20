@@ -1,20 +1,25 @@
-/* Split the screen in half */
-.form {
-  border: 5px solid #555;
+/* Set up the container */
+.container {
+  width: 1000px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
   padding: 10px;
-}
-
-.preview {
-  width: 100%;
-  float: left;
+  border: 5px solid #292929;
+  background: #555;
 }
 
 /* Control the left side */
 .controls {
   width: 30%;
+  border: 5px solid #292929;
+  background: #555;
+  padding: 10px;
 }
 
-/* Control the right side */
+/* Control the right side (image) */
 .image {
   width: 70%;
 }

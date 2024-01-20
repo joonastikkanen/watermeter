@@ -220,6 +220,7 @@ def preview():
         # Get the ROIs
         rois = config.get('rois')
         gauge_rois = config.get('gauge_rois')
+        print("ROIS BEFORE PREVIEW")
         print(rois)
         print(gauge_rois)
         sensor_data = load_sensor_data()
@@ -234,6 +235,7 @@ def update_config():
     try:
         rois = []
         gauge_rois = []
+        print("ROIS BEFORE UPDATE")
         print(rois)
         print(gauge_rois)
         if request.method == 'POST':
@@ -292,12 +294,14 @@ def update_config():
             # Convert the lists to tuples
             rois = [tuple(roi) for roi in rois]
             gauge_rois = [tuple(roi) for roi in gauge_rois]
+            print("ROIS AFTER UPDATE")
             print(rois)
             print(gauge_rois)
             config = load_config()
             config['rois'] = rois
             config['gauge_rois'] = gauge_rois
             # Update more values here
+            print("ROIS AFTER CONFIG UPDATE")
             print(rois)
             print(gauge_rois)
             # Write the updated configuration to the YAML file

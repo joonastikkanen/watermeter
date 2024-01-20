@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-<div class="preview">
-    <div class="preview controls">
-        <div class="form">
+<div class="container">
+    <div class="controls">
             <form action="{{ url_for('update_config') }}" method="post" id="roi-form">
                 <div id="roi-fields">
                 <b>NUMBER AREA</b><br>
@@ -34,26 +33,19 @@
                 <button type="button" id="remove-gauge-roi">-</button><br><br>
                 <input type="submit" value="UPDATE AREAS">
             </form>
-        </div>
         <br>
-        <div class="form">
            <form action="{{ url_for('take_new_picture_route') }}" method="post">
                 <button type="submit">TAKE NEW PICTURE</button><br>
             </form>
-        </div>
         <br>
-        <div class="form">
             <form action="{{ url_for('draw_rois_route') }}" method="post">
                 <button type="submit">UPDATE AREAS</button><br>
             </form>
-        </div>
         <br>
-        <div class="form">
         <form action="{{ url_for('read_image_route') }}" method="post">
             <button type="submit">READ DATA FROM AREAS</button><br>
             <b>Sensor data: {{ sensor_data }}</b><br><br>
         </form>
-        </div>
         <br>
         <script>
             // NUMBER ROI'S
@@ -104,7 +96,7 @@
             });
         </script>
     </div>
-    <div class="preview image">
+    <div class="image">
         <img src="{{ url_for('preview_image') }}" alt="Preview image">
     </div>
 </div>
