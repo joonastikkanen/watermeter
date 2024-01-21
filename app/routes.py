@@ -1,0 +1,86 @@
+from flask import send_file, redirect, url_for, render_template
+from app import app
+from app.reader import load_sensor_data, read_image, draw_rois
+from app.camera import take_picture
+from app.config_update import update_config
+from app import load_config
+
+config = load_config()
+# Convert the lists to tuples
+gauge_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]
+picamera_image_path = config['picamera_image_path']
+picamera_photo_height = config['picamera_photo_height']
+picamera_photo_width = config['picamera_photo_width']
+rois = config['rois'] = [tuple(roi) for roi in config['rois']]
+tesseract_path = config['tesseract_path']
+tesseract_config = config['tesseract_config']
+watermeter_last_value_file = config['watermeter_last_value_file']
+watermeter_preview_image_path = config['watermeter_preview_image_path']
+
+# ROUTES
+@app.route('/')
+def home():
+    try:
+        sensor_data = load_sensor_data()
+        return sensor_data
+    except FileNotFoundError:
+        return "Failed to load sensor data", 404
+
+
+@app.route('/take_new_picture', methods=['POST'])
+def take_new_picture_route():
+    try:
+        take_picture()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to take new picture", 404
+
+@app.route('/read_image', methods=['POST'])
+def read_image_route():
+    try:
+        read_image()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to read data from image", 404
+
+@app.route('/draw_rois', methods=['POST'])
+def draw_rois_route():
+    try:
+        # Load the configuration
+        config = load_config()
+        draw_rois()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to draw ROI areas to image", 404
+
+@app.route('/preview/image')
+def preview_image():
+    try:
+        return send_file(watermeter_preview_image_path, mimetype='image/jpeg')
+    except FileNotFoundError:
+        return "No image found", 404
+
+@app.route('/preview')
+def preview():
+    try:
+        # Load the configuration
+        config = load_config()
+        # Get the ROIs
+        rois = config.get('rois')
+        gauge_rois = config.get('gauge_rois')
+        sensor_data = load_sensor_data()
+        capture_timestamp = take_picture()
+        # Render the template
+        return render_template('preview.html', sensor_data=sensor_data, rois=rois, gaugerois=gauge_rois, capture_timestamp=capture_timestamp)
+    except FileNotFoundError:
+        return "Failed to render preview page", 404
+
+@app.route('/update_config', methods=['POST'])
+def update_config_route():
+    try:
+        take_picture()
+        update_config()
+        draw_rois()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to update config", 404
