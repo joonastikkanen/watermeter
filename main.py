@@ -1,6 +1,7 @@
 import yaml
 from time import sleep
-from picamera2 import Picamera2
+from datetime import datetime
+from picamera2 import Picamera2, Preview
 from flask import Flask, send_file, redirect, url_for, request, render_template
 import cv2
 import pytesseract
@@ -57,13 +58,18 @@ def take_picture():
     # Turn on LED
     led_on()
     # Turn on Camera and allow to adjust to brightness
+    camera.start_preview(Preview.NULL)
+
+    preview_config = camera.create_preview_configuration(main=picamera_config)
+    camera.configure(preview_config)    
     camera.start()
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
     camera.capture_file(picamera_image_path)
+    capture_timestamp = datetime.now()
     camera.close()
     led_off()
-    return True
+    return capture_timestamp
 
 # READ IMAGE
 def read_image():
@@ -125,6 +131,8 @@ def read_image():
             angle_range = np.pi  # The range of angles on the gauge (180 degrees)
             value = (pointer_angle / angle_range) * value_range
             digits += str(value)
+        read_digits()
+        read_gauges()
         # Convert the digits string to an integer
         value = int(digits)
         return digits
@@ -184,7 +192,7 @@ def take_new_picture_route():
         take_picture()
         return redirect(url_for('preview'))
     except FileNotFoundError:
-        return "Failed to read data from image", 404
+        return "Failed to take new picture", 404
 
 @app.route('/read_image', methods=['POST'])
 def read_image_route():
@@ -220,78 +228,86 @@ def preview():
         rois = config.get('rois')
         gauge_rois = config.get('gauge_rois')
         sensor_data = load_sensor_data()
-
+        capture_timestamp = take_picture()
         # Render the template
-        return render_template('preview.html', sensor_data=sensor_data, rois=rois, gaugerois=gauge_rois)
+        return render_template('preview.html', sensor_data=sensor_data, rois=rois, gaugerois=gauge_rois, capture_timestamp=capture_timestamp)
     except FileNotFoundError:
         return "Failed to render preview page", 404
 
 @app.route('/update_config', methods=['POST'])
+def update_config_route():
+    try:
+        take_picture()
+        update_config()
+        draw_rois()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to update config", 404
+
 def update_config():
     try:
-        if request.method == 'POST':
-            # Iterate over the form data
-            rois = []
-            gauge_rois = []
-            print(request.form)
-            for key in request.form:
-                # Check if the key starts with 'roi'
-                if key.startswith('roi'):
-                    # Split the key into parts
-                    parts = key.split('_')
+        # Iterate over the form data
+        rois = []
+        gauge_rois = []
+        print(request.form)
+        for key in request.form:
+            # Check if the key starts with 'roi'
+            if key.startswith('roi'):
+                # Split the key into parts
+                parts = key.split('_')
 
-                    # Check if the key has the correct format
-                    if len(parts) == 3:
-                        # Get the ROI number and coordinate
-                        roi_number = int(parts[1])
-                        coordinate = parts[2]
-                        # Ensure the ROIs list has enough elements
-                        while len(rois) < roi_number:
-                            rois.append([])
+                # Check if the key has the correct format
+                if len(parts) == 3:
+                    # Get the ROI number and coordinate
+                    roi_number = int(parts[1])
+                    coordinate = parts[2]
+                    # Ensure the ROIs list has enough elements
+                    while len(rois) < roi_number:
+                        rois.append([])
 
-                        # Get the value from the form data and convert it to an integer
-                        value = int(request.form[key])
-                        # Validate the value
-                        if not (0 <= value <= 2000):
-                            return "Invalid input: ROI values must be between 0 and 2000", 400
+                    # Get the value from the form data and convert it to an integer
+                    value = int(request.form[key])
+                    # Validate the value
+                    if not (0 <= value <= 2000):
+                        return "Invalid input: ROI values must be between 0 and 2000", 400
 
-                        # Add the value to the correct ROI
-                        rois[roi_number - 1].append(value)
-                # Check if the key starts with 'gaugeroi'
-                if key.startswith('gaugeroi'):
-                    # Split the key into parts
-                    parts = key.split('_')
+                    # Add the value to the correct ROI
+                    rois[roi_number - 1].append(value)
+            # Check if the key starts with 'gaugeroi'
+            if key.startswith('gaugeroi'):
+                # Split the key into parts
+                parts = key.split('_')
 
-                    # Check if the key has the correct format
-                    if len(parts) == 3:
-                        # Get the ROI number and coordinate
-                        gauge_roi_number = int(parts[1])
-                        coordinate = parts[2]
+                # Check if the key has the correct format
+                if len(parts) == 3:
+                    # Get the ROI number and coordinate
+                    gauge_roi_number = int(parts[1])
+                    coordinate = parts[2]
 
-                        # Ensure the ROIs list has enough elements
-                        while len(gauge_rois) < gauge_roi_number:
-                            gauge_rois.append([])
+                    # Ensure the ROIs list has enough elements
+                    while len(gauge_rois) < gauge_roi_number:
+                        gauge_rois.append([])
 
-                        # Get the value from the form data and convert it to an integer
-                        value = int(request.form[key])
+                    # Get the value from the form data and convert it to an integer
+                    value = int(request.form[key])
 
-                        # Validate the value
-                        if not (0 <= value <= 2000):
-                            return "Invalid input: ROI values must be between 0 and 2000", 400
+                    # Validate the value
+                    if not (0 <= value <= 2000):
+                        return "Invalid input: ROI values must be between 0 and 2000", 400
 
-                        # Add the value to the correct ROI
-                        gauge_rois[gauge_roi_number - 1].append(value)
+                    # Add the value to the correct ROI
+                    gauge_rois[gauge_roi_number - 1].append(value)
 
-            # Convert the lists to tuples
+        # Convert the lists to tuples
 
-            rois = [list(roi) for roi in rois]
-            gauge_rois = [list(roi) for roi in gauge_rois]
-            config['rois'] = rois
-            config['gauge_rois'] = gauge_rois
-            # Update more values here
-            # Write the updated configuration to the YAML file
-            with open('config.yaml', 'w') as file:
-                yaml.dump(config, file, default_flow_style=None)
-            return redirect(url_for('preview'))
+        rois = [list(roi) for roi in rois]
+        gauge_rois = [list(roi) for roi in gauge_rois]
+        config['rois'] = rois
+        config['gauge_rois'] = gauge_rois
+        # Update more values here
+        # Write the updated configuration to the YAML file
+        with open('config.yaml', 'w') as file:
+            yaml.dump(config, file, default_flow_style=None)
+        return True
     except ValueError:
         return "Invalid input: could not convert data to an integer", 400
