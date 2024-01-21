@@ -1,26 +1,24 @@
 /* Set up the container */
 .container {
-  width: 1000px;
+  width: 1500px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
+  align-items: left;
+  margin: 5 auto;
   padding: 10px;
   border: 5px solid #292929;
-  background: #555;
 }
 
 /* Control the left side */
 .controls {
-  width: 30%;
-  border: 5px solid #292929;
-  background: #555;
+  width: 50%;
   padding: 10px;
 }
 
 /* Control the right side (image) */
 .image {
-  width: 70%;
+  width: 100%;
+  padding: 10px;
 }
 
