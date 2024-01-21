@@ -131,7 +131,7 @@ def read_image():
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
     	f.write(int(digits))
-  
+
 # Draw the ROIs on the image
 def draw_rois():
     # Load the image
@@ -155,7 +155,6 @@ def draw_rois():
         # Save the image
         img.save(filename=watermeter_preview_image_path)
     return True
-
 
 # LOAD SENSOR DATA
 def load_sensor_data():
@@ -220,27 +219,20 @@ def preview():
         # Get the ROIs
         rois = config.get('rois')
         gauge_rois = config.get('gauge_rois')
-        print("ROIS BEFORE PREVIEW")
-        print(rois)
-        print(gauge_rois)
         sensor_data = load_sensor_data()
 
         # Render the template
-        return render_template('preview.html', sensor_data=sensor_data, rois=rois, gauge_rois=gauge_rois)
+        return render_template('preview.html', sensor_data=sensor_data, rois=rois, gaugerois=gauge_rois)
     except FileNotFoundError:
         return "Failed to render preview page", 404
-    
+
 @app.route('/update_config', methods=['POST'])
 def update_config():
     try:
-
         if request.method == 'POST':
             # Iterate over the form data
             rois = []
             gauge_rois = []
-            print("ROIS BEFORE UPDATE")
-            print(rois)
-            print(gauge_rois)
             print(request.form)
             for key in request.form:
                 # Check if the key starts with 'roi'
@@ -291,26 +283,15 @@ def update_config():
                         gauge_rois[gauge_roi_number - 1].append(value)
 
             # Convert the lists to tuples
-                   
+
             rois = [list(roi) for roi in rois]
             gauge_rois = [list(roi) for roi in gauge_rois]
-            print("ROIS AFTER CONFIG UPDATE")
-            print(rois)
-            print(gauge_rois)
-            #config = load_config()
             config['rois'] = rois
             config['gauge_rois'] = gauge_rois
             # Update more values here
-            print("ROIS AFTER CONFIG UPDATE")
-            print(rois)
-            print(gauge_rois)
             # Write the updated configuration to the YAML file
             with open('config.yaml', 'w') as file:
-                yaml.dump(config, file)
+                yaml.dump(config, file, default_flow_style=None)
             return redirect(url_for('preview'))
     except ValueError:
         return "Invalid input: could not convert data to an integer", 400
-
-        
-
-    

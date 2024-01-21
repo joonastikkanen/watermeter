@@ -1,5 +1,5 @@
 gauge_rois:
-- [967, 602, 265, 291]
+- [13, 41, 51, 51]
 picamera_config: '{"size": (2000, 2000)}'
 picamera_image_path: /run/shm/watermeter_last.jpg
 rois:
@@ -8,9 +8,6 @@ rois:
 - [604, 381, 71, 102]
 - [679, 374, 71, 102]
 - [760, 374, 71, 102]
-- [844, 371, 71, 102]
-- [928, 368, 71, 102]
-- [1015, 408, 71, 102]
 tesseract_config: --psm 6 -c tessedit_char_whitelist=0123456789
 tesseract_path: /usr/bin/tesseract
 watermeter_last_value_file: /run/shm/watermeter_last_value.txt

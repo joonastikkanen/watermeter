@@ -20,7 +20,7 @@
                 <div id="gauge-roi-fields">
                 <b>GAUGE AREA</b><br>
                 {% for gaugeroi in gaugerois %}
-                    <div id="roi{{ loop.index }}">
+                    <div id="gaugeroi_{{ loop.index }}">
                         <label for="gaugeroi_{{ loop.index }}">GAUGE AREA {{ loop.index }}:</label><br>
                         <input type="text" id="gaugeroi_{{ loop.index }}_x" name="gaugeroi_{{ loop.index }}_x" value="{{ gaugeroi[0] }}" size="8" placeholder="X Position">
                         <input type="text" id="gaugeroi_{{ loop.index }}_y" name="gaugeroi_{{ loop.index }}_y" value="{{ gaugeroi[1] }}" size="8" placeholder="Y Position">
