@@ -21,7 +21,8 @@ config = load_config()
 # Convert the lists to tuples
 gauge_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]
 picamera_image_path = config['picamera_image_path']
-picamera_config = config['picamera_config']
+picamera_photo_height = config['picamera_photo_height']
+picamera_photo_width = config['picamera_photo_width']
 rois = config['rois'] = [tuple(roi) for roi in config['rois']]
 tesseract_path = config['tesseract_path']
 tesseract_config = config['tesseract_config']
@@ -57,15 +58,14 @@ def take_picture():
     camera = Picamera2()
     # Turn on LED
     led_on()
-    # Turn on Camera and allow to adjust to brightness
-    camera.start_preview(Preview.NULL)
-
-    preview_config = camera.create_preview_configuration(main=picamera_config)
-    camera.configure(preview_config)    
+    # Set resolution and turn on Camera
+    camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
+    camera.still_configuration.enable_raw()
+    camera.still_configuration.raw.size = camera.sensor_resolution
     camera.start()
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
-    camera.capture_file(picamera_image_path)
+    camera.switch_mode_and_capture_file("still", picamera_image_path)
     capture_timestamp = datetime.now()
     camera.close()
     led_off()

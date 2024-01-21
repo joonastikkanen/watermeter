@@ -22,3 +22,7 @@
   padding: 10px;
 }
 
+.image img {
+  border-radius: 8px;
+  width: 800px;
+}
