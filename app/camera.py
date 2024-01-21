@@ -2,7 +2,7 @@ import blinkt
 from picamera2 import Picamera2
 from time import sleep
 from datetime import datetime
-from app import app, load_config
+from app import load_config
 
 config = load_config()
 picamera_image_path = config['picamera_image_path']
