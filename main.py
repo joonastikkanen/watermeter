@@ -134,8 +134,10 @@ def read_image():
         read_digits()
         read_gauges()
         # Convert the digits string to an integer
-        #value = int(digits)
-        value = digits
+        if digits.isdigit():
+            value = int(digits)
+        else:
+           value = "Error: Digits contains non-integer values."
         return digits
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
