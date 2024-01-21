@@ -134,11 +134,12 @@ def read_image():
         read_digits()
         read_gauges()
         # Convert the digits string to an integer
-        value = int(digits)
+        #value = int(digits)
+        value = digits
         return digits
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
-    	f.write(int(digits))
+    	f.write(digits)
 
 # Draw the ROIs on the image
 def draw_rois():
