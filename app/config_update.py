@@ -66,7 +66,7 @@ def update_config():
         config['gauge_rois'] = gauge_rois
         # Update more values here
         # Write the updated configuration to the YAML file
-        with open('../config.yaml', 'w') as file:
+        with open('config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
         return True
     except ValueError:

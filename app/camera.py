@@ -2,12 +2,13 @@ import blinkt
 from picamera2 import Picamera2
 from time import sleep
 from datetime import datetime
-from app import load_config
+from app import app, load_config
 
 config = load_config()
 picamera_image_path = config['picamera_image_path']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
+watermeter_preview_image_path = config['watermeter_preview_image_path']
 
 # LED ON
 def led_on():

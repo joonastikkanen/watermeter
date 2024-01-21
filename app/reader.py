@@ -5,7 +5,7 @@ import numpy as np
 from wand.image import Image
 from wand.drawing import Drawing
 from wand.color import Color
-from camera import take_picture
+from app.camera import take_picture
 
 config = load_config()
 gauge_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]

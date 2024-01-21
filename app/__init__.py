@@ -3,7 +3,7 @@ import yaml
 
 # LOAD CONFIG FILE
 def load_config():
-    with open('../config.yaml', 'r') as file:
+    with open('config.yaml', 'r') as file:
         config = yaml.safe_load(file)
     return config
 
@@ -30,3 +30,5 @@ def create_app():
     return app
 
 app = create_app()
+
+from app import routes

@@ -1,20 +1,13 @@
 from flask import send_file, redirect, url_for, render_template
-from app import app
+from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois
 from app.camera import take_picture
 from app.config_update import update_config
-from app import load_config
 
 config = load_config()
 # Convert the lists to tuples
 gauge_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]
-picamera_image_path = config['picamera_image_path']
-picamera_photo_height = config['picamera_photo_height']
-picamera_photo_width = config['picamera_photo_width']
 rois = config['rois'] = [tuple(roi) for roi in config['rois']]
-tesseract_path = config['tesseract_path']
-tesseract_config = config['tesseract_config']
-watermeter_last_value_file = config['watermeter_last_value_file']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 
 # ROUTES
