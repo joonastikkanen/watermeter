@@ -233,13 +233,15 @@ def preview():
 @app.route('/update_config', methods=['POST'])
 def update_config():
     try:
-        rois = []
-        gauge_rois = []
-        print("ROIS BEFORE UPDATE")
-        print(rois)
-        print(gauge_rois)
+
         if request.method == 'POST':
             # Iterate over the form data
+            rois = []
+            gauge_rois = []
+            print("ROIS BEFORE UPDATE")
+            print(rois)
+            print(gauge_rois)
+            print(request.form)
             for key in request.form:
                 # Check if the key starts with 'roi'
                 if key.startswith('roi'):
@@ -251,21 +253,18 @@ def update_config():
                         # Get the ROI number and coordinate
                         roi_number = int(parts[1])
                         coordinate = parts[2]
-
                         # Ensure the ROIs list has enough elements
                         while len(rois) < roi_number:
                             rois.append([])
 
                         # Get the value from the form data and convert it to an integer
                         value = int(request.form[key])
-
                         # Validate the value
                         if not (0 <= value <= 2000):
                             return "Invalid input: ROI values must be between 0 and 2000", 400
 
                         # Add the value to the correct ROI
                         rois[roi_number - 1].append(value)
-
                 # Check if the key starts with 'gaugeroi'
                 if key.startswith('gaugeroi'):
                     # Split the key into parts
@@ -292,12 +291,13 @@ def update_config():
                         gauge_rois[gauge_roi_number - 1].append(value)
 
             # Convert the lists to tuples
-            rois = [tuple(roi) for roi in rois]
-            gauge_rois = [tuple(roi) for roi in gauge_rois]
-            print("ROIS AFTER UPDATE")
+                   
+            rois = [list(roi) for roi in rois]
+            gauge_rois = [list(roi) for roi in gauge_rois]
+            print("ROIS AFTER CONFIG UPDATE")
             print(rois)
             print(gauge_rois)
-            config = load_config()
+            #config = load_config()
             config['rois'] = rois
             config['gauge_rois'] = gauge_rois
             # Update more values here
