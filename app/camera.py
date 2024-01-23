@@ -1,7 +1,8 @@
 import os
 import blinkt
+import time
 from picamera2 import Picamera2
-from time import sleep, time
+from time import sleep
 from datetime import datetime
 from app import load_config
 

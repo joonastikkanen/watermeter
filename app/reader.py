@@ -34,7 +34,7 @@ def read_image():
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     def read_predigits():
-
+        predigits = ''
         # Crop the image
         # Process each ROI
         for x, y, w, h in prerois:
@@ -83,7 +83,7 @@ def read_image():
         return(predigits)
 
     def read_postdigits():
-
+        postdigits = ''
         # Crop the image
         # Process each ROI
         for x, y, w, h in postrois:
@@ -132,9 +132,9 @@ def read_image():
         return(postdigits)
     
     read_predigits()
-    read_pregauges()
+    #read_pregauges()
     read_postdigits()
-    read_postgauges()
+    #read_postgauges()
     
     digits = predigits + '.' + postdigits
     
