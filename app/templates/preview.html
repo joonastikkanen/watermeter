@@ -89,7 +89,7 @@
 
             document.getElementById('remove-pre-roi').addEventListener('click', function() {
                 if (preRoiCount > 0) {
-                    var preRoiField = document.getElementById(`roi_${preRoiCount}`);
+                    var preRoiField = document.getElementById(`preroi_${preRoiCount}`);
                     roiField.parentNode.removeChild(preRoiField);
                     preRoiCount--;
                 }
@@ -112,7 +112,7 @@
 
             document.getElementById('remove-pre-gauge-roi').addEventListener('click', function() {
                 if (preGaugeRoiCount > 0) {
-                    var preGaugeRoiField = document.getElementById(`gaugeroi_${preGaugeRoiCount}`);
+                    var preGaugeRoiField = document.getElementById(`pregaugeroi_${preGaugeRoiCount}`);
                     preGaugeRoiField.parentNode.removeChild(preGaugeRoiField);
                     preGaugeRoiCount--;
                 }
@@ -135,7 +135,7 @@
  
              document.getElementById('remove-post-roi').addEventListener('click', function() {
                  if (postRoiCount > 0) {
-                     var postRoiField = document.getElementById(`roi_${postRoiCount}`);
+                     var postRoiField = document.getElementById(`postroi_${postRoiCount}`);
                      roiField.parentNode.removeChild(postRoiField);
                      postRoiCount--;
                  }
@@ -158,7 +158,7 @@
  
              document.getElementById('remove-post-gauge-roi').addEventListener('click', function() {
                  if (postGaugeRoiCount > 0) {
-                     var postGaugeRoiField = document.getElementById(`gaugeroi_${postGaugeRoiCount}`);
+                     var postGaugeRoiField = document.getElementById(`postgaugeroi_${postGaugeRoiCount}`);
                      postGaugeRoiField.parentNode.removeChild(postGaugeRoiField);
                      postGaugeRoiCount--;
                  }
