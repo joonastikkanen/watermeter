@@ -96,7 +96,7 @@
             });
             // PRE GAUGE ROIS
             var preGaugeRoiCount = {{ pregaugerois|length }};
-            document.getElementById('add-gauge-roi').addEventListener('click', function() {
+            document.getElementById('add-pre-gauge-roi').addEventListener('click', function() {
                 preGaugeRoiCount++;
                 var preGaugeRoiField = document.createElement('div');
                 preGaugeRoiField.innerHTML = `
@@ -142,7 +142,7 @@
              });
              // POST GAUGE ROIS
              var postGaugeRoiCount = {{ postgaugerois|length }};
-             document.getElementById('add-gauge-roi').addEventListener('click', function() {
+             document.getElementById('add-post-gauge-roi').addEventListener('click', function() {
                  postGaugeRoiCount++;
                  var postGaugeRoiField = document.createElement('div');
                  postGaugeRoiField.innerHTML = `
