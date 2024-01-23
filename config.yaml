@@ -5,6 +5,7 @@ picamera_photo_height: 2000
 picamera_photo_width: 2000
 rois:
 - [439, 388, 71, 102]
+- [123, 12, 12, 123]
 tesseract_config: --psm 6 -c tessedit_char_whitelist=0123456789
 tesseract_path: /usr/bin/tesseract
 watermeter_last_value_file: /run/shm/watermeter_last_value.txt
