@@ -8,9 +8,9 @@ def update_config():
     try:
         # Iterate over the form data
         prerois = []
-        pregauge_rois = []
+        pregaugerois = []
         postrois = []
-        postgauge_rois = []        
+        postgaugerois = []        
         print(request.form)
         for key in request.form:
             # Check if the key starts with 'preroi'
@@ -48,8 +48,8 @@ def update_config():
                     coordinate = parts[2]
 
                     # Ensure the ROIs list has enough elements
-                    while len(pregauge_rois) < pregauge_roi_number:
-                        pregauge_rois.append([])
+                    while len(pregaugerois) < pregauge_roi_number:
+                        pregaugerois.append([])
 
                     # Get the value from the form data and convert it to an integer
                     value = int(request.form[key])
@@ -59,7 +59,7 @@ def update_config():
                         return "Invalid input: ROI values must be between 0 and 2000", 400
 
                     # Add the value to the correct ROI
-                    pregauge_rois[pregauge_roi_number - 1].append(value)
+                    pregaugerois[pregauge_roi_number - 1].append(value)
 
         for key in request.form:
             # Check if the key starts with 'postroi'
@@ -97,8 +97,8 @@ def update_config():
                     coordinate = parts[2]
 
                     # Ensure the ROIs list has enough elements
-                    while len(postgauge_rois) < postgauge_roi_number:
-                        postgauge_rois.append([])
+                    while len(postgaugerois) < postgauge_roi_number:
+                        postgaugerois.append([])
 
                     # Get the value from the form data and convert it to an integer
                     value = int(request.form[key])
@@ -108,18 +108,18 @@ def update_config():
                         return "Invalid input: ROI values must be between 0 and 2000", 400
 
                     # Add the value to the correct ROI
-                    postgauge_rois[postgauge_roi_number - 1].append(value)
+                    postgaugerois[postgauge_roi_number - 1].append(value)
 
         # Convert the lists to tuples
 
         prerois = [list(roi) for roi in prerois]
-        pregauge_rois = [list(roi) for roi in pregauge_rois]
+        pregaugerois = [list(roi) for roi in pregaugerois]
         postrois = [list(roi) for roi in postrois]
-        postgauge_rois = [list(roi) for roi in postgauge_rois]
+        postgaugerois = [list(roi) for roi in postgaugerois]
         config['prerois'] = prerois
-        config['pregauge_rois'] = pregauge_rois
+        config['pregaugerois'] = pregaugerois
         config['postrois'] = postrois
-        config['pstgauge_rois'] = postgauge_rois
+        config['postgaugerois'] = postgaugerois
         # Update more values here
         # Write the updated configuration to the YAML file
         with open('config.yaml', 'w') as file:

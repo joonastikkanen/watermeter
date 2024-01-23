@@ -11,9 +11,9 @@ import os
 config = load_config()
 picamera_image_path = config['picamera_image_path']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
-pregauge_rois = config['pregauge_rois'] = [tuple(roi) for roi in config['pregauge_rois']]
+pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
-postgauge_rois = config['postgauge_rois'] = [tuple(roi) for roi in config['postgauge_rois']]
+postgaugerois = config['postgaugerois'] = [tuple(roi) for roi in config['postgaugerois']]
 tesseract_path = config['tesseract_path']
 tesseract_config = config['tesseract_config']
 watermeter_last_value_file = config['watermeter_last_value_file']
@@ -51,7 +51,7 @@ def read_image():
 
     def read_pregauges():
         # Process each ROI
-        for x, y, w, h in pregauge_rois:
+        for x, y, w, h in pregaugerois:
             # Crop the image to the ROI
             pregauge_roi = gray_image[y:y+h, x:x+w]
 
@@ -100,7 +100,7 @@ def read_image():
 
     def read_postgauges():
         # Process each ROI
-        for x, y, w, h in postgauge_rois:
+        for x, y, w, h in postgaugerois:
             # Crop the image to the ROI
             postgauge_roi = gray_image[y:y+h, x:x+w]
 
