@@ -104,7 +104,7 @@ def read_image():
     return value
 
 # Draw the ROIs on the image
-def draw_rois_and_gauges(image_path, prerois, pregauges, postrois, postgauges, output_path):
+def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgaugerois, output_path):
     # Load the image
     image = cv2.imread(image_path)
 
@@ -117,7 +117,7 @@ def draw_rois_and_gauges(image_path, prerois, pregauges, postrois, postgauges, o
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
     # Draw each gauge
-    for x, y, w, h, value in pregauges:
+    for x, y, w, h, value in pregaugerois:
         # Calculate the angle and position of the line
         angle = (value / 10) * 180  # Assuming the gauge range is 10
         line_length = h / 2
@@ -127,7 +127,7 @@ def draw_rois_and_gauges(image_path, prerois, pregauges, postrois, postgauges, o
         # Draw the line
         cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
 
-    for x, y, w, h, value in postgauges:
+    for x, y, w, h, value in postgaugerois:
         # Calculate the angle and position of the line
         angle = (value / 10) * 180  # Assuming the gauge range is 10
         line_length = h / 2
