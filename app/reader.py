@@ -115,27 +115,34 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
     # Draw each ROI
     for x, y, w, h in postrois:
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
+    
+    if 'value' in locals():
+        # Draw each gauge
+        for x, y, w, h, value in pregaugerois:
+            # Calculate the angle and position of the line
+            angle = (value / 10) * 180  # Assuming the gauge range is 10
+            line_length = h / 2
+            line_x = x + w / 2 + line_length * np.cos(angle)
+            line_y = y + h / 2 - line_length * np.sin(angle)
 
-    # Draw each gauge
-    for x, y, w, h, value in pregaugerois:
-        # Calculate the angle and position of the line
-        angle = (value / 10) * 180  # Assuming the gauge range is 10
-        line_length = h / 2
-        line_x = x + w / 2 + line_length * np.cos(angle)
-        line_y = y + h / 2 - line_length * np.sin(angle)
+            # Draw the line
+            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
+            
+        for x, y, w, h, value in postgaugerois:
+            # Calculate the angle and position of the line
+            angle = (value / 10) * 180  # Assuming the gauge range is 10
+            line_length = h / 2
+            line_x = x + w / 2 + line_length * np.cos(angle)
+            line_y = y + h / 2 - line_length * np.sin(angle)
 
-        # Draw the line
-        cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
+            # Draw the line
+            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
+    else:
+        for x, y, w, h in pregaugerois:
+            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
-    for x, y, w, h, value in postgaugerois:
-        # Calculate the angle and position of the line
-        angle = (value / 10) * 180  # Assuming the gauge range is 10
-        line_length = h / 2
-        line_x = x + w / 2 + line_length * np.cos(angle)
-        line_y = y + h / 2 - line_length * np.sin(angle)
-
-        # Draw the line
-        cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
+        for x, y, w, h in postgaugerois:
+            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
     # Save the image
     cv2.imwrite(output_path, image)
