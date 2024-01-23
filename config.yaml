@@ -1,18 +1,16 @@
 picamera_image_path: /run/shm/watermeter_last.jpg
 picamera_photo_height: 2000
 picamera_photo_width: 2000
-prerois:
-- [439, 388, 71, 102]
-- [123, 12, 12, 123]
-pregaugerois:
-- [13, 41, 51, 51]
-postrois:
-- [439, 388, 71, 102]
-- [123, 12, 12, 123]
 postgaugerois:
-- [13, 41, 51, 51]
+- [55, 255, 555, 224]
+postrois:
+- [424, 52, 52, 154]
+pregaugerois:
+- [23, 125, 515, 23]
+prerois:
+- [123, 42, 52, 52]
 tesseract_config: --psm 6 -c tessedit_char_whitelist=0123456789
 tesseract_path: /usr/bin/tesseract
+watermeter_init_value: 0
 watermeter_last_value_file: /run/shm/watermeter_last_value.txt
 watermeter_preview_image_path: /run/shm/watermeter_preview.jpg
-watermeter_init_value: 0
