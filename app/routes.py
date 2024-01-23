@@ -6,8 +6,10 @@ from app.config_update import update_config
 
 config = load_config()
 # Convert the lists to tuples
-gauge_rois = config['gauge_rois'] = [tuple(roi) for roi in config['gauge_rois']]
-rois = config['rois'] = [tuple(roi) for roi in config['rois']]
+prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
+pregauge_rois = config['pregauge_rois'] = [tuple(roi) for roi in config['pregauge_rois']]
+postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
+postgauge_rois = config['postgauge_rois'] = [tuple(roi) for roi in config['postgauge_rois']]
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 
 # ROUTES
@@ -59,12 +61,14 @@ def preview():
         # Load the configuration
         config = load_config()
         # Get the ROIs
-        rois = config.get('rois')
-        gauge_rois = config.get('gauge_rois')
+        prerois = config.get('prerois')
+        pregauge_rois = config.get('pregauge_rois')
+        postrois = config.get('postrois')
+        postgauge_rois = config.get('postgauge_rois')
         sensor_data = load_sensor_data()
         capture_timestamp = take_picture()
         # Render the template
-        return render_template('preview.html', sensor_data=sensor_data, rois=rois, gaugerois=gauge_rois, capture_timestamp=capture_timestamp)
+        return render_template('preview.html', sensor_data=sensor_data, prerois=prerois, pregauge_rois=pregauge_rois, postrois=postrois, postgauge_rois=postgauge_rois, capture_timestamp=capture_timestamp)
     except FileNotFoundError:
         return "Failed to render preview page", 404
 
