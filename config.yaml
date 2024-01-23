@@ -4,12 +4,12 @@ picamera_photo_width: 2000
 prerois:
 - [439, 388, 71, 102]
 - [123, 12, 12, 123]
-pregauge_rois:
+pregaugerois:
 - [13, 41, 51, 51]
 postrois:
 - [439, 388, 71, 102]
 - [123, 12, 12, 123]
-postgauge_rois:
+postgaugerois:
 - [13, 41, 51, 51]
 tesseract_config: --psm 6 -c tessedit_char_whitelist=0123456789
 tesseract_path: /usr/bin/tesseract
