@@ -165,13 +165,13 @@ def draw_rois():
             for x, y, w, h in prerois:
                 draw.rectangle(left=x, top=y, width=w, height=h)
 
-            for x, y, w, h in pregauge_rois:
+            for x, y, w, h in pregaugerois:
                 draw.rectangle(left=x, top=y, width=w, height=h)
 
             for x, y, w, h in postrois:
                 draw.rectangle(left=x, top=y, width=w, height=h)
 
-            for x, y, w, h in postgauge_rois:
+            for x, y, w, h in postgaugerois:
                 draw.rectangle(left=x, top=y, width=w, height=h)
 
             # Overlay the ROIs onto the image
