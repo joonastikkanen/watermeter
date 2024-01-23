@@ -5,10 +5,10 @@
                 <h2>PRE DECIMAL NUMBER AREAS</h2>
                 <br>
                 <div id="pre-roi-fields">
-                <b>PRE DESIMAL NUMBER AREAS</b><br>
+                <b>NUMBERS</b><br>
                     {% for preroi in prerois %}
                         <div id="preroi_{{ loop.index }}">
-                            <label for="preroi_{{ loop.index }}">AREA {{ loop.index }}:</label><br>
+                            <label for="preroi_{{ loop.index }}">NUMBER {{ loop.index }}:</label><br>
                             <input type="text" id="preroi_{{ loop.index }}_x" name="preroi_{{ loop.index }}_x" value="{{ preroi[0] }}" size="8" placeholder="X Position">
                             <input type="text" id="preroi_{{ loop.index }}_y" name="preroi_{{ loop.index }}_y" value="{{ preroi[1] }}" size="8" placeholder="Y Position">
                             <input type="text" id="preroi_{{ loop.index }}_w" name="preroi_{{ loop.index }}_w" value="{{ preroi[2] }}" size="8" placeholder="Width">
@@ -20,10 +20,10 @@
                 <button type="button" id="remove-pre-roi">-</button><br>
                 <br>
                 <div id="pre-gauge-roi-fields">
-                <b>PRE DESIMAL GAUGE AREAS</b><br>
+                <b>GAUGES</b><br>
                 {% for pregaugeroi in pregaugerois %}
                     <div id="pregaugeroi_{{ loop.index }}">
-                        <label for="pregaugeroi_{{ loop.index }}">GAUGE AREA {{ loop.index }}:</label><br>
+                        <label for="pregaugeroi_{{ loop.index }}">GAUGE {{ loop.index }}:</label><br>
                         <input type="text" id="pregaugeroi_{{ loop.index }}_x" name="pregaugeroi_{{ loop.index }}_x" value="{{ pregaugeroi[0] }}" size="8" placeholder="X Position">
                         <input type="text" id="pregaugeroi_{{ loop.index }}_y" name="pregaugeroi_{{ loop.index }}_y" value="{{ pregaugeroi[1] }}" size="8" placeholder="Y Position">
                         <input type="text" id="pregaugeroi_{{ loop.index }}_w" name="pregaugeroi_{{ loop.index }}_w" value="{{ pregaugeroi[2] }}" size="8" placeholder="Width">
@@ -37,10 +37,10 @@
                 <h2>POST DECIMAL NUMBER AREAS</h2>
                 <br>
                 <div id="post-roi-fields">
-                    <b>NUMBER AREAS</b><br>
+                    <b>NUMBERS</b><br>
                         {% for postroi in postrois %}
                             <div id="postroi_{{ loop.index }}">
-                                <label for="postroi_{{ loop.index }}">AREA {{ loop.index }}:</label><br>
+                                <label for="postroi_{{ loop.index }}">NUMBER {{ loop.index }}:</label><br>
                                 <input type="text" id="postroi_{{ loop.index }}_x" name="postroi_{{ loop.index }}_x" value="{{ postroi[0] }}" size="8" placeholder="X Position">
                                 <input type="text" id="postroi_{{ loop.index }}_y" name="postroi_{{ loop.index }}_y" value="{{ postroi[1] }}" size="8" placeholder="Y Position">
                                 <input type="text" id="postroi_{{ loop.index }}_w" name="postroi_{{ loop.index }}_w" value="{{ postroi[2] }}" size="8" placeholder="Width">
@@ -52,10 +52,10 @@
                     <button type="button" id="remove-post-roi">-</button><br>
                     <br>
                     <div id="post-gauge-roi-fields">
-                    <b>GAUGE AREAS</b><br>
+                    <b>GAUGES</b><br>
                     {% for postgaugeroi in postgaugerois %}
                         <div id="postgaugeroi_{{ loop.index }}">
-                            <label for="postgaugeroi_{{ loop.index }}">GAUGE AREA {{ loop.index }}:</label><br>
+                            <label for="postgaugeroi_{{ loop.index }}">GAUGE {{ loop.index }}:</label><br>
                             <input type="text" id="postgaugeroi_{{ loop.index }}_x" name="postgaugeroi_{{ loop.index }}_x" value="{{ postgaugeroi[0] }}" size="8" placeholder="X Position">
                             <input type="text" id="postgaugeroi_{{ loop.index }}_y" name="postgaugeroi_{{ loop.index }}_y" value="{{ postgaugeroi[1] }}" size="8" placeholder="Y Position">
                             <input type="text" id="postgaugeroi_{{ loop.index }}_w" name="postgaugeroi_{{ loop.index }}_w" value="{{ postgaugeroi[2] }}" size="8" placeholder="Width">
@@ -77,7 +77,7 @@
                 preRoiCount++;
                 var roiField = document.createElement('div');
                 preRoiField.innerHTML = `
-                    <label for="preroi_${preRoiCount}">AREA ${preRoiCount}:</label><br>
+                    <label for="preroi_${preRoiCount}">NUMBER ${preRoiCount}:</label><br>
                     <input type="text" id="preroi_${preRoiCount}_x" name="preroi_${preRoiCount}_x" size="8" placeholder="X Position">
                     <input type="text" id="preroi_${preRoiCount}_y" name="preroi_${preRoiCount}_y" size="8" placeholder="Y Position">
                     <input type="text" id="preroi_${preRoiCount}_w" name="preroi_${preRoiCount}_w" size="8" placeholder="Width">
@@ -90,7 +90,7 @@
             document.getElementById('remove-pre-roi').addEventListener('click', function() {
                 if (preRoiCount > 0) {
                     var preRoiField = document.getElementById(`preroi_${preRoiCount}`);
-                    roiField.parentNode.removeChild(preRoiField);
+                    preRoiField.parentNode.removeChild(preRoiField);
                     preRoiCount--;
                 }
             });
@@ -136,7 +136,7 @@
              document.getElementById('remove-post-roi').addEventListener('click', function() {
                  if (postRoiCount > 0) {
                      var postRoiField = document.getElementById(`postroi_${postRoiCount}`);
-                     roiField.parentNode.removeChild(postRoiField);
+                     postRoiField.parentNode.removeChild(postRoiField);
                      postRoiCount--;
                  }
              });
