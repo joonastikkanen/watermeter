@@ -33,30 +33,31 @@ def read_image():
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    def read_predigits():
-        predigits = ''
+    def read_digits(rois, gray_image, digits):
         # Crop the image
         # Process each ROI
-        for x, y, w, h in prerois:
+        for x, y, w, h in rois:
             # Crop the image
-            preroi = gray_image[y:y+h, x:x+w]
+            roi = gray_image[y:y+h, x:x+w]
 
             # Use Tesseract to do OCR on the ROI
-            predigits += pytesseract.image_to_string(preroi, config=tesseract_config)
+            digits += pytesseract.image_to_string(roi, config=tesseract_config)
 
             # Print the text
-            print(predigits)
+            print(digits)
 
-        return(predigits)
+        return(digits)
 
-    def read_pregauges():
+
+    def read_gauges(gaugerois, gray_image, digits):
+        digits = ''
         # Process each ROI
-        for x, y, w, h in pregaugerois:
+        for x, y, w, h in gaugerois:
             # Crop the image to the ROI
-            pregauge_roi = gray_image[y:y+h, x:x+w]
+            gauge_roi = gray_image[y:y+h, x:x+w]
 
             # Use edge detection and Hough line transformation to find the pointer
-            edges = cv2.Canny(pregauge_roi, 50, 150, apertureSize=3)
+            edges = cv2.Canny(gauge_roi, 50, 150, apertureSize=3)
             lines = cv2.HoughLines(edges, 1, np.pi / 180, 200)
 
             # Find the line with the maximum y value, which should be the pointer
@@ -79,62 +80,13 @@ def read_image():
             value_range = 10  # The range of values on the gauge
             angle_range = np.pi  # The range of angles on the gauge (180 degrees)
             value = (pointer_angle / angle_range) * value_range
-            predigits += str(value)
-        return(predigits)
-
-    def read_postdigits():
-        postdigits = ''
-        # Crop the image
-        # Process each ROI
-        for x, y, w, h in postrois:
-            # Crop the image
-            postroi = gray_image[y:y+h, x:x+w]
-
-            # Use Tesseract to do OCR on the ROI
-            postdigits += pytesseract.image_to_string(postroi, config=tesseract_config)
-
-            # Print the text
-            print(postdigits)
-
-        return(postdigits)
-
-    def read_postgauges():
-        # Process each ROI
-        for x, y, w, h in postgaugerois:
-            # Crop the image to the ROI
-            postgauge_roi = gray_image[y:y+h, x:x+w]
-
-            # Use edge detection and Hough line transformation to find the pointer
-            edges = cv2.Canny(postgauge_roi, 50, 150, apertureSize=3)
-            lines = cv2.HoughLines(edges, 1, np.pi / 180, 200)
-
-            # Find the line with the maximum y value, which should be the pointer
-            max_y = -np.inf
-            pointer_angle = 0
-            if lines is not None:
-                for rho, theta in lines[0]:
-                    a = np.cos(theta)
-                    b = np.sin(theta)
-                    x0 = a * rho
-                    y0 = b * rho
-                    x1 = int(x0 + 1000 * (-b))
-                    y1 = int(y0 + 1000 * (a))
-
-                    if y1 > max_y:
-                        max_y = y1
-                        pointer_angle = np.arctan2(y2 - y1, x2 - x1)
-
-            # Calculate the value indicated by the pointer
-            value_range = 10  # The range of values on the gauge
-            angle_range = np.pi  # The range of angles on the gauge (180 degrees)
-            value = (pointer_angle / angle_range) * value_range
-            postdigits += str(value)
-        return(postdigits)
+            digits += str(value)
+        return digits
     
-    read_predigits()
-    #read_pregauges()
-    read_postdigits()
-    #read_postgauges()
+    read_digits(rois=prerois, gray_image=gray_image, digits=predigits)
+    read_gauges(gaugerois=pregaugerois, gray_image=gray_image, digits=predigits)
+    read_digits(rois=postrois, gray_image=gray_image, digits=postdigits)
+    read_gauges(gaugerois=postgaugerois, gray_image=gray_image, digits=predigits)
     
     digits = predigits + '.' + postdigits
     
@@ -152,33 +104,41 @@ def read_image():
     return value
 
 # Draw the ROIs on the image
-def draw_rois():
+def draw_rois_and_gauges(image_path, prerois, pregauges, postrois, postgauges, output_path):
     # Load the image
-    with Image(filename=picamera_image_path) as img:
-        # Create a Drawing object and set its properties
-        with Drawing() as draw:
-            draw.stroke_color = Color('red')
-            draw.stroke_width = 2
-            draw.fill_color = Color('transparent')
+    image = cv2.imread(image_path)
 
-            # Draw each ROI
-            for x, y, w, h in prerois:
-                draw.rectangle(left=x, top=y, width=w, height=h)
+    # Draw each ROI
+    for x, y, w, h in prerois:
+        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
-            for x, y, w, h in pregaugerois:
-                draw.rectangle(left=x, top=y, width=w, height=h)
+    # Draw each ROI
+    for x, y, w, h in postrois:
+        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
-            for x, y, w, h in postrois:
-                draw.rectangle(left=x, top=y, width=w, height=h)
+    # Draw each gauge
+    for x, y, w, h, value in pregauges:
+        # Calculate the angle and position of the line
+        angle = (value / 10) * 180  # Assuming the gauge range is 10
+        line_length = h / 2
+        line_x = x + w / 2 + line_length * np.cos(angle)
+        line_y = y + h / 2 - line_length * np.sin(angle)
 
-            for x, y, w, h in postgaugerois:
-                draw.rectangle(left=x, top=y, width=w, height=h)
+        # Draw the line
+        cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
 
-            # Overlay the ROIs onto the image
-            draw(img)
+    for x, y, w, h, value in postgauges:
+        # Calculate the angle and position of the line
+        angle = (value / 10) * 180  # Assuming the gauge range is 10
+        line_length = h / 2
+        line_x = x + w / 2 + line_length * np.cos(angle)
+        line_y = y + h / 2 - line_length * np.sin(angle)
 
-        # Save the image
-        img.save(filename=watermeter_preview_image_path)
+        # Draw the line
+        cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
+
+    # Save the image
+    cv2.imwrite(output_path, image)
     return True
 
 # LOAD SENSOR DATA

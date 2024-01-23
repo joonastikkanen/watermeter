@@ -1,6 +1,6 @@
 from flask import send_file, redirect, url_for, render_template
 from app import app, load_config
-from app.reader import load_sensor_data, read_image, draw_rois
+from app.reader import load_sensor_data, read_image, draw_rois_and_gauges
 from app.camera import take_picture, get_picamera_image_timestamp
 from app.config_update import update_config
 
@@ -77,7 +77,7 @@ def preview():
 def update_config_route():
     try:
         update_config()
-        draw_rois_route()
+        draw_rois_and_gauges(picamera_image_path, prerois=prerois, pregaugerois=pregaugerois, postrois=postrois, postgaugerois=postgaugerois, output_path=watermeter_preview_image_path)
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to update config", 404
