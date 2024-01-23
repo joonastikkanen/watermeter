@@ -75,7 +75,7 @@
             var preRoiCount = {{ prerois|length }};
             document.getElementById('add-pre-roi').addEventListener('click', function() {
                 preRoiCount++;
-                var roiField = document.createElement('div');
+                var preRoiField = document.createElement('div');
                 preRoiField.innerHTML = `
                     <label for="preroi_${preRoiCount}">NUMBER ${preRoiCount}:</label><br>
                     <input type="text" id="preroi_${preRoiCount}_x" name="preroi_${preRoiCount}_x" size="8" placeholder="X Position">
@@ -121,7 +121,7 @@
              var postRoiCount = {{ postrois|length }};
              document.getElementById('add-post-roi').addEventListener('click', function() {
                  postRoiCount++;
-                 var roiField = document.createElement('div');
+                 var postRoiField = document.createElement('div');
                  postRoiField.innerHTML = `
                      <label for="postroi_${postRoiCount}">AREA ${postRoiCount}:</label><br>
                      <input type="text" id="postroi_${postRoiCount}_x" name="postroi_${postRoiCount}_x" size="8" placeholder="X Position">
