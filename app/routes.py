@@ -1,11 +1,12 @@
 from flask import send_file, redirect, url_for, render_template
 from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois
-from app.camera import take_picture
+from app.camera import take_picture, get_picamera_image_timestamp
 from app.config_update import update_config
 
 config = load_config()
 # Convert the lists to tuples
+picamera_image_path = config['picamera_image_path']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -66,7 +67,7 @@ def preview():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         sensor_data = load_sensor_data()
-        capture_timestamp = take_picture()
+        capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
         # Render the template
         return render_template('preview.html', sensor_data=sensor_data, prerois=prerois, pregaugerois=pregaugerois, postrois=postrois, postgaugerois=postgaugerois, capture_timestamp=capture_timestamp)
     except FileNotFoundError:
@@ -75,9 +76,8 @@ def preview():
 @app.route('/update_config', methods=['POST'])
 def update_config_route():
     try:
-        take_picture()
         update_config()
-        draw_rois()
+        draw_rois_route()
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to update config", 404

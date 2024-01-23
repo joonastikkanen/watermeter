@@ -1,6 +1,7 @@
+import os
 import blinkt
 from picamera2 import Picamera2
-from time import sleep
+from time import sleep, time
 from datetime import datetime
 from app import load_config
 
@@ -34,7 +35,11 @@ def take_picture():
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
     camera.switch_mode_and_capture_file("still", picamera_image_path)
-    capture_timestamp = datetime.now()
     camera.close()
     led_off()
-    return capture_timestamp
+    return True
+
+def get_picamera_image_timestamp(picamera_image_path):
+    picamera_image_timestamp = os.path.getctime(picamera_image_path)
+    picamera_image_time = time.ctime(picamera_image_timestamp)
+    return picamera_image_time
