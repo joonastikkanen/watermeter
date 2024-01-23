@@ -83,10 +83,10 @@ def read_image():
             digits += str(value)
         return digits
     
-    read_digits(rois=prerois, gray_image=gray_image, digits=predigits)
-    read_gauges(gaugerois=pregaugerois, gray_image=gray_image, digits=predigits)
-    read_digits(rois=postrois, gray_image=gray_image, digits=postdigits)
-    read_gauges(gaugerois=postgaugerois, gray_image=gray_image, digits=predigits)
+    read_digits(prerois, gray_image, predigits)
+    read_gauges(pregaugerois, gray_image, predigits)
+    read_digits(postrois, gray_image, postdigits)
+    read_gauges(postgaugerois, gray_image, postdigits)
     
     digits = predigits + '.' + postdigits
     
@@ -117,6 +117,7 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
     
     if 'value' in locals():
+        print("The value variable is defined.")
         # Draw each gauge
         for x, y, w, h, value in pregaugerois:
             # Calculate the angle and position of the line
@@ -138,6 +139,7 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
             # Draw the line
             cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
     else:
+        print("The value variable is not defined.")
         for x, y, w, h in pregaugerois:
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
 

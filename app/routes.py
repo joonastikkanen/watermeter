@@ -44,7 +44,12 @@ def draw_rois_route():
     try:
         # Load the configuration
         config = load_config()
-        draw_rois()
+        prerois = config.get('prerois')
+        pregaugerois = config.get('pregaugerois')
+        postrois = config.get('postrois')
+        postgaugerois = config.get('postgaugerois')
+        watermeter_preview_image_path = config['watermeter_preview_image_path']
+        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path)
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
@@ -77,12 +82,7 @@ def preview():
 def update_config_route():
     try:
         update_config()
-        prerois = config.get('prerois')
-        pregaugerois = config.get('pregaugerois')
-        postrois = config.get('postrois')
-        postgaugerois = config.get('postgaugerois')
-        watermeter_preview_image_path = config['watermeter_preview_image_path']
-        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path)
+        draw_rois_route()
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to update config", 404
