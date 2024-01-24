@@ -128,7 +128,7 @@ def update_config():
         config['picamera_led_brightness'] = int(picamera_led_brightness)
         if request.form['picamera_led_enabled_true']:
             config['picamera_led_enabled'] = bool(True)
-        if request.form['picamera_led_enabled_true']:
+        else:
             config['picamera_led_enabled_false'] = bool(False)
         # Write the updated configuration to the YAML file
         with open('config.yaml', 'w') as file:

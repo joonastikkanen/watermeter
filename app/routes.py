@@ -75,6 +75,9 @@ def preview():
         pregaugerois = config.get('pregaugerois')
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
+        picamera_led_brightness = config['picamera_led_brightness']*100
+        picamera_image_brightness = config['picamera_image_brightness']*100
+        picamera_image_contrast = config['picamera_image_contrast']*100
         sensor_data = load_sensor_data()
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
         # Render the template

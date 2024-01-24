@@ -67,10 +67,8 @@
                 <button type="button" id="remove-post-gauge-roi">-</button><br>
                 <h2>PiCamera Configuration</h2>
                 <b>LED Enabled</b>
-                <label for="picamera_led_enabled_true">Enabled</label><br>
-                <input type="radio" id="picamera_led_enabled_true" name="picamera_led_enabled_true" value="True" {% if picamera_led_enabled %}checked{% endif %}>
-                <label for="picamera_led_enabled_false">Disabled</label>
-                <input type="radio" id="picamera_led_enabled_false" name="picamera_led_enabled_false" value="False" {% if not picamera_led_enabled %}checked{% endif %}>
+                <label for="picamera_led_enabled_true">Enabled</label>
+                <input type="checkbox" id="picamera_led_enabled_true" name="picamera_led_enabled_true" value="True" {% if picamera_led_enabled %}checked{% endif %}>
                 <br>
                 <b>LED Brightness Configuration</b>
                 <label for="picamera_led_brightness">Brightness:</label>
