@@ -7,6 +7,8 @@ from app.config_update import update_config
 config = load_config()
 # Convert the lists to tuples
 picamera_image_path = config['picamera_image_path']
+picamera_image_brightness = config['picamera_image_brightness']
+picamera_image_contrast = config['picamera_image_contrast']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -34,7 +36,7 @@ def take_new_picture_route():
 @app.route('/read_image', methods=['POST'])
 def read_image_route():
     try:
-        read_image()
+        read_image(picamera_image_brightness, picamera_image_contrast)
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to read data from image", 404

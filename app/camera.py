@@ -10,12 +10,14 @@ config = load_config()
 picamera_image_path = config['picamera_image_path']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
+picamera_led_enabled = config['picamera_led_enabled']
+picamera_led_brightness = config['picamera_led_brightness']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 
 # LED ON
 def led_on():
     blinkt.set_clear_on_exit(False)
-    blinkt.set_all(255, 255, 255, 1.0)
+    blinkt.set_all(255, 255, 255, picamera_led_brightness)
     blinkt.show()
 
 # LED OFF
@@ -26,8 +28,9 @@ def led_off():
 # TAKE PICTURE
 def take_picture():
     camera = Picamera2()
-    # Turn on LED
-    led_on()
+    if picamera_led_enabled:
+        # Turn on LED
+        led_on()
     # Set resolution and turn on Camera
     camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
     camera.still_configuration.enable_raw()
@@ -37,7 +40,9 @@ def take_picture():
     # Take an image. I put in in /run/shm to not wear the SD card
     camera.switch_mode_and_capture_file("still", picamera_image_path)
     camera.close()
-    led_off()
+    if picamera_led_enabled:
+        # Turn on LED
+        led_off()
     return True
 
 def get_picamera_image_timestamp(picamera_image_path):

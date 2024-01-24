@@ -19,8 +19,9 @@ tesseract_config = config['tesseract_config']
 watermeter_last_value_file = config['watermeter_last_value_file']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
+
 # READ IMAGE
-def read_image():
+def read_image(brightness, contrast):
     # Initialize an empty string to hold the digits
     predigits = ''
     postdigits = ''
@@ -29,6 +30,9 @@ def read_image():
 
     # Load the image from file
     image = cv2.imread(picamera_image_path)
+
+    # Adjust brightness and contrast
+    image = cv2.convertScaleAbs(image, alpha=brightness, beta=contrast)
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
