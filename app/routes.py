@@ -30,7 +30,7 @@ def home():
 @app.route('/take_new_picture', methods=['POST'])
 def take_new_picture_route():
     try:
-        take_picture()
+        take_picture(picamera_led_enabled, picamera_led_brightness)
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to take new picture", 404
@@ -53,7 +53,7 @@ def draw_rois_route():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_preview_image_path = config['watermeter_preview_image_path']
-        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path, )
+        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path,  )
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404

@@ -15,7 +15,7 @@ picamera_led_brightness = config['picamera_led_brightness']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 
 # LED ON
-def led_on():
+def led_on(picamera_led_brightness):
     blinkt.set_clear_on_exit(False)
     blinkt.set_all(255, 255, 255, picamera_led_brightness)
     blinkt.show()
@@ -26,11 +26,11 @@ def led_off():
     blinkt.show()
 
 # TAKE PICTURE
-def take_picture():
+def take_picture(picamera_led_enabled, picamera_led_brightness):
     camera = Picamera2()
     if picamera_led_enabled:
         # Turn on LED
-        led_on()
+        led_on(picamera_led_brightness)
     # Set resolution and turn on Camera
     camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
     camera.still_configuration.enable_raw()
