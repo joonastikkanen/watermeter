@@ -31,6 +31,10 @@ def home():
 @app.route('/take_new_picture', methods=['POST'])
 def take_new_picture_route():
     try:
+        config = load_config()
+        picamera_led_enabled = config['picamera_led_enabled']
+        picamera_led_brightness = config['picamera_led_brightness']
+
         take_picture(picamera_led_enabled, picamera_led_brightness)
         return redirect(url_for('preview'))
     except FileNotFoundError:
@@ -77,18 +81,18 @@ def preview():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_job_schedule = config['watermeter_job_schedule']
-        picamera_led_brightness = config['picamera_led_brightness']*100
-        picamera_image_brightness = config['picamera_image_brightness']*100
-        picamera_image_contrast = config['picamera_image_contrast']*100
+        picamera_led_brightness = config['picamera_led_brightness']
+        picamera_image_brightness = config['picamera_image_brightness']
+        picamera_image_contrast = config['picamera_image_contrast']
         sensor_data = load_sensor_data()
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
         # Render the template
-        return render_template('preview.html', 
-                               sensor_data=sensor_data, 
-                               prerois=prerois, 
-                               pregaugerois=pregaugerois, 
-                               postrois=postrois, 
-                               postgaugerois=postgaugerois, 
+        return render_template('preview.html',
+                               sensor_data=sensor_data,
+                               prerois=prerois,
+                               pregaugerois=pregaugerois,
+                               postrois=postrois,
+                               postgaugerois=postgaugerois,
                                capture_timestamp=capture_timestamp,
                                picamera_led_enabled=picamera_led_enabled,
                                picamera_led_brightness=picamera_led_brightness,

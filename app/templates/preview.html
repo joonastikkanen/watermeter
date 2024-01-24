@@ -1,11 +1,9 @@
 <body data-prerois="{{ prerois|length }}" data-pregaugerois="{{ pregaugerois|length }}" data-postrois="{{ postrois|length }}" data-postrois="{{ postgaugerois|length }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-<script src="{{url_for('static', filename='preview.js')}}"></script>
 <div class="container">
     <div class="controls">
             <form action="{{ url_for('update_config_route') }}" method="post" id="roi-form">
-                <h2>PRE DECIMAL NUMBER AREAS</h2>
-                <br>
+                <h3>PRE DECIMAL NUMBER AREAS</h3>
                 <div id="pre-roi-fields">
                 <b>NUMBERS</b><br>
                     {% for preroi in prerois %}
@@ -35,9 +33,7 @@
                 </div>
                 <button type="button" id="add-pre-gauge-roi">+</button>
                 <button type="button" id="remove-pre-gauge-roi">-</button><br>
-                <br>
-                <h2>POST DECIMAL NUMBER AREAS</h2>
-                <br>
+                <h3>POST DECIMAL NUMBER AREAS</h3>
                 <div id="post-roi-fields">
                     <b>NUMBERS</b><br>
                         {% for postroi in postrois %}
@@ -67,28 +63,30 @@
                     </div>
                 <button type="button" id="add-post-gauge-roi">+</button>
                 <button type="button" id="remove-post-gauge-roi">-</button><br>
-                <h2>PiCamera LED Configuration</h2><br>
+                <h3>PiCamera LED Configuration</h3><br>
                 <label for="picamera_led_enabled_true">Enabled</label>
                 <input type="radio" id="picamera_led_enabled_true" name="picamera_led_enabled" value="True" {% if picamera_led_enabled %}checked{% endif %}>
                 <label for="picameraled_enabled_false">Disabled</label>
                 <input type="radio" id="picamera_led_enabled_false" name="picamera_led_enabled" value="False" {% if not picamera_led_enabled %}checked{% endif %}>
-                <br>
+                <br><br>
                 <b>LED Brightness Configuration</b><br>
                 <label for="picamera_led_brightness">Brightness:</label>
-                <input type="range" id="picamera_led_brightness" name="picamera_led_brightness" min="0" max="1.0" value="{{ picamera_led_brightness }}" step="0.01">
-                <p>Value: <output id="picamera_led_brightness_value"></output></p>
+                <input type="range" id="picamera_led_brightness" name="picamera_led_brightness" min="0" max="1.0" value="{{ picamera_led_brightness }}" step="0.01"><br>
+                Value: <output id="picamera_led_brightness_value"></output><br>
                 <h2>Picture Configuration</h2>
                 <b>Picture Brightness Configuration</b><br>
                 <label for="picamera_image_brightness">Brightness:</label>
-                <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="1.0" value="{{ picamera_image_brightness }}" step="0.01">
-                <p>Value: <output id="picamera_led_brightness_value"></output></p>
+                <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="1.0" value="{{ picamera_image_brightness }}" step="0.01"><br>
+                Value: <output id="picamera_image_brightness_value"></output><br>
                 <b>Picture Contrast Configuration</b><br>
                 <label for="picamera_image_contrast">Brightness:</label>
-                <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="1.0" value="{{ picamera_image_contrast }}" step="0.01">
-                <p>Value: <output id="picamera_led_brightness_value"></output></p>
+                <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="1.0" value="{{ picamera_image_contrast }}" step="0.01"><br>
+                Value: <output id="picamera_image_contrast_value"></output><br>
                 <b>Background jobs runs interval (in minutes)</b><br><br>
                 <label for="watermeter_job_schedule">Schedule Time:</label>
                 <input type="number" id="watermeter_job_schedule" name="watermeter_job_schedule" value="{{ watermeter_job_schedule }}" placeholder="Value in minutes"><br>
+                <br>
+                <br>
                 <input type="submit" value="UPDATE CONFIGS">
             </form>
         <form action="{{ url_for('read_image_route') }}" method="post">
@@ -104,4 +102,5 @@
         <b>Picture timestamp: {{ capture_timestamp }}</b><br>
     </div>
 </div>
+<script src="{{url_for('static', filename='javascript/preview.js')}}"></script>
 </body>

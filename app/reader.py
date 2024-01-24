@@ -22,6 +22,8 @@ watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
 def read_image(brightness, contrast):
+    brightness = float(brightness)
+    contrast = float(contrast)
     # Initialize an empty string to hold the digits
     predigits = ''
     postdigits = ''

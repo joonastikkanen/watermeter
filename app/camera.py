@@ -28,6 +28,8 @@ def led_off():
 # TAKE PICTURE
 def take_picture(picamera_led_enabled, picamera_led_brightness):
     camera = Picamera2()
+    picamera_led_enabled = bool(picamera_led_enabled)
+    picamera_led_brightness = float(picamera_led_brightness)
     if picamera_led_enabled:
         # Turn on LED
         led_on(picamera_led_brightness)

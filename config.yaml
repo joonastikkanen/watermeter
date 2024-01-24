@@ -1,10 +1,10 @@
+picamera_image_brightness: 0.46
+picamera_image_contrast: 0.62
 picamera_image_path: /run/shm/watermeter_last.jpg
+picamera_led_brightness: 0.74
+picamera_led_enabled: true
 picamera_photo_height: 2000
 picamera_photo_width: 2000
-picamera_led_enabled: true
-picamera_led_brightness: 1.0 # Values between 0.0 and 1.0
-picamera_image_brightness: 1.0 # Values between 0.0 and 1.0
-picamera_image_contrast: 0 # Values between 0.0 and 1.0
 postgaugerois:
 - [55, 255, 555, 224]
 postrois:
@@ -16,6 +16,6 @@ prerois:
 tesseract_config: --psm 6 -c tessedit_char_whitelist=0123456789
 tesseract_path: /usr/bin/tesseract
 watermeter_init_value: 0
+watermeter_job_schedule: 7
 watermeter_last_value_file: /run/shm/watermeter_last_value.txt
 watermeter_preview_image_path: /run/shm/watermeter_preview.jpg
-watermeter_job_schedule: 5 # in minutes
