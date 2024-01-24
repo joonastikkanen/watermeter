@@ -1,10 +1,5 @@
 name: Build ARM64 Docker Image
 
-on:
-  push:
-    tags:
-      - '*'
-
 env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ${{ github.repository }}
