@@ -92,6 +92,7 @@ def preview():
                                picamera_led_brightness=picamera_led_brightness,
                                picamera_image_brightness=picamera_image_brightness,
                                picamera_image_contrast=picamera_image_contrast,
+                               watermeter_job_schedule=watermeter_job_schedule
                                )
     except FileNotFoundError:
         return "Failed to render preview page", 404

@@ -85,6 +85,9 @@
                 <label for="picamera_image_contrast">Brightness:</label>
                 <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="100" value="{{ picamera_image_contrast }}">
                 <br>
+                <b>Background jobs runs interval (in minutes)</b>
+                <label for="schedule_time">Schedule Time:</label>
+                <input type="number" id="watermeter_job_schedule" value="{{ watermeter_job_schedule }}">
                 <input type="submit" value="UPDATE CONFIGS">
             </form>
         <form action="{{ url_for('read_image_route') }}" method="post">

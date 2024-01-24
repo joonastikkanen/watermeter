@@ -25,6 +25,7 @@ tesseract_config = config['tesseract_config']
 watermeter_last_value_file = config['watermeter_last_value_file']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
+watermeter_job_schedule = config['watermeter_job_schedule']
 
 # CONFIGURATION
 class Config(object):

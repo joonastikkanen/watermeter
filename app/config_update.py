@@ -122,17 +122,16 @@ def update_config():
         picamera_image_brightness = int(request.form['picamera_image_brightness'])/100
         picamera_image_contrast = int(request.form['picamera_image_contrast'])/100
         picamera_led_brightness = int(request.form['picamera_led_brightness'])/100
-        print(picamera_image_brightness)
-        print(picamera_image_contrast)
-        print(picamera_led_brightness)
+        watermeter_job_schedule = int(request.form['watermeter_job_schedule'])
         # Update more values here
-        config['picamera_image_brightness'] = int(picamera_image_brightness)
-        config['picamera_image_contrast'] = int(picamera_image_contrast)
-        config['picamera_led_brightness'] = int(picamera_led_brightness)
+        config['picamera_image_brightness'] = picamera_image_brightness
+        config['picamera_image_contrast'] = picamera_image_contrast
+        config['picamera_led_brightness'] = picamera_led_brightness
         if request.form['picamera_led_enabled']:
             config['picamera_led_enabled'] = bool(True)
         else:
             config['picamera_led_enabled'] = bool(False)
+        config['watermeter_job_schedule'] = watermeter_job_schedule
         # Write the updated configuration to the YAML file
         with open('config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
