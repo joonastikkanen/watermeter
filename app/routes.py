@@ -16,6 +16,7 @@ pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregauger
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
 postgaugerois = config['postgaugerois'] = [tuple(roi) for roi in config['postgaugerois']]
 watermeter_preview_image_path = config['watermeter_preview_image_path']
+watermeter_job_schedule = config['watermeter_job_schedule']
 
 # ROUTES
 @app.route('/')
@@ -75,6 +76,7 @@ def preview():
         pregaugerois = config.get('pregaugerois')
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
+        watermeter_job_schedule = config['watermeter_job_schedule']
         picamera_led_brightness = config['picamera_led_brightness']*100
         picamera_image_brightness = config['picamera_image_brightness']*100
         picamera_image_contrast = config['picamera_image_contrast']*100
