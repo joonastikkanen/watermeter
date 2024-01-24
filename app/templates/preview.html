@@ -65,10 +65,12 @@
                     </div>
                 <button type="button" id="add-post-gauge-roi">+</button>
                 <button type="button" id="remove-post-gauge-roi">-</button><br>
-                <h2>PiCamera Configuration</h2>
-                <b>LED Enabled</b>
+                <h2>PiCamera LED Configuration</h2><br>
                 <label for="picamera_led_enabled_true">Enabled</label>
-                <input type="checkbox" id="picamera_led_enabled_true" name="picamera_led_enabled_true" value="True" {% if picamera_led_enabled %}checked{% endif %}>
+                <input type="radio" id="picamera_led_enabled_true" name="picamera_led_enabled" value="True" {% if picamera_led_enabled %}checked{% endif %}>
+                <label for="picameraled_enabled_false">Disabled</label>
+                <input type="radio" id="picamera_led_enabled_false" name="picamera_led_enabled" value="False" {% if not picamera_led_enabled %}checked{% endif %}>
+                <br>
                 <br>
                 <b>LED Brightness Configuration</b>
                 <label for="picamera_led_brightness">Brightness:</label>

@@ -122,14 +122,17 @@ def update_config():
         picamera_image_brightness = int(request.form['picamera_image_brightness'])/100
         picamera_image_contrast = int(request.form['picamera_image_contrast'])/100
         picamera_led_brightness = int(request.form['picamera_led_brightness'])/100
+        print(picamera_image_brightness)
+        print(picamera_image_contrast)
+        print(picamera_led_brightness)
         # Update more values here
         config['picamera_image_brightness'] = int(picamera_image_brightness)
         config['picamera_image_contrast'] = int(picamera_image_contrast)
         config['picamera_led_brightness'] = int(picamera_led_brightness)
-        if request.form['picamera_led_enabled_true']:
+        if request.form['picamera_led_enabled']:
             config['picamera_led_enabled'] = bool(True)
         else:
-            config['picamera_led_enabled_false'] = bool(False)
+            config['picamera_led_enabled'] = bool(False)
         # Write the updated configuration to the YAML file
         with open('config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
