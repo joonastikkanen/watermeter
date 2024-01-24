@@ -71,27 +71,22 @@
                 <label for="picameraled_enabled_false">Disabled</label>
                 <input type="radio" id="picamera_led_enabled_false" name="picamera_led_enabled" value="False" {% if not picamera_led_enabled %}checked{% endif %}>
                 <br>
-                <br>
-                <b>LED Brightness Configuration</b>
+                <b>LED Brightness Configuration</b><br>
                 <label for="picamera_led_brightness">Brightness:</label>
                 <input type="range" id="picamera_led_brightness" name="picamera_led_brightness" min="0" max="1.0" value="{{ picamera_led_brightness }}" step="0.01">
                 <p>Value: <output id="picamera_led_brightness_value"></output></p>
-                <br>
                 <h2>Picture Configuration</h2>
-                <b>Picture Brightness Configuration</b>
+                <b>Picture Brightness Configuration</b><br>
                 <label for="picamera_image_brightness">Brightness:</label>
                 <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="1.0" value="{{ picamera_image_brightness }}" step="0.01">
                 <p>Value: <output id="picamera_led_brightness_value"></output></p>
-                <br>
-                <b>Picture Contrast Configuration</b>
+                <b>Picture Contrast Configuration</b><br>
                 <label for="picamera_image_contrast">Brightness:</label>
                 <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="1.0" value="{{ picamera_image_contrast }}" step="0.01">
                 <p>Value: <output id="picamera_led_brightness_value"></output></p>
-                <br>
-                <b>Background jobs runs interval (in minutes)</b>
-                <label for="watermeter_job_schedule">Schedule Time:</label><br>
-                <input type="number" id="watermeter_job_schedule" name="watermeter_job_schedule" value="{{ watermeter_job_schedule }}" placeholder="Value in minutes">
-                <br>
+                <b>Background jobs runs interval (in minutes)</b><br><br>
+                <label for="watermeter_job_schedule">Schedule Time:</label>
+                <input type="number" id="watermeter_job_schedule" name="watermeter_job_schedule" value="{{ watermeter_job_schedule }}" placeholder="Value in minutes"><br>
                 <input type="submit" value="UPDATE CONFIGS">
             </form>
         <form action="{{ url_for('read_image_route') }}" method="post">
@@ -202,7 +197,7 @@
             });
             // IMAGE BRIGHTNESS
             const brightnessValue = document.querySelector("#picamera_image_brightness_value");
-            const brightnessValueInput = document.querySelector("#picamera_image_brightness");
+            const brightnessInput = document.querySelector("#picamera_image_brightness");
             brightnessValue.textContent = brightnessInput.value;
             brightnessInput.addEventListener("input", (event) => {
             brightnessValue.textContent = event.target.value;
