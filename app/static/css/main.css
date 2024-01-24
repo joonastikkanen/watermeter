@@ -26,3 +26,7 @@
   border-radius: 8px;
   width: 800px;
 }
+
+#watermeter_job_schedule {
+  width: 4em;
+}

@@ -74,20 +74,23 @@
                 <br>
                 <b>LED Brightness Configuration</b>
                 <label for="picamera_led_brightness">Brightness:</label>
-                <input type="range" id="picamera_led_brightness" name="picamera_led_brightness" min="0" max="100" value="{{ picamera_led_brightness }}">
+                <input type="range" id="picamera_led_brightness" name="picamera_led_brightness" min="0" max="1.0" value="{{ picamera_led_brightness }}" step="0.01">
+                <p>Value: <output id="picamera_led_brightness_value"></output></p>
                 <br>
                 <h2>Picture Configuration</h2>
                 <b>Picture Brightness Configuration</b>
                 <label for="picamera_image_brightness">Brightness:</label>
-                <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="100" value="{{ picamera_image_brightness }}">
+                <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="1.0" value="{{ picamera_image_brightness }}" step="0.01">
+                <p>Value: <output id="picamera_led_brightness_value"></output></p>
                 <br>
                 <b>Picture Contrast Configuration</b>
                 <label for="picamera_image_contrast">Brightness:</label>
-                <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="100" value="{{ picamera_image_contrast }}">
+                <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="1.0" value="{{ picamera_image_contrast }}" step="0.01">
+                <p>Value: <output id="picamera_led_brightness_value"></output></p>
                 <br>
                 <b>Background jobs runs interval (in minutes)</b>
                 <label for="watermeter_job_schedule">Schedule Time:</label><br>
-                <input type="number" id="watermeter_job_schedule" name="watermeter_job_schedule" value="{{ watermeter_job_schedule }}">
+                <input type="number" id="watermeter_job_schedule" name="watermeter_job_schedule" value="{{ watermeter_job_schedule }}" placeholder="Value in minutes">
                 <br>
                 <input type="submit" value="UPDATE CONFIGS">
             </form>
@@ -190,6 +193,27 @@
                      postGaugeRoiCount--;
                  }
              });
+            // LED BRIGHTNESS
+            const value = document.querySelector("#picamera_led_brightness_value");
+            const input = document.querySelector("#picamera_led_brightness");
+            value.textContent = input.value;
+            input.addEventListener("input", (event) => {
+            value.textContent = event.target.value;
+            });
+            // IMAGE BRIGHTNESS
+            const value = document.querySelector("#picamera_image_brightness_value");
+            const input = document.querySelector("#picamera_image_brightness");
+            value.textContent = input.value;
+            input.addEventListener("input", (event) => {
+            value.textContent = event.target.value;
+            });
+            // IMAGE CONTRAST
+            const value = document.querySelector("#picamera_image_contrast_value");
+            const input = document.querySelector("#picamera_image_contrast");
+            value.textContent = input.value;
+            input.addEventListener("input", (event) => {
+            value.textContent = event.target.value;
+            });
         </script>
     </div>
     <div class="image">
