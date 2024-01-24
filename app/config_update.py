@@ -111,7 +111,6 @@ def update_config():
                     postgaugerois[postgauge_roi_number - 1].append(value)
 
         # Convert the lists to tuples
-
         prerois = [list(roi) for roi in prerois]
         pregaugerois = [list(roi) for roi in pregaugerois]
         postrois = [list(roi) for roi in postrois]
@@ -121,6 +120,16 @@ def update_config():
         config['postrois'] = postrois
         config['postgaugerois'] = postgaugerois
         # Update more values here
+        if request.form['picamera_image_brightness']:
+            config['picamera_image_brightness'] = int(request.form['picamera_image_brightness'])
+        if request.form['picamera_image_contrast']:
+            config['picamera_image_contrast'] = int(request.form['picamera_image_contrast'])
+        if request.form['picamera_led_brightness']:
+            config['picamera_led_brightness'] = int(request.form['picamera_led_brightness'])
+        if request.form['picamera_led_enabled_true']:
+            config['picamera_led_enabled'] = bool(True)
+        if request.form['picamera_led_enabled_true']:
+            config['picamera_led_enabled_false'] = bool(False)
         # Write the updated configuration to the YAML file
         with open('config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
