@@ -119,13 +119,16 @@ def update_config():
         config['pregaugerois'] = pregaugerois
         config['postrois'] = postrois
         config['postgaugerois'] = postgaugerois
+        picamera_image_brightness = int(request.form['picamera_image_brightness'])/100
+        picamera_image_contrast = int(request.form['picamera_image_contrast'])/100
+        picamera_led_brightness = int(request.form['picamera_led_brightness'])/100
         # Update more values here
         if request.form['picamera_image_brightness']:
-            config['picamera_image_brightness'] = int(request.form['picamera_image_brightness'])
+            config['picamera_image_brightness'] = int(picamera_image_brightness)
         if request.form['picamera_image_contrast']:
-            config['picamera_image_contrast'] = int(request.form['picamera_image_contrast'])
+            config['picamera_image_contrast'] = int(picamera_image_contrast)
         if request.form['picamera_led_brightness']:
-            config['picamera_led_brightness'] = int(request.form['picamera_led_brightness'])
+            config['picamera_led_brightness'] = int(picamera_led_brightness)
         if request.form['picamera_led_enabled_true']:
             config['picamera_led_enabled'] = bool(True)
         if request.form['picamera_led_enabled_true']:

@@ -7,6 +7,8 @@ from app.config_update import update_config
 config = load_config()
 # Convert the lists to tuples
 picamera_image_path = config['picamera_image_path']
+picamera_led_enabled = config['picamera_led_enabled']
+picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
 picamera_image_contrast = config['picamera_image_contrast']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
@@ -51,7 +53,7 @@ def draw_rois_route():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_preview_image_path = config['watermeter_preview_image_path']
-        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path)
+        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path, )
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
@@ -76,7 +78,18 @@ def preview():
         sensor_data = load_sensor_data()
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
         # Render the template
-        return render_template('preview.html', sensor_data=sensor_data, prerois=prerois, pregaugerois=pregaugerois, postrois=postrois, postgaugerois=postgaugerois, capture_timestamp=capture_timestamp)
+        return render_template('preview.html', 
+                               sensor_data=sensor_data, 
+                               prerois=prerois, 
+                               pregaugerois=pregaugerois, 
+                               postrois=postrois, 
+                               postgaugerois=postgaugerois, 
+                               capture_timestamp=capture_timestamp,
+                               picamera_led_enabled=picamera_led_enabled,
+                               picamera_led_brightness=picamera_led_brightness,
+                               picamera_image_brightness=picamera_image_brightness,
+                               picamera_image_contrast=picamera_image_contrast,
+                               )
     except FileNotFoundError:
         return "Failed to render preview page", 404
 
