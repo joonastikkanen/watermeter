@@ -10,5 +10,9 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y python3-libcamer
     pip3 install -r requirements.txt && \
     rm -rf /var/lib/apt/lists/*
 
+EXPOSE 5000
+
+VOLUME [ "/dev/" ]
+
 CMD ["/usr/src/watermeter/venv/bin/gunicorn", "-w", "2", "'run:app'"]
 

@@ -136,7 +136,7 @@ def update_config():
             config['picamera_led_enabled'] = bool(False)
         config['watermeter_job_schedule'] = int(watermeter_job_schedule)
         # Write the updated configuration to the YAML file
-        with open('config.yaml', 'w') as file:
+        with open('config/config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
         return True
     except ValueError:

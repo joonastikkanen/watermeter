@@ -20,5 +20,5 @@ tesseract_config: --psm 6 -c tessedit_char_whitelist=0123456789
 tesseract_path: /usr/bin/tesseract
 watermeter_init_value: 0
 watermeter_job_schedule: 6
-watermeter_last_value_file: /run/shm/watermeter_last_value.txt
+watermeter_last_value_file: ./config/watermeter_last_value.txt
 watermeter_preview_image_path: /run/shm/watermeter_preview.jpg

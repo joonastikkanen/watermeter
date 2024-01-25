@@ -1,9 +1,11 @@
-from flask import Flask 
+from flask import Flask
+from flask_apscheduler import APScheduler
+from app.schedule import run_schedule
 import yaml
 
 # LOAD CONFIG FILE
 def load_config():
-    with open('config.yaml', 'r') as file:
+    with open('config/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
     return config
 
@@ -31,6 +33,7 @@ watermeter_job_schedule = config['watermeter_job_schedule']
 # CONFIGURATION
 class Config(object):
     DEBUG = False
+    SCHEDULER_API_ENABLED = True
 
 # APP
 def create_app():
@@ -39,5 +42,14 @@ def create_app():
     return app
 
 app = create_app()
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
+watermeter_job_schedule = int(watermeter_job_schedule)
+
+# Schedule the job to run every day at 10:30am
+scheduler.add_job(id='run_schedule', func=run_schedule, trigger='interval', minutes=watermeter_job_schedule)
 
 from app import routes

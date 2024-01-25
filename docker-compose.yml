@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  watermeter:
+    image:  ghcr.io/joonastikkanen/watermeter:latest
+    container_name: watermeter
+    volumes:
+      - ./config:/usr/src/watermeter/config
+      # Check media devices using rpicam-hello command
+      - /dev/media0:/dev/media0
+      - /dev/media3:/dev/media3
+    restart: always
+    ports:
+      - "5000:5000"
