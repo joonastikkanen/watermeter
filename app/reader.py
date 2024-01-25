@@ -107,7 +107,7 @@ def read_image(brightness, contrast):
         f.write(value)
 
     # Save grayscale image
-    cv2.imwrite(picamera_image_path, image)
+    cv2.imwrite(picamera_image_path, gray_image)
     # Return the value
     return value
 
