@@ -88,14 +88,14 @@ def read_image(brightness, contrast):
             value = (pointer_angle / angle_range) * value_range
             digits += str(value)
         return digits
-    
+
     read_digits(prerois, gray_image, predigits)
     read_gauges(pregaugerois, gray_image, predigits)
     read_digits(postrois, gray_image, postdigits)
     read_gauges(postgaugerois, gray_image, postdigits)
-    
+
     digits = predigits + '.' + postdigits
-    
+
     # Convert the digits string to an integer
     if digits.isdigit():
         value = int(digits)
@@ -105,7 +105,9 @@ def read_image(brightness, contrast):
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
         f.write(value)
-     
+
+    # Save grayscale image
+    cv2.imwrite(picamera_image_path, image)
     # Return the value
     return value
 
@@ -121,7 +123,7 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
     # Draw each ROI
     for x, y, w, h in postrois:
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
-    
+
     if 'value' in locals():
         print("The value variable is defined.")
         # Draw each gauge
@@ -134,7 +136,7 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
 
             # Draw the line
             cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
-            
+
         for x, y, w, h, value in postgaugerois:
             # Calculate the angle and position of the line
             angle = (value / 10) * 180  # Assuming the gauge range is 10
@@ -161,7 +163,7 @@ def load_sensor_data():
     if not os.path.isfile(watermeter_last_value_file):
         with open(watermeter_last_value_file, 'w') as f:
             f.write(str(watermeter_init_value))
-    else:              
+    else:
         with open(watermeter_last_value_file, 'r') as f:
             sensor_data = str(f.read())
     return sensor_data

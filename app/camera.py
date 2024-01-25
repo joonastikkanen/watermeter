@@ -1,6 +1,8 @@
 import os
 import blinkt
 import time
+import libcamera
+from PIL import Image
 from picamera2 import Picamera2
 from time import sleep
 from datetime import datetime
@@ -12,6 +14,7 @@ picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
 picamera_led_enabled = config['picamera_led_enabled']
 picamera_led_brightness = config['picamera_led_brightness']
+picamera_image_rotate = config['picamera_image_rotate']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 
 # LED ON
@@ -26,10 +29,11 @@ def led_off():
     blinkt.show()
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, picamera_led_brightness):
+def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate):
     camera = Picamera2()
     picamera_led_enabled = bool(picamera_led_enabled)
     picamera_led_brightness = float(picamera_led_brightness)
+    picamera_image_rotate = int(picamera_image_rotate)
     if picamera_led_enabled:
         # Turn on LED
         led_on(picamera_led_brightness)
@@ -45,6 +49,12 @@ def take_picture(picamera_led_enabled, picamera_led_brightness):
     if picamera_led_enabled:
         # Turn on LED
         led_off()
+    # Open an image file
+    with Image.open(picamera_image_path) as img:
+        # Flip the image vertically
+        roteted_img = img.rotate(picamera_image_rotate)
+        # Save the flipped image
+        roteted_img.save(picamera_image_path)
     return True
 
 def get_picamera_image_timestamp(picamera_image_path):

@@ -123,11 +123,13 @@ def update_config():
         print(picamera_image_brightness)
         picamera_image_contrast = request.form['picamera_image_contrast']
         picamera_led_brightness = request.form['picamera_led_brightness']
+        picamera_image_rotate = request.form['picamera_image_rotate']
         watermeter_job_schedule = request.form['watermeter_job_schedule']
         # Update more values here
         config['picamera_image_brightness'] = picamera_image_brightness
         config['picamera_image_contrast'] = picamera_image_contrast
         config['picamera_led_brightness'] = picamera_led_brightness
+        config['picamera_image_rotate'] = picamera_image_rotate
         if request.form['picamera_led_enabled']:
             config['picamera_led_enabled'] = bool(True)
         else:

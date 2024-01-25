@@ -11,6 +11,7 @@ picamera_led_enabled = config['picamera_led_enabled']
 picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
 picamera_image_contrast = config['picamera_image_contrast']
+picamera_image_rotate = config['picamera_image_rotate']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -34,17 +35,23 @@ def take_new_picture_route():
         config = load_config()
         picamera_led_enabled = config['picamera_led_enabled']
         picamera_led_brightness = config['picamera_led_brightness']
-
-        take_picture(picamera_led_enabled, picamera_led_brightness)
-        return redirect(url_for('preview'))
+        picamera_image_rotate = config['picamera_image_rotate']
+        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate)
     except FileNotFoundError:
         return "Failed to take new picture", 404
+
+@app.route('/preview/picamera_image')
+def picamera_image():
+    try:
+        return send_file(picamera_image_path, mimetype='image/jpeg')
+    except FileNotFoundError:
+        return "No image found", 404
+
 
 @app.route('/read_image', methods=['POST'])
 def read_image_route():
     try:
         read_image(picamera_image_brightness, picamera_image_contrast)
-        return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to read data from image", 404
 
@@ -59,7 +66,6 @@ def draw_rois_route():
         postgaugerois = config.get('postgaugerois')
         watermeter_preview_image_path = config['watermeter_preview_image_path']
         draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path,  )
-        return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
 
@@ -84,6 +90,7 @@ def preview():
         picamera_led_brightness = config['picamera_led_brightness']
         picamera_image_brightness = config['picamera_image_brightness']
         picamera_image_contrast = config['picamera_image_contrast']
+        picamera_image_rotate = config['picamera_image_rotate']
         sensor_data = load_sensor_data()
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
         # Render the template
@@ -98,6 +105,7 @@ def preview():
                                picamera_led_brightness=picamera_led_brightness,
                                picamera_image_brightness=picamera_image_brightness,
                                picamera_image_contrast=picamera_image_contrast,
+                               picamera_image_rotate=picamera_image_rotate,
                                watermeter_job_schedule=watermeter_job_schedule
                                )
     except FileNotFoundError:
@@ -107,6 +115,8 @@ def preview():
 def update_config_route():
     try:
         update_config()
+        take_new_picture_route()
+        read_image_route()
         draw_rois_route()
         return redirect(url_for('preview'))
     except FileNotFoundError:

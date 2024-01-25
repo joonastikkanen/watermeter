@@ -82,6 +82,14 @@
                 <label for="picamera_image_contrast">Brightness:</label>
                 <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="1.0" value="{{ picamera_image_contrast }}" step="0.01"><br>
                 Value: <output id="picamera_image_contrast_value"></output><br>
+                <b>Picture Image Rotation</b><br>
+                <label for="picamera_image_rotate">Angle:</label>
+                <select name="picamera_image_rotate" id="picamera_image_rotate">
+                  <option value="0" {% if picamera_image_rotate == "0" %}selected="selected"{% endif %}>0</option>
+                  <option value="90" {% if picamera_image_rotate == "90" %}selected="selected"{% endif %}>90</option>
+                  <option value="180" {% if picamera_image_rotate == "180" %}selected="selected"{% endif %}>180</option>
+                  <option value="360" {% if picamera_image_rotate == "360" %}selected="selected"{% endif %}>360</option>
+                </select><br><br>
                 <b>Background jobs runs interval (in minutes)</b><br><br>
                 <label for="watermeter_job_schedule">Schedule Time:</label>
                 <input type="number" id="watermeter_job_schedule" name="watermeter_job_schedule" value="{{ watermeter_job_schedule }}" placeholder="Value in minutes"><br>
@@ -89,12 +97,6 @@
                 <br>
                 <input type="submit" value="UPDATE CONFIGS">
             </form>
-        <form action="{{ url_for('read_image_route') }}" method="post">
-            <button type="submit">READ DATA FROM AREAS</button><br>
-        </form>
-        <form action="{{ url_for('take_new_picture_route') }}" method="post">
-            <button type="submit">TAKE NEW PICTURE</button><br>
-        </form>
     </div>
     <div class="image">
         <img src="{{ url_for('preview_image') }}" alt="Preview image"><br>

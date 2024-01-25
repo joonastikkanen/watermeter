@@ -12,6 +12,7 @@ config = load_config()
 picamera_image_path = config['picamera_image_path']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
+picamera_image_rotate = config['picamera_image_rotate']
 picamera_led_enabled = config['picamera_led_enabled']
 picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
