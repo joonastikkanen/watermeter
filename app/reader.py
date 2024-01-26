@@ -165,5 +165,5 @@ def load_sensor_data():
             f.write(str(watermeter_init_value))
     else:
         with open(watermeter_last_value_file, 'r') as f:
-            sensor_data = str(f.read())
+            sensor_data = f.read()
     return sensor_data

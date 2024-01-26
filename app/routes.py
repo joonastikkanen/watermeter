@@ -92,6 +92,7 @@ def preview():
         picamera_image_contrast = config['picamera_image_contrast']
         picamera_image_rotate = config['picamera_image_rotate']
         sensor_data = load_sensor_data()
+        print(sensor_data)
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
         # Render the template
         return render_template('preview.html',

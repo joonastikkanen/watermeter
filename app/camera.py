@@ -58,6 +58,9 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     return True
 
 def get_picamera_image_timestamp(picamera_image_path):
-    picamera_image_timestamp = os.path.getctime(picamera_image_path)
-    picamera_image_time = time.ctime(picamera_image_timestamp)
+    if not os.path.isfile(picamera_image_path):
+        picamera_image_time = "No picture yet taken"
+    else:
+        picamera_image_timestamp = os.path.getctime(picamera_image_path)
+        picamera_image_time = time.ctime(picamera_image_timestamp)
     return picamera_image_time
