@@ -62,10 +62,6 @@ def submit_rois_route():
     update_config()
     read_image_route()
     draw_rois_route()
-    rois = json.loads(request.form['rois'])
-    # process the rois
-    # ...
-    print(rois)
     return redirect(url_for('preview'))
 
 @app.route('/read_image', methods=['POST'])
