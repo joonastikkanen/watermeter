@@ -13,6 +13,8 @@ picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
 picamera_image_contrast = config['picamera_image_contrast']
 picamera_image_rotate = config['picamera_image_rotate']
+picamera_photo_height = config['picamera_photo_height']
+picamera_photo_width = config['picamera_photo_width']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -61,7 +63,7 @@ def roi_editor_route():
             # Check if the key starts with 'roi_name'
             if key.startswith('roi_name'):
                 roi_name = value
-        return render_template('roi_editor.html', roi_id=roi_id, roi_name=roi_name)
+        return render_template('roi_editor.html', roi_id=roi_id, roi_name=roi_name, picamera_photo_height=picamera_photo_height, picamera_photo_width=picamera_photo_width)
     except FileNotFoundError:
         return "No image found", 404
 
