@@ -58,7 +58,10 @@ def roi_editor_route():
 
 
 @app.route('/preview/submit_rois', methods=['POST'])
-def submit_rois():
+def submit_rois_route():
+    update_config()
+    read_image_route()
+    draw_rois_route()
     rois = json.loads(request.form['rois'])
     # process the rois
     # ...
