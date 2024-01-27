@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 <div class="container">
     <div class="controls">
-            <form action="{{ url_for('update_config_route') }}" method="post" id="roi-form">
                 <h3>PRE DECIMAL NUMBER AREAS</h3>
                 <div id="pre-roi-fields">
                 <b>NUMBERS</b><br>
@@ -30,6 +29,7 @@
                         <button>OPEN PRE DECIMAL NUMBER EDITOR</button><br>
                     </a>
                     </div>
+                <form action="{{ url_for('update_config_route') }}" method="post" id="roi-form">
                 <h3>PiCamera LED Configuration</h3><br>
                 <label for="picamera_led_enabled_true">Enabled</label>
                 <input type="radio" id="picamera_led_enabled_true" name="picamera_led_enabled" value="True" {% if picamera_led_enabled %}checked{% endif %}>
