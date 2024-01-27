@@ -13,7 +13,7 @@
 </head>
 <body>
     <canvas id="canvas" width="1000" height="1000"></canvas>
-    <form id="{{ roi_name }}" action="{{ url_for('submit_rois') }}" method="post">
+    <form id="{{ roi_name }}" action="{{ url_for('submit_rois_route') }}" method="post">
         <input type="hidden" id="{{ roi_id }}" name="{{ roi_id }}">
         <button type="submit">Submit ROIs</button>
     </form>

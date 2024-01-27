@@ -119,22 +119,28 @@ def update_config():
         config['pregaugerois'] = pregaugerois
         config['postrois'] = postrois
         config['postgaugerois'] = postgaugerois
-        picamera_image_brightness = request.form['picamera_image_brightness']
-        print(picamera_image_brightness)
-        picamera_image_contrast = request.form['picamera_image_contrast']
-        picamera_led_brightness = request.form['picamera_led_brightness']
-        picamera_image_rotate = request.form['picamera_image_rotate']
-        watermeter_job_schedule = request.form['watermeter_job_schedule']
+        if key.startswith('picamera_image_brightness'):
+            picamera_image_brightness = request.form['picamera_image_brightness']
+            config['picamera_image_brightness'] = picamera_image_brightness
+        if key.startswith('picamera_image_contrast'):
+            picamera_image_contrast = request.form['picamera_image_contrast']
+            config['picamera_image_contrast'] = picamera_image_contrast
+        if key.startswith('picamera_led_brightness'):
+            picamera_led_brightness = request.form['picamera_led_brightness']
+            config['picamera_led_brightness'] = picamera_led_brightness
+        if key.startswith('picamera_image_rotate'):
+            picamera_image_rotate = request.form['picamera_image_rotate']
+            config['picamera_image_rotate'] = picamera_image_rotate
+        if key.startswith('watermeter_job_schedule'):
+            watermeter_job_schedule = request.form['watermeter_job_schedule']
+            config['watermeter_job_schedule'] = watermeter_job_schedule
         # Update more values here
-        config['picamera_image_brightness'] = picamera_image_brightness
-        config['picamera_image_contrast'] = picamera_image_contrast
-        config['picamera_led_brightness'] = picamera_led_brightness
-        config['picamera_image_rotate'] = picamera_image_rotate
-        if request.form['picamera_led_enabled']:
-            config['picamera_led_enabled'] = bool(True)
-        else:
-            config['picamera_led_enabled'] = bool(False)
-        config['watermeter_job_schedule'] = int(watermeter_job_schedule)
+        if key.startswith('picamera_led_enabled'):
+            if request.form['picamera_led_enabled']:
+                config['picamera_led_enabled'] = bool(True)
+            else:
+                config['picamera_led_enabled'] = bool(False)
+
         # Write the updated configuration to the YAML file
         with open('config/config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
