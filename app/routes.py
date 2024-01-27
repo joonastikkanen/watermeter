@@ -1,8 +1,9 @@
-from flask import send_file, redirect, url_for, render_template
+from flask import send_file, redirect, url_for, render_template, request
 from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois_and_gauges
 from app.camera import take_picture, get_picamera_image_timestamp
 from app.config_update import update_config
+import json
 
 config = load_config()
 # Convert the lists to tuples
@@ -47,6 +48,22 @@ def picamera_image():
     except FileNotFoundError:
         return "No image found", 404
 
+
+@app.route('/preview/roi_editor')
+def roi_editor_route():
+    try:
+        return render_template('roi_editor.html')
+    except FileNotFoundError:
+        return "No image found", 404
+
+
+@app.route('/preview/submit_rois', methods=['POST'])
+def submit_rois():
+    rois = json.loads(request.form['rois'])
+    # process the rois
+    # ...
+    print(rois)
+    return redirect(url_for('preview'))
 
 @app.route('/read_image', methods=['POST'])
 def read_image_route():

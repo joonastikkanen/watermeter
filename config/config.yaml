@@ -1,8 +1,8 @@
-picamera_image_brightness: '2'
+picamera_image_brightness: '0.83'
 picamera_image_contrast: '0'
 picamera_image_path: /run/shm/watermeter_last.jpg
-picamera_image_rotate: '90'
-picamera_led_brightness: '1'
+picamera_image_rotate: '180'
+picamera_led_brightness: '0.47'
 picamera_led_enabled: true
 picamera_photo_height: 2000
 picamera_photo_width: 2000

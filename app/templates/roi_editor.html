@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Draw ROIs</title>
+    <style>
+        #canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+            background: url('/preview/image');
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="1000" height="1000"></canvas>
+    <form id="roi-form" action="{{ url_for('submit_rois') }}" method="post">
+        <input type="hidden" id="rois" name="rois">
+        <button type="submit">Submit ROIs</button>
+    </form>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var rect = {};
+        var rois = [];
+        var drag = false;
+
+        function init() {
+            canvas.addEventListener('mousedown', mouseDown, false);
+            canvas.addEventListener('mouseup', mouseUp, false);
+            canvas.addEventListener('mousemove', mouseMove, false);
+        }
+
+        function mouseDown(e) {
+            rect.startX = e.pageX - this.offsetLeft;
+            rect.startY = e.pageY - this.offsetTop;
+            drag = true;
+        }
+
+        function mouseUp() {
+            drag = false;
+            rois.push(rect);
+            rect = {};
+        }
+
+        function mouseMove(e) {
+            if (drag) {
+                rect.w = (e.pageX - this.offsetLeft) - rect.startX;
+                rect.h = (e.pageY - this.offsetTop) - rect.startY;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                draw();
+            }
+        }
+
+        function draw() {
+            rois.forEach(function(roi) {
+                ctx.strokeRect(roi.startX, roi.startY, roi.w, roi.h);
+            });
+            if (drag) {
+                ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
+            }
+        }
+
+        document.getElementById('roi-form').addEventListener('submit', function() {
+            document.getElementById('rois').value = JSON.stringify(rois);
+        });
+
+        init();
+    </script>
+</body>
+</html>
