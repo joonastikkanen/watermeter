@@ -52,7 +52,13 @@ def picamera_image():
 @app.route('/preview/roi_editor')
 def roi_editor_route():
     try:
-        return render_template('roi_editor.html')
+        for key in request.form:
+            # Check if the key starts with 'preroi'
+            if key.startswith('roi_id'):
+                roi_id= request.form['roi_id']
+            if key.startswith('roi_name'):
+                roi_name = request.form['roi_name']
+        return render_template('roi_editor.html', roi_id=roi_id, roi_name=roi_name), 
     except FileNotFoundError:
         return "No image found", 404
 
