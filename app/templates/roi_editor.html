@@ -13,8 +13,8 @@
 </head>
 <body>
     <canvas id="canvas" width="1000" height="1000"></canvas>
-    <form id="roi-form" action="{{ url_for('submit_rois') }}" method="post">
-        <input type="hidden" id="rois" name="rois">
+    <form id="{{ roi_name }}" action="{{ url_for('submit_rois') }}" method="post">
+        <input type="hidden" id="{{ roi_id }}" name="{{ roi_id }}">
         <button type="submit">Submit ROIs</button>
     </form>
     <script>
@@ -23,6 +23,7 @@
         var rect = {};
         var rois = [];
         var drag = false;
+        var id = "{{ roi_id }}";
 
         function init() {
             canvas.addEventListener('mousedown', mouseDown, false);
@@ -50,18 +51,17 @@
                 draw();
             }
         }
-
         function draw() {
-            rois.forEach(function(roi) {
-                ctx.strokeRect(roi.startX, roi.startY, roi.w, roi.h);
+            rois.forEach(function(roi, index) {  // add index parameter to callback
+                ctx.strokeRect(roi[id + "_" + index + "_x"], roi[id + "_" + index + "_y"], roi[id + "_" + index + "_w"], roi[id + "_" + index + "_h"]);
             });
             if (drag) {
                 ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
             }
         }
 
-        document.getElementById('roi-form').addEventListener('submit', function() {
-            document.getElementById('rois').value = JSON.stringify(rois);
+        document.getElementById('{{ roi_name }}').addEventListener('submit', function() {
+            document.getElementById('{{ roi_id }}').value = JSON.stringify(rois);
         });
 
         init();

@@ -6,63 +6,30 @@
                 <h3>PRE DECIMAL NUMBER AREAS</h3>
                 <div id="pre-roi-fields">
                 <b>NUMBERS</b><br>
-                    {% for preroi in prerois %}
-                        <div id="preroi_{{ loop.index }}">
-                            <label for="preroi_{{ loop.index }}">NUMBER {{ loop.index }}:</label><br>
-                            <input type="text" id="preroi_{{ loop.index }}_x" name="preroi_{{ loop.index }}_x" value="{{ preroi[0] }}" size="8" placeholder="X Position">
-                            <input type="text" id="preroi_{{ loop.index }}_y" name="preroi_{{ loop.index }}_y" value="{{ preroi[1] }}" size="8" placeholder="Y Position">
-                            <input type="text" id="preroi_{{ loop.index }}_w" name="preroi_{{ loop.index }}_w" value="{{ preroi[2] }}" size="8" placeholder="Width">
-                            <input type="text" id="preroi_{{ loop.index }}_h" name="preroi_{{ loop.index }}_h" value="{{ preroi[3] }}" size="8" placeholder="Height"><br>
-                        </div>
-                    {% endfor %}
+                <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form') }}">
+                    <button>OPEN PRE DECIMAL NUMBER EDITOR</button><br>
+                </a>
                 </div>
-                <button type="button" id="add-pre-roi">+</button>
-                <button type="button" id="remove-pre-roi">-</button><br>
-                <br>
                 <div id="pre-gauge-roi-fields">
-                <b>GAUGES</b><br>
-                {% for pregaugeroi in pregaugerois %}
-                    <div id="pregaugeroi_{{ loop.index }}">
-                        <label for="pregaugeroi_{{ loop.index }}">GAUGE {{ loop.index }}:</label><br>
-                        <input type="text" id="pregaugeroi_{{ loop.index }}_x" name="pregaugeroi_{{ loop.index }}_x" value="{{ pregaugeroi[0] }}" size="8" placeholder="X Position">
-                        <input type="text" id="pregaugeroi_{{ loop.index }}_y" name="pregaugeroi_{{ loop.index }}_y" value="{{ pregaugeroi[1] }}" size="8" placeholder="Y Position">
-                        <input type="text" id="pregaugeroi_{{ loop.index }}_w" name="pregaugeroi_{{ loop.index }}_w" value="{{ pregaugeroi[2] }}" size="8" placeholder="Width">
-                        <input type="text" id="pregaugeroi_{{ loop.index }}_h" name="pregaugeroi_{{ loop.index }}_h" value="{{ pregaugeroi[3] }}" size="8" placeholder="Height"><br>
-                    </div>
-                {% endfor %}
+                    <b>GAUGES</b><br>
+                    <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form') }}">
+                        <button>OPEN PRE DECIMAL NUMBER EDITOR</button><br>
+                    </a>
                 </div>
-                <button type="button" id="add-pre-gauge-roi">+</button>
-                <button type="button" id="remove-pre-gauge-roi">-</button><br>
                 <h3>POST DECIMAL NUMBER AREAS</h3>
                 <div id="post-roi-fields">
                     <b>NUMBERS</b><br>
-                        {% for postroi in postrois %}
-                            <div id="postroi_{{ loop.index }}">
-                                <label for="postroi_{{ loop.index }}">NUMBER {{ loop.index }}:</label><br>
-                                <input type="text" id="postroi_{{ loop.index }}_x" name="postroi_{{ loop.index }}_x" value="{{ postroi[0] }}" size="8" placeholder="X Position">
-                                <input type="text" id="postroi_{{ loop.index }}_y" name="postroi_{{ loop.index }}_y" value="{{ postroi[1] }}" size="8" placeholder="Y Position">
-                                <input type="text" id="postroi_{{ loop.index }}_w" name="postroi_{{ loop.index }}_w" value="{{ postroi[2] }}" size="8" placeholder="Width">
-                                <input type="text" id="postroi_{{ loop.index }}_h" name="postroi_{{ loop.index }}_h" value="{{ postroi[3] }}" size="8" placeholder="Height"><br>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <button type="button" id="add-post-roi">+</button>
-                    <button type="button" id="remove-post-roi">-</button><br>
-                    <br>
-                    <div id="post-gauge-roi-fields">
+                    <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form') }}">
+                        <button>OPEN PRE DECIMAL NUMBER EDITOR</button><br>
+                    </a>
+                </div>
+                <br>
+                <div id="post-gauge-roi-fields">
                     <b>GAUGES</b><br>
-                    {% for postgaugeroi in postgaugerois %}
-                        <div id="postgaugeroi_{{ loop.index }}">
-                            <label for="postgaugeroi_{{ loop.index }}">GAUGE {{ loop.index }}:</label><br>
-                            <input type="text" id="postgaugeroi_{{ loop.index }}_x" name="postgaugeroi_{{ loop.index }}_x" value="{{ postgaugeroi[0] }}" size="8" placeholder="X Position">
-                            <input type="text" id="postgaugeroi_{{ loop.index }}_y" name="postgaugeroi_{{ loop.index }}_y" value="{{ postgaugeroi[1] }}" size="8" placeholder="Y Position">
-                            <input type="text" id="postgaugeroi_{{ loop.index }}_w" name="postgaugeroi_{{ loop.index }}_w" value="{{ postgaugeroi[2] }}" size="8" placeholder="Width">
-                            <input type="text" id="postgaugeroi_{{ loop.index }}_h" name="postgaugeroi_{{ loop.index }}_h" value="{{ postgaugeroi[3] }}" size="8" placeholder="Height"><br>
-                        </div>
-                    {% endfor %}
+                    <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='postgaugeroi', roi_name='post-gauge-roi-form') }}">
+                        <button>OPEN PRE DECIMAL NUMBER EDITOR</button><br>
+                    </a>
                     </div>
-                <button type="button" id="add-post-gauge-roi">+</button>
-                <button type="button" id="remove-post-gauge-roi">-</button><br>
                 <h3>PiCamera LED Configuration</h3><br>
                 <label for="picamera_led_enabled_true">Enabled</label>
                 <input type="radio" id="picamera_led_enabled_true" name="picamera_led_enabled" value="True" {% if picamera_led_enabled %}checked{% endif %}>
