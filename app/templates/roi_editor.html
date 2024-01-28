@@ -17,54 +17,6 @@
         <input type="hidden" id="{{ roi_id }}" name="{{ roi_id }}">
         <button type="submit">Submit ROIs</button>
     </form>
-    <script>
-        var canvas = document.getElementById('canvas');
-        var ctx = canvas.getContext('2d');
-        var rect = {};
-        var rois = [];
-        var drag = false;
-        var id = "{{ roi_id }}";
-
-        function init() {
-            canvas.addEventListener('mousedown', mouseDown, false);
-            canvas.addEventListener('mouseup', mouseUp, false);
-            canvas.addEventListener('mousemove', mouseMove, false);
-        }
-
-        function mouseDown(e) {
-            rect.startX = e.pageX - this.offsetLeft;
-            rect.startY = e.pageY - this.offsetTop;
-            drag = true;
-        }
-
-        function mouseUp() {
-            drag = false;
-            rois.push(rect);
-            rect = {};
-        }
-
-        function mouseMove(e) {
-            if (drag) {
-                rect.w = (e.pageX - this.offsetLeft) - rect.startX;
-                rect.h = (e.pageY - this.offsetTop) - rect.startY;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                draw();
-            }
-        }
-        function draw() {
-            rois.forEach(function(roi, index) {  // add index parameter to callback
-                ctx.strokeRect(roi[id + "_" + index + "_x"], roi[id + "_" + index + "_y"], roi[id + "_" + index + "_w"], roi[id + "_" + index + "_h"]);
-            });
-            if (drag) {
-                ctx.strokeRect(roi[id + "_" + index + "_x"], roi[id + "_" + index + "_y"], roi[id + "_" + index + "_w"], roi[id + "_" + index + "_h"]);
-            }
-        }
-
-        document.getElementById('{{ roi_name }}').addEventListener('submit', function() {
-            document.getElementById('{{ roi_id }}').value = JSON.stringify(rois);
-        });
-
-        init();
-    </script>
+    <script src="{{url_for('static', filename='javascript/roi_editor.js', roi_id=roi_id, roi_name=roi_name)}}"></script>
 </body>
 </html>
