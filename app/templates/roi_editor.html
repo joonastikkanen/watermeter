@@ -17,6 +17,7 @@
         <input type="hidden" id="{{ roi_id }}" name="{{ roi_id }}">
         <button type="submit">Submit ROIs</button>
     </form>
+    {% from 'flask' import url_for %}
     <script src="{{url_for('static', filename='javascript/roi_editor.js', roi_id=roi_id, roi_name=roi_name)}}"></script>
 </body>
 </html>
