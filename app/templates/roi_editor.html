@@ -67,8 +67,7 @@
             }
         }
 
-        init();
-        document.getElementById('{{ roi_name }}').addEventListener('submit', function(e) {
+        document.getElementById('{{ roi_name }}').addEventListener('{{ roi_id }}', function(e) {
             var roisTuples = rois.flatMap(function(roi) {
                 return [
                     [roi.id + '_x', roi.x],
@@ -80,7 +79,7 @@
             document.getElementById('{{ roi_id }}').value = JSON.stringify(roisTuples);
             e.preventDefault();
         });
-
+        init();
     </script>
 </body>
 </html>
