@@ -13,7 +13,7 @@
 </head>
 <body>
     <canvas id="canvas" width="{{ picamera_photo_width }}" height="{{ picamera_photo_height }}"></canvas>
-    <form id="{{ roi_name }}" action="{{ url_for('submit_rois_route') }}" method="post">
+    <form id="{{ roi_name }}" action="{{ url_for('submit_rois_route', roi_id=roi_id) }}" method="post">
         <input type="hidden" id="{{ roi_id }}" name="{{ roi_id }}">
         <button type="submit">Submit ROIs</button>
     </form>
@@ -66,8 +66,8 @@
                 ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
             }
         }
-
-        document.getElementById('{{ roi_name }}').addEventListener('{{ roi_id }}', function(e) {
+        init();
+        document.getElementById('{{ roi_name }}').addEventListener('submit', function(e) {
             var roisTuples = rois.flatMap(function(roi) {
                 return [
                     [roi.id + '_x', roi.x],
@@ -79,7 +79,6 @@
             document.getElementById('{{ roi_id }}').value = JSON.stringify(roisTuples);
             e.preventDefault();
         });
-        init();
     </script>
 </body>
 </html>
