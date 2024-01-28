@@ -40,7 +40,7 @@
         function mouseUp() {
             drag = false;
             rois.push({
-                id: 'preroi_' + (rois.length + 1),
+                id: '{{ roi_id }}_' + (rois.length + 1),
                 x: rect.startX,
                 y: rect.startY,
                 w: rect.w,
