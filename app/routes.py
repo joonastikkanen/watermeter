@@ -92,7 +92,7 @@ def draw_rois_route():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_preview_image_path = config['watermeter_preview_image_path']
-        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path,  )
+        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path)
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
 
