@@ -163,7 +163,7 @@ def update_roi_editor_config():
             if key.startswith('preroi'):
                 rois = json.loads(value)
                 # Create a list of lists, where each inner list contains the values of a dictionary
-                prerois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                prerois = [[int(roi['x']), int(roi['y']), int(roi['w']), int(roi['h'])] for roi in rois]
                 print(prerois)
                 # Print the list of lists as YAML
                 config['prerois'] = prerois
@@ -172,7 +172,7 @@ def update_roi_editor_config():
             if key.startswith('pregaugeroi'):
                 rois = json.loads(value)
                 # Create a list of lists, where each inner list contains the values of a dictionary
-                pregaugerois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                pregaugerois = [[int(roi['x']), int(roi['y']), int(roi['w']), int(roi['h'])] for roi in rois]
                 print(pregaugerois)
                 # Print the list of lists as YAML
                 config['pregaugeroi'] = pregaugerois
@@ -181,7 +181,7 @@ def update_roi_editor_config():
             if key.startswith('postroi'):
                 rois = json.loads(value)
                 # Create a list of lists, where each inner list contains the values of a dictionary
-                postrois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                postrois = [[int(roi['x']), int(roi['y']), int(roi['w']), int(roi['h'])] for roi in rois]
                 print(postrois)
                 # Print the list of lists as YAML
                 config['postrois'] = postrois
@@ -190,7 +190,7 @@ def update_roi_editor_config():
             if key.startswith('postgaugeroi'):
                 rois = json.loads(value)
                 # Create a list of lists, where each inner list contains the values of a dictionary
-                postgaugerois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                postgaugerois = [[int(roi['x']), int(roi['y']), int(roi['w']), int(roi['h'])] for roi in rois]
                 print(postgaugerois)
                 # Print the list of lists as YAML
                 config['postgaugerois'] = postgaugerois
