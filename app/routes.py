@@ -114,6 +114,7 @@ def preview():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_job_schedule = config['watermeter_job_schedule']
+        picamera_led_enabled = config['picamera_led_enabled']
         picamera_led_brightness = config['picamera_led_brightness']
         picamera_image_brightness = config['picamera_image_brightness']
         picamera_image_contrast = config['picamera_image_contrast']

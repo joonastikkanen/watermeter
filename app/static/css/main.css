@@ -7,7 +7,6 @@
   align-items: left;
   margin: 5 auto;
   padding: 10px;
-  border: 5px solid #292929;
 }
 
 /* Control the left side */
@@ -32,10 +31,11 @@
 }
 
 input[type="range"] {
-  width:200px;
+  width: 200px;
 }
 
-p,
+div,
+button,
 label {
   font:
     1rem 'Fira Sans',
