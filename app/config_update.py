@@ -24,11 +24,13 @@ def update_config():
             if key.startswith('watermeter_job_schedule'):
                 watermeter_job_schedule = request.form['watermeter_job_schedule']
                 config['watermeter_job_schedule'] = watermeter_job_schedule
-            # Update more values here
-            if key.startswith('picamera_led_enabled_true'):
-                config['picamera_led_enabled'] = bool(True)
-            if key.startswith('picamera_led_enabled_false'):
-                config['picamera_led_enabled'] = bool(False)
+            if key.startswith('picamera_led_enabled'):
+                picamera_led_enabled = request.form['picamera_led_enabled']
+                if picamera_led_enabled == 'True':
+                    config['picamera_led_enabled'] = True
+                if picamera_led_enabled == 'False':
+                    config['picamera_led_enabled'] = False
+
         # Write the updated configuration to the YAML file
         with open('config/config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
