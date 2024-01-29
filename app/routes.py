@@ -39,7 +39,9 @@ def take_new_picture_route():
         picamera_led_enabled = config['picamera_led_enabled']
         picamera_led_brightness = config['picamera_led_brightness']
         picamera_image_rotate = config['picamera_image_rotate']
-        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate)
+        picamera_image_brightness = config['picamera_image_brightness']
+        picamera_image_contrast = config['picamera_image_contrast']
+        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast)
     except FileNotFoundError:
         return "Failed to take new picture", 404
 
@@ -78,7 +80,7 @@ def submit_rois_route():
 @app.route('/read_image', methods=['POST'])
 def read_image_route():
     try:
-        read_image(picamera_image_brightness, picamera_image_contrast)
+        read_image()
     except FileNotFoundError:
         return "Failed to read data from image", 404
 

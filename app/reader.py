@@ -21,9 +21,7 @@ watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
-def read_image(brightness, contrast):
-    brightness = float(brightness)
-    contrast = float(contrast)
+def read_image():
     # Initialize an empty string to hold the digits
     predigits = ''
     postdigits = ''
@@ -32,9 +30,6 @@ def read_image(brightness, contrast):
 
     # Load the image from file
     image = cv2.imread(picamera_image_path)
-
-    # Adjust brightness and contrast
-    image = cv2.convertScaleAbs(image, alpha=brightness, beta=contrast)
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -121,14 +116,14 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
         text = "prerois"
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
         # Draw the text on the image
-        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
     # Draw each ROI
     for x, y, w, h in postrois:
         text = "postrois"
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
         # Draw the text on the image
-        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
     if 'value' in locals():
         print("The value variable is defined.")
@@ -142,9 +137,9 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
             line_y = y + h / 2 - line_length * np.sin(angle)
 
             # Draw the line
-            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
+            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 0, 255), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
         for x, y, w, h, value in postgaugerois:
             text = "pregaugerois"
@@ -155,22 +150,22 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
             line_y = y + h / 2 - line_length * np.sin(angle)
 
             # Draw the line
-            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 255, 0), 2)
+            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 0, 255), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
     else:
         print("The value variable is not defined.")
         for x, y, w, h in pregaugerois:
             text = "pregaugerois"
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
             
         for x, y, w, h in postgaugerois:
             text = "postgaugerois"
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
     # Save the image
     cv2.imwrite(output_path, image)

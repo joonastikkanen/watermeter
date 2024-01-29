@@ -1,4 +1,5 @@
 import os
+import cv2
 import blinkt
 import time
 import libcamera
@@ -29,11 +30,13 @@ def led_off():
     blinkt.show()
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate):
+def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast):
     camera = Picamera2()
     picamera_led_enabled = bool(picamera_led_enabled)
     picamera_led_brightness = float(picamera_led_brightness)
     picamera_image_rotate = int(picamera_image_rotate)
+    picamera_image_brightness = float(picamera_image_brightness)
+    picamera_image_contrast = float(picamera_image_contrast)
     if picamera_led_enabled:
         # Turn on LED
         led_on(picamera_led_brightness)
@@ -55,6 +58,12 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
         roteted_img = img.rotate(picamera_image_rotate)
         # Save the flipped image
         roteted_img.save(picamera_image_path)
+    
+    # Load the image from file
+    image = cv2.imread(picamera_image_path)
+
+    # Adjust brightness and contrast
+    image = cv2.convertScaleAbs(image, alpha=picamera_image_brightness, beta=picamera_image_contrast)
     return True
 
 def get_picamera_image_timestamp(picamera_image_path):
