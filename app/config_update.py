@@ -1,5 +1,6 @@
 from app import load_config
 import yaml
+import json
 from flask import request
 
 config = load_config()
@@ -141,6 +142,47 @@ def update_config():
         config['pregaugerois'] = pregaugerois
         config['postrois'] = postrois
         config['postgaugerois'] = postgaugerois
+
+        # Write the updated configuration to the YAML file
+        with open('config/config.yaml', 'w') as file:
+            yaml.dump(config, file, default_flow_style=None)
+        return True
+    except ValueError:
+        return "Invalid input: could not convert data to an integer", 400
+
+def update_roi_editor_config():
+    try:
+        # Iterate over the form data
+        prerois = []
+        pregaugerois = []
+        postrois = []
+        postgaugerois = []
+        rois = json.loads(request.form['rois'])
+        print(request.form)
+        for key, value in rois:
+            if key.startswith('preroi'):
+                # Create a list of lists, where each inner list contains the values of a dictionary
+                prerois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                # Print the list of lists as YAML
+                config['prerois'] = prerois
+                
+            if key.startswith('pregaugerois'):
+                # Create a list of lists, where each inner list contains the values of a dictionary
+                pregaugerois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                # Print the list of lists as YAML
+                config['pregaugerois'] = pregaugerois
+                
+            if key.startswith('postrois'):
+                # Create a list of lists, where each inner list contains the values of a dictionary
+                postrois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                # Print the list of lists as YAML
+                config['postrois'] = postrois
+                
+            if key.startswith('postgaugerois'):
+                # Create a list of lists, where each inner list contains the values of a dictionary
+                postgaugerois = [[str(roi['x']), str(roi['y']), str(roi['w']), str(roi['h'])] for roi in rois]
+                # Print the list of lists as YAML
+                config['postgaugerois'] = pregaugerois
 
         # Write the updated configuration to the YAML file
         with open('config/config.yaml', 'w') as file:

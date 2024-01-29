@@ -2,7 +2,7 @@ from flask import send_file, redirect, url_for, render_template, request
 from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois_and_gauges
 from app.camera import take_picture, get_picamera_image_timestamp
-from app.config_update import update_config
+from app.config_update import update_config, update_roi_editor_config
 import json
 
 config = load_config()
@@ -70,7 +70,7 @@ def roi_editor_route():
 
 @app.route('/preview/submit_rois', methods=['POST'])
 def submit_rois_route():
-    update_config()
+    update_roi_editor_config()
     read_image_route()
     draw_rois_route()
     return redirect(url_for('preview'))
