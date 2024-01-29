@@ -6,11 +6,11 @@
     <div class="controls">
             <fieldset>
                     <legend>Pre Decimal Areas [<b>00</b>.00]</legend>
-                    Numbers<span class="material-symbols-outlined">pin</span><br>
+                    <span class="material-symbols-outlined">pin</span>Numbers<br>
                     <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form') }}">
                         <button>OPEN EDITOR</button><br>
                     </a>
-                    Gauges<span class="material-symbols-outlined">speed</span><br>
+                    <span class="material-symbols-outlined">speed</span>Gauges<br>
                     <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form') }}">
                         <button>OPEN EDITOR</button><br>
                     </a>
@@ -44,11 +44,11 @@
             <legend>Picture Configuration</legend>
             Brightness Configuration<br>
             <label for="picamera_image_brightness">Brightness:</label>
-            <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="200" value="{{ picamera_image_brightness }}" step="1"><br>
+            <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="100" value="{{ picamera_image_brightness }}" step="1"><br>
             Value: <output id="picamera_image_brightness_value"></output><br>
             Contrast Configuration<br>
             <label for="picamera_image_contrast">Contrast:</label>
-            <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="3.0" value="{{ picamera_image_contrast }}" step="0.01"><br>
+            <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0.5" max="3.0" value="{{ picamera_image_contrast }}" step="0.01"><br>
             Value: <output id="picamera_image_contrast_value"></output><br>
             Image Rotation<br>
             <label for="picamera_image_rotate">Angle:</label>

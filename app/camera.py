@@ -42,8 +42,6 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
         led_on(picamera_led_brightness)
     # Set resolution and turn on Camera
     camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
-    camera.still_configuration.enable_raw()
-    camera.still_configuration.raw.size = camera.sensor_resolution
     camera.start()
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
@@ -58,12 +56,12 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
         roteted_img = img.rotate(picamera_image_rotate)
         # Save the flipped image
         roteted_img.save(picamera_image_path)
-    
+
     # Load the image from file
     image = cv2.imread(picamera_image_path)
 
     # Adjust brightness and contrast
-    image = cv2.convertScaleAbs(image, alpha=picamera_image_brightness, beta=picamera_image_contrast)
+    image = cv2.convertScaleAbs(image, alpha=picamera_image_contrast, beta=picamera_image_brightness)
     # Save the image
     cv2.imwrite(picamera_image_path, image)
     return True

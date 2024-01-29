@@ -46,7 +46,7 @@ from app.camera import take_picture
 from app.reader import read_image
 
 def run_schedule():
-    take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate)
+    take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast)
     read_image(picamera_image_brightness, picamera_image_contrast)
 
 
