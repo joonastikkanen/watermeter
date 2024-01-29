@@ -175,7 +175,7 @@ def update_roi_editor_config():
                 pregaugerois = [[int(roi['x']), int(roi['y']), int(roi['w']), int(roi['h'])] for roi in rois]
                 print(pregaugerois)
                 # Print the list of lists as YAML
-                config['pregaugeroi'] = pregaugerois
+                config['pregaugerois'] = pregaugerois
 
         for key, value in roi_json.items():
             if key.startswith('postroi'):
