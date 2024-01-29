@@ -30,3 +30,7 @@
 #watermeter_job_schedule {
   width: 4em;
 }
+
+input[type="range"] {
+  width:200px;
+}
