@@ -2,7 +2,7 @@ from flask import send_file, redirect, url_for, render_template, request
 from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois_and_gauges
 from app.camera import take_picture, get_picamera_image_timestamp
-from app.config_update import update_config
+from app.config_update import update_config, update_roi_editor_config
 import json
 
 config = load_config()
@@ -13,6 +13,8 @@ picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
 picamera_image_contrast = config['picamera_image_contrast']
 picamera_image_rotate = config['picamera_image_rotate']
+picamera_photo_height = config['picamera_photo_height']
+picamera_photo_width = config['picamera_photo_width']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -52,14 +54,23 @@ def picamera_image():
 @app.route('/preview/roi_editor')
 def roi_editor_route():
     try:
-        return render_template('roi_editor.html')
+        roi_id = None
+        roi_name = None
+        for key, value in request.args.items():
+            # Check if the key starts with 'roi_id'
+            if key.startswith('roi_id'):
+                roi_id = value
+            # Check if the key starts with 'roi_name'
+            if key.startswith('roi_name'):
+                roi_name = value
+        return render_template('roi_editor.html', roi_id=roi_id, roi_name=roi_name, picamera_photo_height=picamera_photo_height, picamera_photo_width=picamera_photo_width)
     except FileNotFoundError:
         return "No image found", 404
 
 
 @app.route('/preview/submit_rois', methods=['POST'])
 def submit_rois_route():
-    update_config()
+    update_roi_editor_config()
     read_image_route()
     draw_rois_route()
     return redirect(url_for('preview'))
@@ -81,7 +92,7 @@ def draw_rois_route():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_preview_image_path = config['watermeter_preview_image_path']
-        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path,  )
+        draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path)
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
 
