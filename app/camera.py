@@ -64,6 +64,8 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
 
     # Adjust brightness and contrast
     image = cv2.convertScaleAbs(image, alpha=picamera_image_brightness, beta=picamera_image_contrast)
+    # Save the image
+    cv2.imwrite(picamera_image_path, image)
     return True
 
 def get_picamera_image_timestamp(picamera_image_path):
