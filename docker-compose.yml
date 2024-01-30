@@ -10,4 +10,4 @@ services:
       - /dev/media3:/dev/media3
     restart: always
     ports:
-      - "0.0.0.0:5000:5000"
+      - "0.0.0.0:8000:8000"
