@@ -68,7 +68,20 @@ def roi_editor_route():
             # Check if the key starts with 'roi_name'
             if key.startswith('roi_name'):
                 roi_name = value
-        return render_template('roi_editor.html', roi_id=roi_id, roi_name=roi_name, picamera_photo_height=picamera_photo_height, picamera_photo_width=picamera_photo_width)
+        preroi_roi_rgb_colors="255, 0, 0",
+        pregaugeroi_roi_rgb_colors="255, 140, 0",
+        postroi_roi_rgb_colors="0, 0, 255",
+        postgaugeroi_roi_rgb_colors="0, 140, 255"
+        return render_template('roi_editor.html', 
+                       roi_id=roi_id, 
+                       roi_name=roi_name, 
+                       picamera_photo_height=picamera_photo_height, 
+                       picamera_photo_width=picamera_photo_width, 
+                       preroi_roi_rgb_colors=preroi_roi_rgb_colors, 
+                       pregaugeroi_roi_rgb_colors=pregaugeroi_roi_rgb_colors, 
+                       postroi_roi_rgb_colors=postroi_roi_rgb_colors, 
+                       postgaugeroi_roi_rgb_colors=postgaugeroi_roi_rgb_colors
+                       )
     except FileNotFoundError:
         return "No image found", 404
 
@@ -97,6 +110,7 @@ def draw_rois_route():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_preview_image_path = config['watermeter_preview_image_path']
+        
         draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path)
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
