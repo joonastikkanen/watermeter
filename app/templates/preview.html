@@ -57,9 +57,9 @@
             <input type="radio" id="picamera_image_focus_manual_enabled_false" name="picamera_image_focus_manual_enabled" value="False" {% if picamera_image_focus_manual_enabled == False %}checked{% endif %}>
             <br>
             Focus Position Configuration<br>
-            <label for="picamera_image_focus_position">Focus:</label>
+            <label for="picamera_image_focus_position">Focus (0=infifity, 3=nearest):</label>
             <input type="range" id="picamera_image_focus_position" name="picamera_image_focus_position" min="0" max="3" value="{{ picamera_image_focus_position }}" step="0.1"><br>
-            Value: <output id="picamera_image_focus_position_value"></output>m<br>
+            Value: <output id="picamera_image_focus_position_value"></output><br>
             Image Rotation<br>
             <label for="picamera_image_rotate">Angle:</label>
             <select name="picamera_image_rotate" id="picamera_image_rotate">

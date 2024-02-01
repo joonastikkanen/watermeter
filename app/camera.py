@@ -47,8 +47,8 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     picamera_image_focus_position = float(picamera_image_focus_position)
     picamera_image_focus_manual_enabled = bool(picamera_image_focus_manual_enabled)
     if picamera_led_enabled:
-        # Turn on LED
-        led_on(picamera_led_brightness)
+      # Turn on LED
+      led_on(picamera_led_brightness)
     # Set resolution and turn on Camera
     camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
     camera.start()
@@ -63,8 +63,8 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     camera.switch_mode_and_capture_file("still", picamera_image_path)
     camera.close()
     if picamera_led_enabled:
-        # Turn on LED
-        led_off()
+      # Turn on LED
+      led_off()
     # Open an image file
     with Image.open(picamera_image_path) as img:
         # Flip the image vertically

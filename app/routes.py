@@ -61,6 +61,7 @@ def roi_editor_route():
     try:
         roi_id = None
         roi_name = None
+        roi_rgb_colors = None
         for key, value in request.args.items():
             # Check if the key starts with 'roi_id'
             if key.startswith('roi_id'):
@@ -68,19 +69,24 @@ def roi_editor_route():
             # Check if the key starts with 'roi_name'
             if key.startswith('roi_name'):
                 roi_name = value
-        preroi_roi_rgb_colors="255, 0, 0",
-        pregaugeroi_roi_rgb_colors="255, 140, 0",
-        postroi_roi_rgb_colors="0, 0, 255",
-        postgaugeroi_roi_rgb_colors="0, 140, 255"
+            # Check if the key starts with 'preroi_roi_rgb_colors'
+            if key.startswith('preroi_roi_rgb_colors'):
+                roi_rgb_colors = "255, 0, 0"
+            # Check if the key starts with 'pregaugeroi_roi_rgb_colors'
+            if key.startswith('pregaugeroi_roi_rgb_colors'):
+                roi_rgb_colors = "255, 140, 0"
+            # Check if the key starts with 'postroi_roi_rgb_colors'
+            if key.startswith('postroi_roi_rgb_colors'):
+                roi_rgb_colors = "0, 0, 255"
+            # Check if the key starts with 'postgaugeroi_roi_rgb_colors'
+            if key.startswith('postgaugeroi_roi_rgb_colors'):
+                roi_rgb_colors = "0, 140, 255"
         return render_template('roi_editor.html', 
                        roi_id=roi_id, 
                        roi_name=roi_name, 
                        picamera_photo_height=picamera_photo_height, 
-                       picamera_photo_width=picamera_photo_width, 
-                       preroi_roi_rgb_colors=preroi_roi_rgb_colors, 
-                       pregaugeroi_roi_rgb_colors=pregaugeroi_roi_rgb_colors, 
-                       postroi_roi_rgb_colors=postroi_roi_rgb_colors, 
-                       postgaugeroi_roi_rgb_colors=postgaugeroi_roi_rgb_colors
+                       picamera_photo_width=picamera_photo_width,
+                       roi_rgb_colors=roi_rgb_colors
                        )
     except FileNotFoundError:
         return "No image found", 404

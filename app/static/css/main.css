@@ -31,7 +31,8 @@
 }
 
 input[type="range"] {
-  width: 200px;
+  width: 250px;
+  align-self: right;
 }
 
 #picamera_image_focus_position {
