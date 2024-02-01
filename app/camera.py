@@ -2,10 +2,9 @@ import os
 import cv2
 import blinkt
 import time
-from libcamera import controls
 import libcamera
 import RPi.GPIO
-from libcamera import ColorSpace, Transform
+from libcamera import controls, ColorSpace, Transform
 from PIL import Image
 from picamera2 import Picamera2
 from picamera2 import Picamera2, Preview
@@ -67,18 +66,23 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
       led_off()
     # Open an image file
     with Image.open(picamera_image_path) as img:
-        # Flip the image vertically
-        roteted_img = img.rotate(picamera_image_rotate)
-        # Save the flipped image
-        roteted_img.save(picamera_image_path)
+      # Flip the image vertically
+      roteted_img = img.rotate(picamera_image_rotate)
+      # Save the flipped image
+      roteted_img.save(picamera_image_path)
 
     # Load the image from file
     image = cv2.imread(picamera_image_path)
 
     # Adjust brightness and contrast
     image = cv2.convertScaleAbs(image, alpha=picamera_image_contrast, beta=picamera_image_brightness)
+
+    # Convert the image to grayscale
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
     # Save the image
-    cv2.imwrite(picamera_image_path, image)
+    cv2.imwrite(picamera_image_path, gray_image)
+
     return True
 
 def get_picamera_image_timestamp(picamera_image_path):

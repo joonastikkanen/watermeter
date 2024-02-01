@@ -29,10 +29,7 @@ def read_image():
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
     # Load the image from file
-    image = cv2.imread(picamera_image_path)
-
-    # Convert the image to grayscale
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray_image = cv2.imread(picamera_image_path)
 
     def read_digits(rois, gray_image, digits):
         # Crop the image
@@ -101,8 +98,6 @@ def read_image():
     with open(watermeter_last_value_file, 'w') as f:
         f.write(value)
 
-    # Save grayscale image
-    cv2.imwrite(picamera_image_path, gray_image)
     # Return the value
     return value
 

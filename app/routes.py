@@ -62,6 +62,17 @@ def roi_editor_route():
         roi_id = None
         roi_name = None
         roi_rgb_colors = None
+        preroi_rgb_colors = None
+        pregaugeroi_rgb_colors = None
+        postroi_rgb_colors = None
+        postgaugeroi_rgb_colors = None
+        roi_colors_codes = {
+          "preroi_rgb_colors": "255, 0, 0",
+          "pregaugeroi_rgb_colors": "255, 140, 0",
+          "postroi_rgb_colors": "0, 0, 255",
+          "postgaugeroi_rgb_colors": "0, 140, 255",
+        }
+        print(request.args)
         for key, value in request.args.items():
             # Check if the key starts with 'roi_id'
             if key.startswith('roi_id'):
@@ -69,24 +80,19 @@ def roi_editor_route():
             # Check if the key starts with 'roi_name'
             if key.startswith('roi_name'):
                 roi_name = value
-            # Check if the key starts with 'preroi_roi_rgb_colors'
-            if key.startswith('preroi_roi_rgb_colors'):
-                roi_rgb_colors = "255, 0, 0"
-            # Check if the key starts with 'pregaugeroi_roi_rgb_colors'
-            if key.startswith('pregaugeroi_roi_rgb_colors'):
-                roi_rgb_colors = "255, 140, 0"
-            # Check if the key starts with 'postroi_roi_rgb_colors'
-            if key.startswith('postroi_roi_rgb_colors'):
-                roi_rgb_colors = "0, 0, 255"
-            # Check if the key starts with 'postgaugeroi_roi_rgb_colors'
-            if key.startswith('postgaugeroi_roi_rgb_colors'):
-                roi_rgb_colors = "0, 140, 255"
-        return render_template('roi_editor.html', 
-                       roi_id=roi_id, 
-                       roi_name=roi_name, 
-                       picamera_photo_height=picamera_photo_height, 
+            # Check if the key starts with 'roi_rgb_colors'
+            if key.startswith('roi_rgb_colors'):
+              roi_rgb_colors = value
+              if roi_rgb_colors in roi_colors_codes:
+                roi_rgb_color_code = roi_colors_codes[roi_rgb_colors]
+        print(roi_rgb_color_code)
+
+        return render_template('roi_editor.html',
+                       roi_id=roi_id,
+                       roi_name=roi_name,
+                       picamera_photo_height=picamera_photo_height,
                        picamera_photo_width=picamera_photo_width,
-                       roi_rgb_colors=roi_rgb_colors
+                       roi_rgb_colors=roi_rgb_color_code
                        )
     except FileNotFoundError:
         return "No image found", 404
