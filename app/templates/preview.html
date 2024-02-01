@@ -7,22 +7,22 @@
             <fieldset>
                     <legend>Pre Decimal Areas [<b>00</b>.00]</legend>
                     <span class="material-symbols-outlined">pin</span>Numbers<br>
-                    <a class="preroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form') }}">
+                    <a class="preroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form', roi_rgb_colors='255, 0, 0') }}">
                         <button>OPEN EDITOR</button><br>
                     </a>
                     <span class="material-symbols-outlined">speed</span>Gauges<br>
-                    <a class="pregaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form') }}">
+                    <a class="pregaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form', roi_rgb_colors='255, 140, 0') }}">
                         <button>OPEN EDITOR</button><br>
                     </a>
             </fieldset>
             <fieldset>
                     <legend>Post decimal Areas [00.<b>00</b>]</legend>
                     <span class="material-symbols-outlined">pin</span>Numbers<br>
-                    <a class="postroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form') }}">
+                    <a class="postroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form', roi_rgb_colors='0, 0, 255') }}">
                         <button>OPEN EDITOR</button><br>
                     </a>
                         <span class="material-symbols-outlined">speed</span>Gauges<br>
-                        <a class="postgaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postgaugeroi', roi_name='post-gauge-roi-form') }}">
+                        <a class="postgaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postgaugeroi', roi_name='post-gauge-roi-form', roi_rgb_colors='0, 140, 255') }}">
                             <button>OPEN EDITOR</button><br>
                         </a>
             </fieldset>

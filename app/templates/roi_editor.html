@@ -55,7 +55,7 @@
         }
 
         function draw() {
-            ctx.strokeStyle = 'red';
+            ctx.strokeStyle = 'rgb({{ roi_rgb_colors }}}})';;
             rois.forEach(function(roi) {
                 ctx.strokeRect(roi.x, roi.y, roi.w, roi.h);
             });

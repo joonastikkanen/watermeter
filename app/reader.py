@@ -121,7 +121,7 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
     # Draw each ROI
     for x, y, w, h in postrois:
         text = "postrois"
-        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 140, 255), 2)
+        cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
         # Draw the text on the image
         cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
 
