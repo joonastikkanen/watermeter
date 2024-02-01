@@ -121,9 +121,9 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
     # Draw each ROI
     for x, y, w, h in postrois:
         text = "postrois"
-        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
+        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 140, 255), 2)
         # Draw the text on the image
-        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
 
     if 'value' in locals():
         print("The value variable is defined.")
@@ -137,12 +137,12 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
             line_y = y + h / 2 - line_length * np.sin(angle)
 
             # Draw the line
-            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 0, 255), 2)
+            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 140, 255), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 140, 255), 2)
 
         for x, y, w, h, value in postgaugerois:
-            text = "pregaugerois"
+            text = "postgaugerois"
             # Calculate the angle and position of the line
             angle = (value / 10) * 180  # Assuming the gauge range is 10
             line_length = h / 2
@@ -150,22 +150,22 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
             line_y = y + h / 2 - line_length * np.sin(angle)
 
             # Draw the line
-            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 0, 255), 2)
+            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (255, 140, 0), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 140, 0), 2)
     else:
         print("The value variable is not defined.")
         for x, y, w, h in pregaugerois:
             text = "pregaugerois"
-            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
+            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 140, 255), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 140, 255), 2)
             
         for x, y, w, h in postgaugerois:
             text = "postgaugerois"
-            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
+            cv2.rectangle(image, (x, y), (x+w, y+h), (255, 140, 0), 2)
             # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 140, 0), 2)
 
     # Save the image
     cv2.imwrite(output_path, image)
