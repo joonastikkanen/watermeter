@@ -21,3 +21,11 @@ contrastValue.textContent = contrastInput.value;
 contrastInput.addEventListener("input", (event) => {
 contrastValue.textContent = event.target.value;
 });
+
+// IMAGE FOCUS
+var focusValue = document.querySelector("#picamera_image_focus_position_value");
+var focusInput = document.querySelector("#picamera_image_focus_position");
+focusValue.textContent = focusInput.value;
+focusInput.addEventListener("input", (event) => {
+focusValue.textContent = event.target.value;
+});

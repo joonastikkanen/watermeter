@@ -1,13 +1,16 @@
 version: "3"
 services:
   watermeter:
-    image:  ghcr.io/joonastikkanen/watermeter:latest
+#    image:  ghcr.io/joonastikkanen/watermeter:latest
+    image: watermeter:latest
     container_name: watermeter
     volumes:
       - ./config:/usr/src/watermeter/config
       # Check media devices using rpicam-hello command
       - /dev/media0:/dev/media0
       - /dev/media3:/dev/media3
+    privileged: true
     restart: always
     ports:
       - "0.0.0.0:8000:8000"
+    command: "sleep 36000"

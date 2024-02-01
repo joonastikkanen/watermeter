@@ -17,11 +17,11 @@
             </fieldset>
             <fieldset>
                     <legend>Post decimal Areas [00.<b>00</b>]</legend>
-                    Numbers<span class="material-symbols-outlined">pin</span><br>
+                    <span class="material-symbols-outlined">pin</span>Numbers<br>
                     <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form') }}">
                         <button>OPEN EDITOR</button><br>
                     </a>
-                        Gauges<span class="material-symbols-outlined">speed</span><br>
+                        <span class="material-symbols-outlined">speed</span>Gauges<br>
                         <a class="button-editor" href="{{ url_for('roi_editor_route', roi_id='postgaugeroi', roi_name='post-gauge-roi-form') }}">
                             <button>OPEN EDITOR</button><br>
                         </a>
@@ -50,12 +50,22 @@
             <label for="picamera_image_contrast">Contrast:</label>
             <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0.5" max="3.0" value="{{ picamera_image_contrast }}" step="0.01"><br>
             Value: <output id="picamera_image_contrast_value"></output><br>
+            Manual Focus Enabled<br>
+            <label for="picamera_image_focus_manual_enabled_true">Enabled</label>
+            <input type="radio" id="picamera_image_focus_manual_enabled_true" name="picamera_image_focus_manual_enabled" value="True" {% if picamera_image_focus_manual_enabled == True %}checked{% endif %}>
+            <label for="picamera_image_focus_manual_enabled_false">Disabled</label>
+            <input type="radio" id="picamera_image_focus_manual_enabled_false" name="picamera_image_focus_manual_enabled" value="False" {% if picamera_image_focus_manual_enabled == False %}checked{% endif %}>
+            <br>
+            Focus Position Configuration<br>
+            <label for="picamera_image_focus_position">Focus:</label>
+            <input type="range" id="picamera_image_focus_position" name="picamera_image_focus_position" min="0" max="3" value="{{ picamera_image_focus_position }}" step="0.1"><br>
+            Value: <output id="picamera_image_focus_position_value"></output>m<br>
             Image Rotation<br>
             <label for="picamera_image_rotate">Angle:</label>
             <select name="picamera_image_rotate" id="picamera_image_rotate">
-                <option value="0" {% if picamera_image_rotate == "0" %}selected="selected"{% endif %}>0</option>
                 <option value="90" {% if picamera_image_rotate == "90" %}selected="selected"{% endif %}>90</option>
                 <option value="180" {% if picamera_image_rotate == "180" %}selected="selected"{% endif %}>180</option>
+                <option value="270" {% if picamera_image_rotate == "270" %}selected="selected"{% endif %}>270</option>
                 <option value="360" {% if picamera_image_rotate == "360" %}selected="selected"{% endif %}>360</option>
             </select><br><br>
         </fieldset>

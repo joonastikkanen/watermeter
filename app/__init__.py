@@ -18,6 +18,8 @@ picamera_led_enabled = config['picamera_led_enabled']
 picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
 picamera_image_contrast = config['picamera_image_contrast']
+picamera_image_focus_position = config['picamera_image_focus_position']
+picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -46,8 +48,8 @@ from app.camera import take_picture
 from app.reader import read_image
 
 def run_schedule():
-    take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast)
-    read_image(picamera_image_brightness, picamera_image_contrast)
+    take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_focus_position, picamera_image_focus_manual_enabled)
+    read_image()
 
 
 scheduler = APScheduler()

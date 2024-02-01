@@ -15,6 +15,7 @@ picamera_image_contrast = config['picamera_image_contrast']
 picamera_image_rotate = config['picamera_image_rotate']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
+
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -41,7 +42,9 @@ def take_new_picture_route():
         picamera_image_rotate = config['picamera_image_rotate']
         picamera_image_brightness = config['picamera_image_brightness']
         picamera_image_contrast = config['picamera_image_contrast']
-        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast)
+        picamera_image_focus_position = config['picamera_image_focus_position']
+        picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
+        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_focus_position, picamera_image_focus_manual_enabled)
     except FileNotFoundError:
         return "Failed to take new picture", 404
 
@@ -121,6 +124,8 @@ def preview():
         picamera_image_brightness = config['picamera_image_brightness']
         picamera_image_contrast = config['picamera_image_contrast']
         picamera_image_rotate = config['picamera_image_rotate']
+        picamera_image_focus_position = config['picamera_image_focus_position']
+        picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
         sensor_data = load_sensor_data()
         print(sensor_data)
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
@@ -137,6 +142,8 @@ def preview():
                                picamera_image_brightness=picamera_image_brightness,
                                picamera_image_contrast=picamera_image_contrast,
                                picamera_image_rotate=picamera_image_rotate,
+                               picamera_image_focus_position=picamera_image_focus_position,
+                               picamera_image_focus_manual_enabled=picamera_image_focus_manual_enabled,
                                watermeter_job_schedule=watermeter_job_schedule
                                )
     except FileNotFoundError:

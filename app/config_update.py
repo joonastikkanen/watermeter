@@ -18,12 +18,21 @@ def update_config():
             if key.startswith('picamera_led_brightness'):
                 picamera_led_brightness = request.form['picamera_led_brightness']
                 config['picamera_led_brightness'] = picamera_led_brightness
+            if key.startswith('picamera_image_focus_position'):
+                picamera_image_focus_position = request.form['picamera_image_focus_position']
+                config['picamera_image_focus_position'] = picamera_image_focus_position
             if key.startswith('picamera_image_rotate'):
                 picamera_image_rotate = request.form['picamera_image_rotate']
                 config['picamera_image_rotate'] = picamera_image_rotate
             if key.startswith('watermeter_job_schedule'):
                 watermeter_job_schedule = request.form['watermeter_job_schedule']
                 config['watermeter_job_schedule'] = watermeter_job_schedule
+            if key.startswith('picamera_image_focus_manual_enabled'):
+                picamera_image_focus_manual_enabled = request.form['picamera_image_focus_manual_enabled']
+                if picamera_image_focus_manual_enabled == 'True':
+                    config['picamera_image_focus_manual_enabled'] = True
+                if picamera_image_focus_manual_enabled == 'False':
+                    config['picamera_image_focus_manual_enabled'] = False
             if key.startswith('picamera_led_enabled'):
                 picamera_led_enabled = request.form['picamera_led_enabled']
                 if picamera_led_enabled == 'True':

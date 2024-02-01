@@ -34,6 +34,10 @@ input[type="range"] {
   width: 200px;
 }
 
+#picamera_image_focus_position {
+  direction: rtl
+}
+
 div,
 button,
 label {
