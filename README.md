@@ -7,25 +7,6 @@ I was inspired by old project nohn's project about using raspberry PI camera as 
 Links:
 * The nohn's project: https://github.com/nohn/watermeter/tree/main
 
-## Install dependencies
-
-```bash
-sudo apt install -y python3-libcamera tesseract-ocr libtesseract-dev python3-pyqt5 python3-prctl libatlas-base-dev ffmpeg python3-pip python3-av python3-prctl libcap-dev
-```
-
-```bash
-python3 -m venv --system-site-packages venv
-source venv/bin/activate 
-pip3 install -r requirements.txt
-export FLASK_APP=run.py
-```
-
-To run flask app
-
-```
-flask run --debug
-```
-
 ## Build dockerimage
 
 ```bash
