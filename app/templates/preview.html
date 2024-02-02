@@ -76,6 +76,9 @@
         </fieldset>
             <input type="submit" value="UPDATE CONFIGS">
             </form>
+            <a href="{{ url_for('read_image_route') }}">
+                <button>READ ROIS</button><br>
+            </a>
     </div>
     <div class="image">
         <img src="{{ url_for('preview_image') }}" alt="Preview image"><br>
