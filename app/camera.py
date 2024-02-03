@@ -9,7 +9,6 @@ from libcamera import controls
 from io import BytesIO
 from PIL import Image
 from picamera2 import Picamera2
-from picamera2 import Picamera2
 from time import sleep
 from datetime import datetime
 from app import load_config

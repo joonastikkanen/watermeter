@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
-from picamera import PiCamera, PiCameraError
+from picamera2 import Picamera2
 from time import sleep
 import yaml
 
@@ -55,10 +55,17 @@ def run_schedule():
 
     while retry_count < retry_limit:
         try:
-            with PiCamera() as camera:
-                take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_focus_position, picamera_image_focus_manual_enabled)
+            with Picamera2() as camera:
+                take_picture(picamera_led_enabled,
+                             picamera_led_brightness, 
+                             picamera_image_rotate, 
+                             picamera_image_brightness, 
+                             picamera_image_contrast, 
+                             picamera_image_focus_position, 
+                             picamera_image_focus_manual_enabled
+                             )
             break
-        except PiCameraError:
+        except IOError:
             print("Camera is already in use")
             retry_count += 1
             if retry_count < retry_limit:
