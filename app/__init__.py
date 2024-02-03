@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
+from picamera import PiCamera, PiCameraError
+from time import sleep
 import yaml
 
 # LOAD CONFIG FILE
@@ -48,9 +50,23 @@ from app.camera import take_picture
 from app.reader import read_image
 
 def run_schedule():
-    take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_focus_position, picamera_image_focus_manual_enabled)
-    read_image()
+    retry_limit = 3
+    retry_count = 0
 
+    while retry_count < retry_limit:
+        try:
+            with PiCamera() as camera:
+                take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_focus_position, picamera_image_focus_manual_enabled)
+            break
+        except PiCameraError:
+            print("Camera is already in use")
+            retry_count += 1
+            if retry_count < retry_limit:
+                print(f"Retry attempt {retry_count} in 60 seconds")
+                sleep(60)
+            else:
+                print("Maximum retry attempts reached")
+    read_image()
 
 scheduler = APScheduler()
 scheduler.init_app(app)

@@ -4,11 +4,12 @@ import blinkt
 import time
 import libcamera
 import RPi.GPIO
-from libcamera import controls, ColorSpace, Transform
+import numpy as np
+from libcamera import controls
+from io import BytesIO
 from PIL import Image
 from picamera2 import Picamera2
-from picamera2 import Picamera2, Preview
-from picamera2.controls import Controls
+from picamera2 import Picamera2
 from time import sleep
 from datetime import datetime
 from app import load_config
@@ -50,6 +51,9 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
       led_on(picamera_led_brightness)
     # Set resolution and turn on Camera
     camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
+    # Set the brightness and contrast
+    camera.brightness = picamera_image_brightness
+    camera.contrast = picamera_image_contrast
     camera.start()
     if picamera_image_focus_manual_enabled:
       camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
@@ -59,23 +63,25 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
       success = camera.wait(job)
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
-    camera.switch_mode_and_capture_file("still", picamera_image_path)
-    camera.close()
+
+    # Create a BytesIO object and capture the image data
+    stream = BytesIO()
+    camera.capture(stream, format='jpeg')
+    # Rewind the stream to the beginning so we can read its content
+    stream.seek(0)
+
+    # Create an image object
+    img = Image.open(stream)
+
+    # Now you can rotate the image
+    rotated_img = img.rotate(picamera_image_rotate)
+
     if picamera_led_enabled:
       # Turn on LED
       led_off()
-    # Open an image file
-    with Image.open(picamera_image_path) as img:
-      # Flip the image vertically
-      roteted_img = img.rotate(picamera_image_rotate)
-      # Save the flipped image
-      roteted_img.save(picamera_image_path)
 
-    # Load the image from file
-    image = cv2.imread(picamera_image_path)
-
-    # Adjust brightness and contrast
-    image = cv2.convertScaleAbs(image, alpha=picamera_image_contrast, beta=picamera_image_brightness)
+    # Convert the PIL Image to a NumPy array
+    image = np.array(rotated_img)
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
