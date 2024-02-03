@@ -6,7 +6,6 @@ import numpy as np
 import cv2
 import io
 from PIL import Image
-from picamera import PiCamera
 from libcamera import controls
 from picamera2 import Picamera2
 from time import sleep
@@ -60,15 +59,9 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
       job = camera.autofocus_cycle(wait=False)
       success = camera.wait(job)
     sleep(1)
-    # Create a BytesIO object
+
     stream = io.BytesIO()
-
-    # Capture the image
-    camera.capture(stream, format='jpeg')
-
-    # Rewind the stream to the beginning so we can read its content
-    stream.seek(0)
-
+    camera.capture_file(stream, format='jpeg')
     # Open the image and rotate it
     img = Image.open(stream)
     rotated_img = img.rotate(picamera_image_rotate) 
