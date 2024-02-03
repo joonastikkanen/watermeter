@@ -63,17 +63,15 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     sleep(1)
     # Take an image. I put in in /run/shm to not wear the SD card
 
-    # Create a BytesIO object and capture the image data
-    stream = BytesIO()
-    camera.capture(stream, format='jpeg')
-    # Rewind the stream to the beginning so we can read its content
-    stream.seek(0)
+    # Capture the image to a file
+    camera.capture_file(picamera_image_path)
 
-    # Create an image object
-    img = Image.open(stream)
+    # Read the image file into a variable
+    with open(picamera_image_path, 'rb') as f:
+        image = f.read()
 
     # Now you can rotate the image
-    rotated_img = img.rotate(picamera_image_rotate)
+    rotated_img = image.rotate(picamera_image_rotate)
 
     if picamera_led_enabled:
       # Turn on LED
