@@ -64,8 +64,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     stream = io.BytesIO()
 
     # Capture the image
-    with PiCamera() as camera:
-        camera.capture(stream, format='jpeg')
+    camera.capture(stream, format='jpeg')
 
     # Rewind the stream to the beginning so we can read its content
     stream.seek(0)
