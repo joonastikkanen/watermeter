@@ -2,15 +2,14 @@ import os
 import cv2
 import blinkt
 import time
-import libcamera
-import RPi.GPIO
 import numpy as np
-from libcamera import controls
-from io import BytesIO
+import cv2
+import io
 from PIL import Image
+from picamera import PiCamera
+from libcamera import controls
 from picamera2 import Picamera2
 from time import sleep
-from datetime import datetime
 from app import load_config
 
 config = load_config()
@@ -61,30 +60,31 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
       job = camera.autofocus_cycle(wait=False)
       success = camera.wait(job)
     sleep(1)
-    # Take an image. I put in in /run/shm to not wear the SD card
+    # Create a BytesIO object
+    stream = io.BytesIO()
 
-    # Capture the image to a file
-    camera.capture_file(picamera_image_path)
+    # Capture the image
+    with PiCamera() as camera:
+        camera.capture(stream, format='jpeg')
 
-    # Read the image file into a variable
-    with open(picamera_image_path, 'rb') as f:
-        image = f.read()
+    # Rewind the stream to the beginning so we can read its content
+    stream.seek(0)
 
-    # Now you can rotate the image
-    rotated_img = image.rotate(picamera_image_rotate)
-
-    if picamera_led_enabled:
-      # Turn on LED
-      led_off()
+    # Open the image and rotate it
+    img = Image.open(stream)
+    rotated_img = img.rotate(picamera_image_rotate) 
 
     # Convert the PIL Image to a NumPy array
     image = np.array(rotated_img)
 
     # Convert the image to grayscale
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
     # Save the image
     cv2.imwrite(picamera_image_path, gray_image)
+    # Close the camera
+    camera.stop()
+    camera.close()
 
     return True
 
