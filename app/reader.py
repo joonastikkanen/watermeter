@@ -29,14 +29,14 @@ def read_image():
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
     # Load the image from file
-    gray_image = cv2.imread(picamera_image_path)
+    image = cv2.imread(picamera_image_path)
 
-    def read_digits(rois, gray_image, digits):
+    def read_digits(rois, image, digits):
         # Crop the image
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
-            roi = gray_image[y:y+h, x:x+w]
+            roi = image[y:y+h, x:x+w]
 
             # Use Tesseract to do OCR on the ROI
             digits += pytesseract.image_to_string(roi, config=tesseract_config)
@@ -47,12 +47,12 @@ def read_image():
         return(digits)
 
 
-    def read_gauges(gaugerois, gray_image, digits):
+    def read_gauges(gaugerois, image, digits):
         digits = ''
         # Process each ROI
         for x, y, w, h in gaugerois:
             # Crop the image to the ROI
-            gauge_roi = gray_image[y:y+h, x:x+w]
+            gauge_roi = image[y:y+h, x:x+w]
 
             # Use edge detection and Hough line transformation to find the pointer
             edges = cv2.Canny(gauge_roi, 50, 150, apertureSize=3)
@@ -81,13 +81,13 @@ def read_image():
             digits += str(value)
         return digits
 
-    read_digits(prerois, gray_image, predigits)
-    read_gauges(pregaugerois, gray_image, predigits)
-    read_digits(postrois, gray_image, postdigits)
-    read_gauges(postgaugerois, gray_image, postdigits)
+    read_digits(prerois, image, predigits)
+    read_gauges(pregaugerois, image, predigits)
+    read_digits(postrois, image, postdigits)
+    read_gauges(postgaugerois, image, postdigits)
 
     digits = predigits + '.' + postdigits
-
+    print(digits)
     # Convert the digits string to an integer
     if digits.isdigit():
         value = int(digits)

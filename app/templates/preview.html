@@ -48,11 +48,11 @@
             Value: <output id="picamera_image_brightness_value"></output><br>
             Contrast Configuration<br>
             <label for="picamera_image_contrast">Contrast:</label>
-            <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0.0" max="32.0" value="{{ picamera_image_contrast }}" step="0.5"><br>
+            <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0.0" max="32.0" value="{{ picamera_image_contrast }}" step="0.1"><br>
             Value: <output id="picamera_image_contrast_value"></output><br>
             Sharpness Configuration<br>
             <label for="picamera_image_sharpness">Sharpness:</label>
-            <input type="range" id="picamera_image_sharpness" name="picamera_image_sharpness" min="0.0" max="16.0" value="{{ picamera_image_sharpness }}" step="0.5"><br>
+            <input type="range" id="picamera_image_sharpness" name="picamera_image_sharpness" min="0.0" max="16.0" value="{{ picamera_image_sharpness }}" step="0.1"><br>
             Value: <output id="picamera_image_sharpness_value"></output><br>
             Manual Focus Enabled<br>
             <label for="picamera_image_focus_manual_enabled_true">Enabled</label>
@@ -70,7 +70,6 @@
                 <option value="90" {% if picamera_image_rotate == "90" %}selected="selected"{% endif %}>90</option>
                 <option value="180" {% if picamera_image_rotate == "180" %}selected="selected"{% endif %}>180</option>
                 <option value="270" {% if picamera_image_rotate == "270" %}selected="selected"{% endif %}>270</option>
-                <option value="360" {% if picamera_image_rotate == "360" %}selected="selected"{% endif %}>360</option>
             </select><br><br>
         </fieldset>
         <fieldset>
@@ -80,7 +79,7 @@
         </fieldset>
             <input type="submit" value="UPDATE CONFIGS">
             </form>
-            <form action="{{ url_for('read_image_route') }}" method="post">
+            <form action="{{ url_for('read_image_route_post') }}" method="post">
                 <input type="submit" value="READ ROIS">
             </form>
     </div>

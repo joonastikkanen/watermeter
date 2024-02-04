@@ -107,6 +107,13 @@ def submit_rois_route():
     return redirect(url_for('preview'))
 
 @app.route('/read_image', methods=['POST'])
+def read_image_route_post():
+    try:
+        read_image_route()
+        return redirect(url_for('preview'))
+    except FileNotFoundError:
+        return "Failed to read data from image", 404
+
 def read_image_route():
     try:
         read_image()
@@ -123,7 +130,7 @@ def draw_rois_route():
         postrois = config.get('postrois')
         postgaugerois = config.get('postgaugerois')
         watermeter_preview_image_path = config['watermeter_preview_image_path']
-        
+
         draw_rois_and_gauges(picamera_image_path, prerois, pregaugerois, postrois, postgaugerois, watermeter_preview_image_path)
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
