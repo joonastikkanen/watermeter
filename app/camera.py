@@ -46,7 +46,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     if picamera_led_enabled:
       # Turn on LED
       led_on(picamera_led_brightness)
-    config = camera.create_preview_configuration({"format": "YUV420", "size": (picamera_photo_width, picamera_photo_height)}, main)
+    config = camera.create_still_configuration(main={"size": (picamera_photo_width, picamera_photo_height)})
     camera.configure(config)
     # Set resolution and turn on Camera
     #camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
@@ -62,10 +62,9 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
       success = camera.wait(job)
     sleep(1)
 
-    stream = io.BytesIO()
-    camera.capture_file(stream, format='jpeg')
+    image = camera.capture_image(config, "main")
     # Open the image and rotate it
-    img = Image.open(stream)
+    img = Image.open(image)
     rotated_img = img.rotate(picamera_image_rotate) 
 
     # Convert the PIL Image to a NumPy array
@@ -77,8 +76,8 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     # Save the image
     cv2.imwrite(picamera_image_path, gray_image)
     # Close the camera
+    camera.stop_preview()
     camera.stop()
-    camera.close()
 
     return True
 
