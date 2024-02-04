@@ -46,11 +46,13 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     if picamera_led_enabled:
       # Turn on LED
       led_on(picamera_led_brightness)
+    config = camera.create_preview_configuration(main={"size": (picamera_photo_width, picamera_photo_height)})
+    camera.configure(config)
     # Set resolution and turn on Camera
-    camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
+    #camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
     # Set the brightness and contrast
-    camera.brightness = picamera_image_brightness
-    camera.contrast = picamera_image_contrast
+    #camera.brightness = picamera_image_brightness
+    #camera.contrast = picamera_image_contrast
     camera.start()
     if picamera_image_focus_manual_enabled:
       camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
