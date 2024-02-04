@@ -24,6 +24,9 @@ def update_config():
             if key.startswith('picamera_image_rotate'):
                 picamera_image_rotate = request.form['picamera_image_rotate']
                 config['picamera_image_rotate'] = picamera_image_rotate
+            if key.startswith('picamera_image_sharpness'):
+                picamera_image_sharpness = request.form['picamera_image_sharpness']
+                config['picamera_image_sharpness'] = picamera_image_sharpness
             if key.startswith('watermeter_job_schedule'):
                 watermeter_job_schedule = request.form['watermeter_job_schedule']
                 config['watermeter_job_schedule'] = watermeter_job_schedule

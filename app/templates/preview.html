@@ -44,12 +44,16 @@
             <legend>Picture Configuration</legend>
             Brightness Configuration<br>
             <label for="picamera_image_brightness">Brightness:</label>
-            <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="0" max="100" value="{{ picamera_image_brightness }}" step="1"><br>
+            <input type="range" id="picamera_image_brightness" name="picamera_image_brightness" min="-1.0" max="1.0" value="{{ picamera_image_brightness }}" step="0.1"><br>
             Value: <output id="picamera_image_brightness_value"></output><br>
             Contrast Configuration<br>
             <label for="picamera_image_contrast">Contrast:</label>
-            <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0" max="100" value="{{ picamera_image_contrast }}" step="1"><br>
+            <input type="range" id="picamera_image_contrast" name="picamera_image_contrast" min="0.0" max="32.0" value="{{ picamera_image_contrast }}" step="0.5"><br>
             Value: <output id="picamera_image_contrast_value"></output><br>
+            Sharpness Configuration<br>
+            <label for="picamera_image_sharpness">Sharpness:</label>
+            <input type="range" id="picamera_image_sharpness" name="picamera_image_sharpness" min="0.0" max="16.0" value="{{ picamera_image_sharpness }}" step="0.5"><br>
+            Value: <output id="picamera_image_sharpness_value"></output><br>
             Manual Focus Enabled<br>
             <label for="picamera_image_focus_manual_enabled_true">Enabled</label>
             <input type="radio" id="picamera_image_focus_manual_enabled_true" name="picamera_image_focus_manual_enabled" value="True" {% if picamera_image_focus_manual_enabled == True %}checked{% endif %}>

@@ -22,6 +22,14 @@ contrastInput.addEventListener("input", (event) => {
 contrastValue.textContent = event.target.value;
 });
 
+// IMAGE SHARPNESS
+var sharpnessValue = document.querySelector("#picamera_image_sharpness_value");
+var sharpnessInput = document.querySelector("#picamera_image_sharpness");
+sharpnessValue.textContent = sharpnessInput.value;
+sharpnessInput.addEventListener("input", (event) => {
+sharpnessValue.textContent = event.target.value;
+});
+
 // IMAGE FOCUS
 var focusValue = document.querySelector("#picamera_image_focus_position_value");
 var focusInput = document.querySelector("#picamera_image_focus_position");

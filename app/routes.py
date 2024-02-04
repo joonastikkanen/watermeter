@@ -44,7 +44,8 @@ def take_new_picture_route():
         picamera_image_contrast = config['picamera_image_contrast']
         picamera_image_focus_position = config['picamera_image_focus_position']
         picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
-        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_focus_position, picamera_image_focus_manual_enabled)
+        picamera_image_sharpness = config['picamera_image_sharpness']
+        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_focus_position, picamera_image_focus_manual_enabled)
     except FileNotFoundError:
         return "Failed to take new picture", 404
 
@@ -150,6 +151,7 @@ def preview():
         picamera_image_brightness = config['picamera_image_brightness']
         picamera_image_contrast = config['picamera_image_contrast']
         picamera_image_rotate = config['picamera_image_rotate']
+        picamera_image_sharpness = config['picamera_image_sharpness']
         picamera_image_focus_position = config['picamera_image_focus_position']
         picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
         sensor_data = load_sensor_data()
@@ -170,7 +172,8 @@ def preview():
                                picamera_image_rotate=picamera_image_rotate,
                                picamera_image_focus_position=picamera_image_focus_position,
                                picamera_image_focus_manual_enabled=picamera_image_focus_manual_enabled,
-                               watermeter_job_schedule=watermeter_job_schedule
+                               watermeter_job_schedule=watermeter_job_schedule,
+                               picamera_image_sharpness=picamera_image_sharpness
                                )
     except FileNotFoundError:
         return "Failed to render preview page", 404

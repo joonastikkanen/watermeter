@@ -34,7 +34,7 @@ def led_off():
     blinkt.show()
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_focus_position, picamera_image_focus_manual_enabled):
+def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_focus_position, picamera_image_focus_manual_enabled):
     camera = Picamera2()
     picamera_led_enabled = bool(picamera_led_enabled)
     picamera_led_brightness = float(picamera_led_brightness)
@@ -43,16 +43,17 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     picamera_image_contrast = float(picamera_image_contrast)
     picamera_image_focus_position = float(picamera_image_focus_position)
     picamera_image_focus_manual_enabled = bool(picamera_image_focus_manual_enabled)
+    picamera_image_sharpness = float(picamera_image_sharpness)
     if picamera_led_enabled:
       # Turn on LED
       led_on(picamera_led_brightness)
-    config = camera.create_still_configuration(main={"size": (picamera_photo_width, picamera_photo_height)})
-    camera.configure(config)
     # Set resolution and turn on Camera
-    #camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
+    camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
     # Set the brightness and contrast
-    #camera.brightness = picamera_image_brightness
-    #camera.contrast = picamera_image_contrast
+    picamera_image_brightness = camera.camera_controls["Brightness"]
+    picamera_image_contrast = camera.camera_controls["Contrast"]
+    picamera_image_sharpness = camera.camera_controls["Sharpness"]
+    picamera_image_rotate = camera.camera_controls["Rotation"]
     camera.start()
     if picamera_image_focus_manual_enabled:
       camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
@@ -62,13 +63,10 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
       success = camera.wait(job)
     sleep(1)
 
-    image = camera.capture_image(config, "main")
-    # Open the image and rotate it
-    img = Image.open(image)
-    rotated_img = img.rotate(picamera_image_rotate) 
+    image = camera.capture_array("main")
 
     # Convert the PIL Image to a NumPy array
-    image = np.array(rotated_img)
+    #image = np.array(image)
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
