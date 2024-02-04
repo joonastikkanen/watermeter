@@ -46,11 +46,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     if picamera_led_enabled:
       # Turn on LED
       led_on(picamera_led_brightness)
-    config = camera.create_preview_configuration(main={
-        "size": (picamera_photo_width, picamera_photo_height),
-        "brightness": picamera_image_brightness,
-        "contrast": picamera_image_contrast
-    })
+    config = camera.create_preview_configuration({"format": "YUV420", "size": (picamera_photo_width, picamera_photo_height)}, main)
     camera.configure(config)
     # Set resolution and turn on Camera
     #camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
