@@ -1,8 +1,11 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
-from picamera2 import Picamera2
 from time import sleep
 import yaml
+from picamera2 import Picamera2
+
+# Initialize the camera at the global scope
+camera = Picamera2()
 
 # LOAD CONFIG FILE
 def load_config():
@@ -12,6 +15,7 @@ def load_config():
 
 config = load_config()
 # Convert the lists to tuples
+picamera_debug = config['picamera_debug']
 picamera_image_path = config['picamera_image_path']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
@@ -47,33 +51,18 @@ def create_app():
 
 app = create_app()
 
-from app.camera import take_picture
-from app.reader import read_image
+#from app.camera import take_picture
+#from app.reader import read_image
 
 def run_schedule():
-    retry_limit = 3
-    retry_count = 0
-
-    while retry_count < retry_limit:
-        try:
-            with Picamera2() as camera:
-                take_picture(picamera_led_enabled,
-                             picamera_led_brightness, 
-                             picamera_image_rotate, 
-                             picamera_image_brightness, 
-                             picamera_image_contrast, 
-                             picamera_image_focus_position, 
-                             picamera_image_focus_manual_enabled
-                             )
-            break
-        except IOError:
-            print("Camera is already in use")
-            retry_count += 1
-            if retry_count < retry_limit:
-                print(f"Retry attempt {retry_count} in 60 seconds")
-                sleep(60)
-            else:
-                print("Maximum retry attempts reached")
+    take_picture(picamera_led_enabled,
+                 picamera_led_brightness,
+                 picamera_image_rotate,
+                 picamera_image_brightness,
+                 picamera_image_contrast,
+                 picamera_image_focus_position,
+                 picamera_image_focus_manual_enabled
+                 )
     read_image()
 
 scheduler = APScheduler()

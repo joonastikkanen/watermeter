@@ -12,9 +12,8 @@ from picamera2.controls import Controls
 from time import sleep
 from app import load_config
 
-Picamera2.set_logging(Picamera2.DEBUG)
-camera = Picamera2()
 config = load_config()
+picamera_debug = config['picamera_debug']
 picamera_image_path = config['picamera_image_path']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
@@ -24,6 +23,13 @@ picamera_image_rotate = config['picamera_image_rotate']
 picamera_image_focus_position = config['picamera_image_focus_position']
 picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
+
+# Picamera debugging
+if picamera_debug:
+  Picamera2.set_logging(Picamera2.DEBUG)
+
+# Initialize the camera at the global scope
+#camera = Picamera2()
 
 # LED ON
 def led_on(picamera_led_brightness):
