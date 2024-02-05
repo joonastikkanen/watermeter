@@ -70,6 +70,13 @@
                 <option value="90" {% if picamera_image_rotate == "90" %}selected="selected"{% endif %}>90</option>
                 <option value="180" {% if picamera_image_rotate == "180" %}selected="selected"{% endif %}>180</option>
                 <option value="270" {% if picamera_image_rotate == "270" %}selected="selected"{% endif %}>270</option>
+            </select><br>
+            Image Noise Reduction Mode<br>
+            <label for="picamera_image_denoise_mode">Angle:</label>
+            <select name="picamera_image_denoise_mode" id="picamera_image_denoise_mode">
+                <option value="Off" {% if picamera_image_denoise_mode == "Off" %}selected="selected"{% endif %}>Off</option>
+                <option value="Fast" {% if picamera_image_denoise_mode == "Fast" %}selected="selected"{% endif %}>Fast</option>
+                <option value="HighQuality" {% if picamera_image_denoise_mode == "HighQuality" %}selected="selected"{% endif %}>HighQuality</option>
             </select><br><br>
         </fieldset>
         <fieldset>

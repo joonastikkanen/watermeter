@@ -22,7 +22,7 @@ prerois:
 - [887, 909, 33, 49]
 - [934, 906, 37, 50]
 - [983, 899, 39, 56]
-tesseract_config: --psm 6 -c tessedit_char_whitelist=0123456789
+tesseract_config: --oem 1 --psm 3 -c tessedit_char_whitelist=0123456789
 tesseract_path: /usr/bin/tesseract
 watermeter_init_value: 1
 watermeter_job_schedule: '1'

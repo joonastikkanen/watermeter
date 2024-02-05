@@ -20,6 +20,10 @@ picamera_photo_width = config['picamera_photo_width']
 picamera_led_enabled = config['picamera_led_enabled']
 picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_rotate = config['picamera_image_rotate']
+picamera_image_denoise_mode = config['picamera_image_denoise_mode']
+picamera_image_brightness = config['picamera_image_brightness']
+picamera_image_contrast = config['picamera_image_contrast']
+picamera_image_sharpness = config['picamera_image_sharpness']
 picamera_image_focus_position = config['picamera_image_focus_position']
 picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
@@ -41,7 +45,7 @@ def led_off():
 
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_focus_position, picamera_image_focus_manual_enabled):
+def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled):
     camera = Picamera2()
     try:
         picamera_led_enabled = bool(picamera_led_enabled)
@@ -52,6 +56,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
         picamera_image_focus_position = float(picamera_image_focus_position)
         picamera_image_focus_manual_enabled = bool(picamera_image_focus_manual_enabled)
         picamera_image_sharpness = float(picamera_image_sharpness)
+        picamera_image_denoise_mode = str(picamera_image_denoise_mode)
         if picamera_led_enabled:
           # Turn on LED
           led_on(picamera_led_brightness)
@@ -64,6 +69,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
           ctrl.Brightness = picamera_image_brightness
           ctrl.Contrast = picamera_image_contrast
           ctrl.Sharpness = picamera_image_sharpness
+          ctrl.NoiseReductionMode = picamera_image_denoise_mode
         if picamera_image_focus_manual_enabled:
           camera.set_controls({"AfMode": Controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
         if not picamera_image_focus_manual_enabled:

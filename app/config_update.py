@@ -27,6 +27,9 @@ def update_config():
             if key.startswith('picamera_image_sharpness'):
                 picamera_image_sharpness = request.form['picamera_image_sharpness']
                 config['picamera_image_sharpness'] = picamera_image_sharpness
+            if key.startswith('picamera_image_denoise_mode'):
+                picamera_image_denoise_mode = request.form['picamera_image_denoise_mode']
+                config['picamera_image_denoise_mode'] = picamera_image_denoise_mode
             if key.startswith('watermeter_job_schedule'):
                 watermeter_job_schedule = request.form['watermeter_job_schedule']
                 config['watermeter_job_schedule'] = watermeter_job_schedule

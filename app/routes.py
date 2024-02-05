@@ -12,10 +12,11 @@ picamera_led_enabled = config['picamera_led_enabled']
 picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
 picamera_image_contrast = config['picamera_image_contrast']
+picamera_image_sharpness = config['picamera_image_sharpness']
+picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_image_rotate = config['picamera_image_rotate']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
-
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -45,7 +46,8 @@ def take_new_picture_route():
         picamera_image_focus_position = config['picamera_image_focus_position']
         picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
         picamera_image_sharpness = config['picamera_image_sharpness']
-        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_focus_position, picamera_image_focus_manual_enabled)
+        picamera_image_denoise_mode = config['picamera_image_denoise_mode']
+        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled)
     except FileNotFoundError:
         return "Failed to take new picture", 404
 
@@ -159,6 +161,7 @@ def preview():
         picamera_image_contrast = config['picamera_image_contrast']
         picamera_image_rotate = config['picamera_image_rotate']
         picamera_image_sharpness = config['picamera_image_sharpness']
+        picamera_image_denoise_mode = config['picamera_image_denoise_mode']
         picamera_image_focus_position = config['picamera_image_focus_position']
         picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
         sensor_data = load_sensor_data()
@@ -180,7 +183,8 @@ def preview():
                                picamera_image_focus_position=picamera_image_focus_position,
                                picamera_image_focus_manual_enabled=picamera_image_focus_manual_enabled,
                                watermeter_job_schedule=watermeter_job_schedule,
-                               picamera_image_sharpness=picamera_image_sharpness
+                               picamera_image_sharpness=picamera_image_sharpness,
+                               picamera_image_denoise_mode=picamera_image_denoise_mode
                                )
     except FileNotFoundError:
         return "Failed to render preview page", 404

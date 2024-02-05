@@ -25,6 +25,7 @@ picamera_led_brightness = config['picamera_led_brightness']
 picamera_image_brightness = config['picamera_image_brightness']
 picamera_image_contrast = config['picamera_image_contrast']
 picamera_image_sharpness = config['picamera_image_sharpness']
+picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_image_focus_position = config['picamera_image_focus_position']
 picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
@@ -61,6 +62,7 @@ def run_schedule():
                  picamera_image_brightness,
                  picamera_image_contrast,
                  picamera_image_sharpness,
+                 picamera_image_denoise_mode,
                  picamera_image_focus_position,
                  picamera_image_focus_manual_enabled
                  )

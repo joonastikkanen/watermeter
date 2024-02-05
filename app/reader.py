@@ -30,13 +30,18 @@ def read_image():
 
     # Load the image from file
     image = cv2.imread(picamera_image_path)
+    # Apply a binary threshold
+    _, binary = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-    def read_digits(rois, image, digits):
+    # Save the preprocessed image
+    preprocessed_image = cv2.imwrite(picamera_image_path, binary)
+
+    def read_digits(rois, preprocessed_image, digits):
         # Crop the image
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
-            roi = image[y:y+h, x:x+w]
+            roi = preprocessed_image[y:y+h, x:x+w]
 
             # Use Tesseract to do OCR on the ROI
             digits += pytesseract.image_to_string(roi, config=tesseract_config)
@@ -47,12 +52,12 @@ def read_image():
         return(digits)
 
 
-    def read_gauges(gaugerois, image, digits):
+    def read_gauges(gaugerois, preprocessed_image, digits):
         digits = ''
         # Process each ROI
         for x, y, w, h in gaugerois:
             # Crop the image to the ROI
-            gauge_roi = image[y:y+h, x:x+w]
+            gauge_roi = preprocessed_image[y:y+h, x:x+w]
 
             # Use edge detection and Hough line transformation to find the pointer
             edges = cv2.Canny(gauge_roi, 50, 150, apertureSize=3)
@@ -82,10 +87,10 @@ def read_image():
             print(digits)
         return digits
 
-    preroisdigits = read_digits(prerois, image, predigits)
-    pregauges_digits = read_gauges(pregaugerois, image, predigits)
-    postroisdigits = read_digits(postrois, image, postdigits)
-    postgauges = read_gauges(postgaugerois, image, postdigits)  
+    preroisdigits = read_digits(prerois, preprocessed_image, predigits)
+    pregauges_digits = read_gauges(pregaugerois, preprocessed_image, predigits)
+    postroisdigits = read_digits(postrois, preprocessed_image, postdigits)
+    postgauges = read_gauges(postgaugerois, preprocessed_image, postdigits)  
     # Combine the digits
     
     digits = preroisdigits + pregauges_digits+ '.' + postroisdigits + postgauges
