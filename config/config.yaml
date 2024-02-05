@@ -6,6 +6,7 @@ picamera_image_focus_position: '3'
 picamera_image_path: /run/shm/watermeter_last.jpg
 picamera_image_rotate: '90'
 picamera_image_sharpness: '8.1'
+preprocessed_image: "Off"
 picamera_led_brightness: '1'
 picamera_led_enabled: true
 picamera_photo_height: 2000
