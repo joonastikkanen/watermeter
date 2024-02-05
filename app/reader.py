@@ -79,14 +79,17 @@ def read_image():
             angle_range = np.pi  # The range of angles on the gauge (180 degrees)
             value = (pointer_angle / angle_range) * value_range
             digits += str(value)
+            print(digits)
         return digits
 
-    read_digits(prerois, image, predigits)
-    read_gauges(pregaugerois, image, predigits)
-    read_digits(postrois, image, postdigits)
-    read_gauges(postgaugerois, image, postdigits)
-
-    digits = predigits + '.' + postdigits
+    preroisdigits = read_digits(prerois, image, predigits)
+    pregauges_digits = read_gauges(pregaugerois, image, predigits)
+    postroisdigits = read_digits(postrois, image, postdigits)
+    postgauges = read_gauges(postgaugerois, image, postdigits)  
+    # Combine the digits
+    
+    digits = preroisdigits + pregauges_digits+ '.' + postroisdigits + postgauges
+    # Print the digits
     print(digits)
     # Convert the digits string to an integer
     if digits.isdigit():
