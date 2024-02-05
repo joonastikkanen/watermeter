@@ -28,9 +28,6 @@ watermeter_preview_image_path = config['watermeter_preview_image_path']
 if picamera_debug:
   Picamera2.set_logging(Picamera2.DEBUG)
 
-# Initialize the camera at the global scope
-#camera = Picamera2()
-
 # LED ON
 def led_on(picamera_led_brightness):
     blinkt.set_clear_on_exit(False)
@@ -41,6 +38,8 @@ def led_on(picamera_led_brightness):
 def led_off():
     blinkt.clear()
     blinkt.show()
+# Initialize the camera at the global scope
+camera = Picamera2()
 
 # TAKE PICTURE
 def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_focus_position, picamera_image_focus_manual_enabled):
@@ -86,7 +85,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
     # Save the image
     cv2.imwrite(picamera_image_path, rotated_image)
     # Close the camera
-    camera.stop()
+    #camera.stop()
     return True
 
 def get_picamera_image_timestamp(picamera_image_path):

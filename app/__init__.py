@@ -5,7 +5,7 @@ import yaml
 from picamera2 import Picamera2
 
 # Initialize the camera at the global scope
-camera = Picamera2()
+#camera = Picamera2()
 
 # LOAD CONFIG FILE
 def load_config():
@@ -51,8 +51,8 @@ def create_app():
 
 app = create_app()
 
-#from app.camera import take_picture
-#from app.reader import read_image
+from app.camera import take_picture
+from app.reader import read_image
 
 def run_schedule():
     take_picture(picamera_led_enabled,
@@ -60,6 +60,7 @@ def run_schedule():
                  picamera_image_rotate,
                  picamera_image_brightness,
                  picamera_image_contrast,
+                 picamera_image_sharpness,
                  picamera_image_focus_position,
                  picamera_image_focus_manual_enabled
                  )
