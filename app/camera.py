@@ -67,8 +67,9 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
         if picamera_image_focus_manual_enabled:
           camera.set_controls({"AfMode": Controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
         if not picamera_image_focus_manual_enabled:
-          camera.autofocus_cycle(wait=False)
-          camera.wait()
+          success = camera.autofocus_cycle()
+          job = camera.autofocus_cycle(wait=False)
+          success = camera.wait(job)
         ctrls = Controls(camera)
         camera.set_controls(ctrls)
         sleep(1)
