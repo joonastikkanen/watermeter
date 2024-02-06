@@ -21,6 +21,10 @@
   padding: 10px;
 }
 
+.controls fieldset {
+  border-radius: 8px;
+}
+
 .image img {
   border-radius: 8px;
   width: 800px;
