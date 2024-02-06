@@ -1,4 +1,4 @@
-from flask import send_file, redirect, url_for, render_template, request
+from flask import send_file, redirect, url_for, render_template, request, Flask, jsonify
 from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois_and_gauges
 from app.camera import take_picture, get_picamera_image_timestamp
@@ -189,13 +189,25 @@ def preview():
     except FileNotFoundError:
         return "Failed to render preview page", 404
 
+# Global variable to track if a request is being processed
+is_request_being_processed = False
+
 @app.route('/update_config', methods=['POST'])
 def update_config_route():
     try:
+        global is_request_being_processed
+        # If a request is being processed, return an error
+        if is_request_being_processed:
+            return jsonify({'error': 'A request is already being processed'}), 429
+        # Otherwise, set the global variable to True and process the request
+        is_request_being_processed = True
         update_config()
         take_new_picture_route()
         read_image_route()
         draw_rois_route()
+        # After processing the request, set the global variable back to False
+        is_request_being_processed = False
+
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to update config", 404

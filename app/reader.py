@@ -96,12 +96,12 @@ def read_image():
     postgauges = read_gauges(postgaugerois, preprocessed_image, postdigits)
     # Combine the digits
 
-    digits = preroisdigits + pregauges_digits+ '.' + postroisdigits + postgauges
+    read_digits = preroisdigits + pregauges_digits+ '.' + postroisdigits + postgauges
     # Print the digits
-    print(digits)
+    print(read_digits)
     # Convert the digits string to an integer
-    if digits.isdigit():
-        value = int(digits)
+    if read_digits.isdigit():
+        value = int(read_digits)
     else:
         value = "Error: Digits contains non-integer values."
 
