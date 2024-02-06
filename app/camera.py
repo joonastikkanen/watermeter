@@ -1,4 +1,5 @@
 import os
+import psutil
 import cv2
 import blinkt
 import time
@@ -61,11 +62,8 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
         if picamera_led_enabled:
           # Turn on LED
           led_on(picamera_led_brightness)
-        # Set resolution and turn on Camera
-        #camera.still_configuration.size = (picamera_photo_width, picamera_photo_height)
+        # Set resolution
         config = camera.create_still_configuration(main={"size": (picamera_photo_width, picamera_photo_height)})
-        #camera.configure(config)
-        camera.start()
         with camera.controls as ctrl:
           ctrl.Brightness = picamera_image_brightness
           ctrl.Contrast = picamera_image_contrast
@@ -76,14 +74,15 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
             ctrl.NoiseReductionMode = libcamera.controls.draft.NoiseReductionModeEnum.Fast
           elif picamera_image_denoise_mode == "HighQuality":
             ctrl.NoiseReductionMode = libcamera.controls.draft.NoiseReductionModeEnum.HighQuality
+        camera.start()
+        ctrls = Controls(camera)
+        camera.set_controls(ctrls)
         if picamera_image_focus_manual_enabled:
           camera.set_controls({"AfMode": Controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
         if not picamera_image_focus_manual_enabled:
           success = camera.autofocus_cycle()
           job = camera.autofocus_cycle(wait=False)
           success = camera.wait(job)
-        ctrls = Controls(camera)
-        camera.set_controls(ctrls)
         sleep(1)
         image = camera.switch_mode_and_capture_array(config, "main")
         # Convert the image to grayscale
@@ -96,6 +95,14 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
           rotated_image = cv2.rotate(gray_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
         # Save the image
         cv2.imwrite(picamera_image_path, rotated_image)
+        # Get the process ID of the current process
+        pid = os.getpid()
+        # Create a Process object
+        process = psutil.Process(pid)
+        # Get the memory info
+        memory_info = process.memory_info()
+        # Print the memory usage
+        print(f"Memory usage: {memory_info.rss / 1024 / 1024} MB")
         pass
     finally:
         camera.stop()
