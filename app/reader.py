@@ -29,7 +29,7 @@ def read_image():
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
     # Load the image from file
-    image = cv2.imread(picamera_image_path)
+    image = cv2.imread(picamera_image_path, cv2.IMREAD_GRAYSCALE)
 
     # Apply a binary threshold
     _, binary = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -48,7 +48,9 @@ def read_image():
             digits += pytesseract.image_to_string(roi, config=tesseract_config)
 
             # Print the text
+            print("read digits:")
             print(digits)
+            digits
 
         return(digits)
 
@@ -91,7 +93,7 @@ def read_image():
     preroisdigits = read_digits(prerois, preprocessed_image, predigits)
     pregauges_digits = read_gauges(pregaugerois, preprocessed_image, predigits)
     postroisdigits = read_digits(postrois, preprocessed_image, postdigits)
-    postgauges = read_gauges(postgaugerois, preprocessed_image, postdigits)  
+    postgauges = read_gauges(postgaugerois, preprocessed_image, postdigits)
     # Combine the digits
 
     digits = preroisdigits + pregauges_digits+ '.' + postroisdigits + postgauges
