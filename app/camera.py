@@ -63,6 +63,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
           # Turn on LED
           led_on(picamera_led_brightness)
         # Set resolution
+        camera.start()
         config = camera.create_still_configuration(main={"size": (picamera_photo_width, picamera_photo_height)})
         with camera.controls as ctrl:
           ctrl.Brightness = picamera_image_brightness
@@ -74,7 +75,6 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
             ctrl.NoiseReductionMode = libcamera.controls.draft.NoiseReductionModeEnum.Fast
           elif picamera_image_denoise_mode == "HighQuality":
             ctrl.NoiseReductionMode = libcamera.controls.draft.NoiseReductionModeEnum.HighQuality
-        camera.start()
         ctrls = Controls(camera)
         camera.set_controls(ctrls)
         if picamera_image_focus_manual_enabled:
