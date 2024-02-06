@@ -30,14 +30,13 @@ def read_image():
 
     # Load the image from file
     image = cv2.imread(picamera_image_path)
-    # Convert the image to grayscale
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
     # Apply a binary threshold
-    _, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, binary = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # Save the preprocessed image
-    preprocessed_image = cv2.imwrite(picamera_image_path, binary)
-
+    cv2.imwrite(picamera_image_path, binary)
+    preprocessed_image = cv2.imread(picamera_image_path)
     def read_digits(rois, preprocessed_image, digits):
         # Crop the image
         # Process each ROI
