@@ -30,8 +30,10 @@ def read_image():
 
     # Load the image from file
     image = cv2.imread(picamera_image_path)
+    # Convert the image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # Apply a binary threshold
-    _, binary = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # Save the preprocessed image
     preprocessed_image = cv2.imwrite(picamera_image_path, binary)
@@ -92,7 +94,7 @@ def read_image():
     postroisdigits = read_digits(postrois, preprocessed_image, postdigits)
     postgauges = read_gauges(postgaugerois, preprocessed_image, postdigits)  
     # Combine the digits
-    
+
     digits = preroisdigits + pregauges_digits+ '.' + postroisdigits + postgauges
     # Print the digits
     print(digits)

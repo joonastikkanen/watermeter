@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 import io
 from PIL import Image
+import libcamera
 from picamera2 import Picamera2
 from picamera2.controls import Controls
 from time import sleep
@@ -69,7 +70,12 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
           ctrl.Brightness = picamera_image_brightness
           ctrl.Contrast = picamera_image_contrast
           ctrl.Sharpness = picamera_image_sharpness
-          ctrl.NoiseReductionMode = picamera_image_denoise_mode
+          if picamera_image_denoise_mode == "Off":
+            ctrl.NoiseReductionMode = libcamera.controls.draft.NoiseReductionModeEnum.Off
+          elif picamera_image_denoise_mode == "Fast":
+            ctrl.NoiseReductionMode = libcamera.controls.draft.NoiseReductionModeEnum.Fast
+          elif picamera_image_denoise_mode == "HighQuality":
+            ctrl.NoiseReductionMode = libcamera.controls.draft.NoiseReductionModeEnum.HighQuality
         if picamera_image_focus_manual_enabled:
           camera.set_controls({"AfMode": Controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
         if not picamera_image_focus_manual_enabled:
