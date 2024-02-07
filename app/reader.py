@@ -23,9 +23,6 @@ watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
 def read_image():
-    # Initialize an empty string to hold the digits
-    predigits = ''
-    postdigits = ''
     # Set the path to the tesseract executable
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
@@ -36,25 +33,24 @@ def read_image():
     _, binary = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # Save the preprocessed image
-    preprocessed_image = cv2.imwrite(picamera_image_path, binary)
-    def read_digits(rois, preprocessed_image, digits):
+    cv2.imwrite(picamera_image_path, binary)
+    preprocessed_image = cv2.imread(picamera_image_path)
+    def read_digits(rois, preprocessed_image):
         digits = ''  # Initialize digits as an empty string
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
             roi = preprocessed_image[y:y+h, x:x+w]
-
             # Use Tesseract to do OCR on the ROI
             digit = pytesseract.image_to_string(roi, config=tesseract_config)
-            digits.append(digit)
-            digits[digit] += digit
+            digits += digit.strip()  # Append the digit to the digits value
             # Print the text
             print(digits)
         return digits
 
 
-    def read_gauges(gaugerois, preprocessed_image, digits):
-        digits = ''
+    def read_gauges(gaugerois, preprocessed_image):
+        total_digits = 0  # Initialize total_digits as 0
         # Process each ROI
         for x, y, w, h in gaugerois:
             # Crop the image to the ROI
@@ -84,35 +80,29 @@ def read_image():
             value_range = 10  # The range of values on the gauge
             angle_range = np.pi  # The range of angles on the gauge (180 degrees)
             value = (pointer_angle / angle_range) * value_range
-            digits += str(value)
-            print(digits)
-        return digits
+            total_digits += int(value)
+            print(total_digits)
+        return total_digits
 
-    preroisdigits = read_digits(prerois, preprocessed_image, predigits)
-    print(f"preroisdigits: ", preroisdigits)
-    pregaugesdigits = read_gauges(pregaugerois, preprocessed_image, predigits)
-    print(f"pregaugesdigits: ", pregaugesdigits)
-    postroisdigits = read_digits(postrois, preprocessed_image, postdigits)
-    print(f"postroisdigits: ", postroisdigits)
-    postgauges = read_gauges(postgaugerois, preprocessed_image, postdigits)
-    print(f"postgauges: ", postgauges)
-    # Combine the digits
+    pre_digits = ''
+    for preroi_digits in [ prerois, pregaugerois]:
+        pre_digit = read_digits(preroi_digits, preprocessed_image).strip()
+        pre_digits += pre_digit.strip()
+        print(f"preroi_digits: ", pre_digits)
 
-    read_digits = preroisdigits + pregaugesdigits + '.' + postroisdigits + postgauges
-    # Print the digits
-    print(read_digits)
-    # Convert the digits string to an integer
-    if isinstance(read_digits, float):
-        value = float(read_digits)
-    else:
-        value = "Error: Digits contains non-integer values."
+    post_digits = ''
+    for postroi_digits in [ postrois, postgaugerois ]:
+        post_digit = read_digits(postroi_digits, preprocessed_image).strip()
+        post_digits += post_digit.strip()
+        print(f"postroi_digits: ", post_digits)
 
+    total_digits = pre_digits + "." + post_digits
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
-        f.write(value)
+        f.write(total_digits)
 
     # Return the value
-    return value
+    return total_digits
 
 # Draw the ROIs on the image
 def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgaugerois, output_path):
@@ -168,7 +158,7 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 140, 255), 2)
             # Draw the text on the image
             cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 140, 255), 2)
-            
+
         for x, y, w, h in postgaugerois:
             text = "postgaugerois"
             cv2.rectangle(image, (x, y), (x+w, y+h), (255, 140, 0), 2)

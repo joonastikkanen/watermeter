@@ -1,1 +1,1 @@
-Error: Digits contains non-integer values.
+1001.573
