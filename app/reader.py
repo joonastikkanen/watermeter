@@ -32,7 +32,7 @@ def read_image():
     image = cv2.imread(picamera_image_path, cv2.IMREAD_GRAYSCALE)
 
     # Apply a binary threshold
-    _, binary = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, binary = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # Save the preprocessed image
     cv2.imwrite(picamera_image_path, binary)
@@ -48,10 +48,7 @@ def read_image():
             digits += pytesseract.image_to_string(roi, config=tesseract_config)
 
             # Print the text
-            print("read digits:")
             print(digits)
-            digits
-
         return(digits)
 
 
@@ -91,17 +88,21 @@ def read_image():
         return digits
 
     preroisdigits = read_digits(prerois, preprocessed_image, predigits)
-    pregauges_digits = read_gauges(pregaugerois, preprocessed_image, predigits)
+    print(f"preroisdigits: ", preroisdigits)
+    pregaugesdigits = read_gauges(pregaugerois, preprocessed_image, predigits)
+    print(f"pregaugesdigits: ", pregaugesdigits)
     postroisdigits = read_digits(postrois, preprocessed_image, postdigits)
+    print(f"postroisdigits: ", postroisdigits)
     postgauges = read_gauges(postgaugerois, preprocessed_image, postdigits)
+    print(f"postgauges: ", postgauges)
     # Combine the digits
 
-    read_digits = preroisdigits + pregauges_digits+ '.' + postroisdigits + postgauges
+    read_digits = preroisdigits + pregaugesdigits + '.' + postroisdigits + postgauges
     # Print the digits
     print(read_digits)
     # Convert the digits string to an integer
-    if read_digits.isdigit():
-        value = int(read_digits)
+    if isinstance(read_digits, float):
+        value = float(read_digits)
     else:
         value = "Error: Digits contains non-integer values."
 

@@ -84,7 +84,7 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
           job = camera.autofocus_cycle(wait=False)
           success = camera.wait(job)
         sleep(1)
-        image = camera.capture_array(config, "main")
+        image = camera.switch_mode_and_capture_array(config, "main")
         # Convert the image to grayscale
         gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
         if picamera_image_rotate == 90:
