@@ -7,6 +7,7 @@ from wand.drawing import Drawing
 from wand.color import Color
 from app.camera import take_picture
 import os
+import pytesseract
 
 config = load_config()
 picamera_image_path = config['picamera_image_path']
@@ -35,21 +36,21 @@ def read_image():
     _, binary = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # Save the preprocessed image
-    cv2.imwrite(picamera_image_path, binary)
-    preprocessed_image = cv2.imread(picamera_image_path)
+    preprocessed_image = cv2.imwrite(picamera_image_path, binary)
     def read_digits(rois, preprocessed_image, digits):
-        # Crop the image
+        digits = ''  # Initialize digits as an empty string
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
             roi = preprocessed_image[y:y+h, x:x+w]
 
             # Use Tesseract to do OCR on the ROI
-            digits += pytesseract.image_to_string(roi, config=tesseract_config)
-
+            digit = pytesseract.image_to_string(roi, config=tesseract_config)
+            digits.append(digit)
+            digits[digit] += digit
             # Print the text
             print(digits)
-        return(digits)
+        return digits
 
 
     def read_gauges(gaugerois, preprocessed_image, digits):
