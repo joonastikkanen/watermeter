@@ -50,7 +50,7 @@ def read_image():
 
 
     def read_gauges(gaugerois, preprocessed_image):
-        total_digits = 0  # Initialize total_digits as 0
+        total_gauges = 0  # Initialize total_digits as 0
         # Process each ROI
         for x, y, w, h in gaugerois:
             # Crop the image to the ROI
@@ -80,23 +80,22 @@ def read_image():
             value_range = 10  # The range of values on the gauge
             angle_range = np.pi  # The range of angles on the gauge (180 degrees)
             value = (pointer_angle / angle_range) * value_range
-            total_digits += int(value)
-            print(total_digits)
-        return total_digits
+            total_gauges += int(value)
+            print(total_gauges)
+        return total_gauges
 
-    pre_digits = ''
-    for preroi_digits in [ prerois, pregaugerois]:
-        pre_digit = read_digits(preroi_digits, preprocessed_image).strip()
-        pre_digits += pre_digit.strip()
-        print(f"preroi_digits: ", pre_digits)
+    preroisdigits = read_digits(prerois, preprocessed_image).strip()
+    pregaugeroisdigits = read_gauges(pregaugerois, preprocessed_image).strip()
+    pre_digits = preroisdigits + pregaugeroisdigits
+    print(f"pre_digits: ", pre_digits)
 
-    post_digits = ''
-    for postroi_digits in [ postrois, postgaugerois ]:
-        post_digit = read_digits(postroi_digits, preprocessed_image).strip()
-        post_digits += post_digit.strip()
-        print(f"postroi_digits: ", post_digits)
+    postroisdigits = read_digits(postrois, preprocessed_image).strip()
+    postgaugeroisdigits = read_gauges(postgaugerois, preprocessed_image).strip()
+    post_digits = postroisdigits + postgaugeroisdigits
+    print(f"postroi_digits: ", post_digits)
 
     total_digits = pre_digits + "." + post_digits
+    print(f"total_digits: ", total_digits)
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
         f.write(total_digits)
