@@ -51,13 +51,14 @@ def read_image():
 
     def read_gauges(gaugerois, preprocessed_image):
         total_gauges = 0  # Initialize total_digits as 0
+        total_gauges_str = ''
         # Process each ROI
         for x, y, w, h in gaugerois:
             # Crop the image to the ROI
             gauge_roi = preprocessed_image[y:y+h, x:x+w]
 
             # Use edge detection and Hough line transformation to find the pointer
-            edges = cv2.Canny(gauge_roi, 50, 150, apertureSize=3)
+            edges = cv2.Canny(gauge_roi, 150, 250, apertureSize=3)
             lines = cv2.HoughLines(edges, 1, np.pi / 180, 200)
 
             # Find the line with the maximum y value, which should be the pointer
@@ -81,17 +82,19 @@ def read_image():
             angle_range = np.pi  # The range of angles on the gauge (180 degrees)
             value = (pointer_angle / angle_range) * value_range
             total_gauges += int(value)
-            print(total_gauges)
-        return total_gauges
+            total_gauges_str = str(total_gauges).strip()
+            print(total_gauges_str)
+        return total_gauges_str
 
-    preroisdigits = read_digits(prerois, preprocessed_image).strip()
-    pregaugeroisdigits = read_gauges(pregaugerois, preprocessed_image).strip()
+    preroisdigits = read_digits(prerois, preprocessed_image)
+    pregaugeroisdigits = read_gauges(pregaugerois, preprocessed_image)
     pre_digits = preroisdigits + pregaugeroisdigits
     print(f"pre_digits: ", pre_digits)
 
-    postroisdigits = read_digits(postrois, preprocessed_image).strip()
-    postgaugeroisdigits = read_gauges(postgaugerois, preprocessed_image).strip()
-    post_digits = postroisdigits + postgaugeroisdigits
+    postroisdigits = read_digits(postrois, preprocessed_image)
+#    postgaugeroisdigits = read_gauges(postgaugerois, preprocessed_image)
+#    post_digits = postroisdigits + postgaugeroisdigits
+    post_digits = postroisdigits
     print(f"postroi_digits: ", post_digits)
 
     total_digits = pre_digits + "." + post_digits
