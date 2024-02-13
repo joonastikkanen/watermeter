@@ -164,6 +164,11 @@ def preview():
         picamera_image_denoise_mode = config['picamera_image_denoise_mode']
         picamera_image_focus_position = config['picamera_image_focus_position']
         picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
+        picamera_photo_height = config['picamera_photo_height']
+        picamera_photo_width = config['picamera_photo_width']
+        picamera_buffer_count = config['picamera_buffer_count']
+        tesseract_oem = config['tesseract_oem']
+        tesseract_psm = config['tesseract_psm']
         sensor_data = load_sensor_data()
         print(sensor_data)
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
@@ -184,7 +189,12 @@ def preview():
                                picamera_image_focus_manual_enabled=picamera_image_focus_manual_enabled,
                                watermeter_job_schedule=watermeter_job_schedule,
                                picamera_image_sharpness=picamera_image_sharpness,
-                               picamera_image_denoise_mode=picamera_image_denoise_mode
+                               picamera_image_denoise_mode=picamera_image_denoise_mode,
+                               picamera_buffer_count=picamera_buffer_count,
+                               picamera_photo_height=picamera_photo_height,
+                               picamera_photo_width=picamera_photo_width,
+                               tesseract_oem=tesseract_oem,
+                               tesseract_psm=tesseract_psm
                                )
     except FileNotFoundError:
         return "Failed to render preview page", 404

@@ -30,9 +30,24 @@ def update_config():
             if key.startswith('picamera_image_denoise_mode'):
                 picamera_image_denoise_mode = request.form['picamera_image_denoise_mode']
                 config['picamera_image_denoise_mode'] = picamera_image_denoise_mode
+            if key.startswith('picamera_photo_height'):
+                picamera_photo_height = request.form['picamera_photo_height']
+                config['picamera_photo_height'] = picamera_photo_height
+            if key.startswith('picamera_photo_width'):
+                picamera_photo_width = request.form['picamera_photo_width']
+                config['picamera_photo_width'] = picamera_photo_width
+            if key.startswith('picamera_buffer_count'):
+                picamera_buffer_count = request.form['picamera_buffer_count']
+                config['picamera_buffer_count'] = picamera_buffer_count
             if key.startswith('watermeter_job_schedule'):
                 watermeter_job_schedule = request.form['watermeter_job_schedule']
                 config['watermeter_job_schedule'] = watermeter_job_schedule
+            if key.startswith('tesseract_oem'):
+                tesseract_oem = request.form['tesseract_oem']
+                config['tesseract_oem'] = tesseract_oem
+            if key.startswith('tesseract_psm'):
+                tesseract_psm = request.form['tesseract_psm']
+                config['tesseract_psm'] = tesseract_psm
             if key.startswith('picamera_image_focus_manual_enabled'):
                 picamera_image_focus_manual_enabled = request.form['picamera_image_focus_manual_enabled']
                 if picamera_image_focus_manual_enabled == 'True':

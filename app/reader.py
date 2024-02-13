@@ -16,7 +16,8 @@ pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregauger
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
 postgaugerois = config['postgaugerois'] = [tuple(roi) for roi in config['postgaugerois']]
 tesseract_path = config['tesseract_path']
-tesseract_config = config['tesseract_config']
+tesseract_oem = config['tesseract_oem']
+tesseract_psm = config['tesseract_psm']
 watermeter_last_value_file = config['watermeter_last_value_file']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
@@ -42,7 +43,7 @@ def read_image():
             # Crop the image
             roi = preprocessed_image[y:y+h, x:x+w]
             # Use Tesseract to do OCR on the ROI
-            digit = pytesseract.image_to_string(roi, config=tesseract_config)
+            digit = pytesseract.image_to_string(roi, config=f"--oem tesseract_oem --psm tesseract_psm -c tessedit_char_whitelist=0123456789", tesseract_oem=tesseract_oem, tesseract_psm=tesseract_psm)
             digits += digit.strip()  # Append the digit to the digits value
             # Print the text
             print(digits)
