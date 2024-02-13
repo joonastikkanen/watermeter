@@ -28,6 +28,7 @@ picamera_image_sharpness = config['picamera_image_sharpness']
 picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_image_focus_position = config['picamera_image_focus_position']
 picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
+picamera_buffer_count = config['picamera_buffer_count']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -65,7 +66,8 @@ def run_schedule():
                  picamera_image_sharpness,
                  picamera_image_denoise_mode,
                  picamera_image_focus_position,
-                 picamera_image_focus_manual_enabled
+                 picamera_image_focus_manual_enabled,
+                 picamera_buffer_count
                  )
     read_image()
 
