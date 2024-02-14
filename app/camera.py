@@ -48,7 +48,7 @@ def led_off():
 
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count):
+def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count, picamera_photo_width, picamera_photo_height):
     camera = Picamera2()
     try:
         picamera_led_enabled = bool(picamera_led_enabled)
@@ -60,6 +60,8 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
         picamera_image_focus_manual_enabled = bool(picamera_image_focus_manual_enabled)
         picamera_image_sharpness = float(picamera_image_sharpness)
         picamera_image_denoise_mode = str(picamera_image_denoise_mode)
+        picamera_photo_width = int(picamera_photo_width)
+        picamera_photo_height = int(picamera_photo_height)
         picamera_buffer_count = int(picamera_buffer_count)
         if picamera_led_enabled:
           # Turn on LED

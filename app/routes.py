@@ -48,7 +48,9 @@ def take_new_picture_route():
         picamera_image_sharpness = config['picamera_image_sharpness']
         picamera_image_denoise_mode = config['picamera_image_denoise_mode']
         picamera_buffer_count = config['picamera_buffer_count']
-        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count)
+        picamera_photo_widtht = config['picamera_photo_width']
+        picamera_photo_height = config['picamera_photo_height']
+        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count, picamera_photo_width, picamera_photo_height)
     except FileNotFoundError:
         return "Failed to take new picture", 404
 

@@ -38,12 +38,15 @@ def read_image():
     preprocessed_image = cv2.imread(picamera_image_path)
     def read_digits(rois, preprocessed_image):
         digits = ''  # Initialize digits as an empty string
+        print(tesseract_oem)
+        print(tesseract_psm)
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
             roi = preprocessed_image[y:y+h, x:x+w]
             # Use Tesseract to do OCR on the ROI
-            digit = pytesseract.image_to_string(roi, config=f"--oem tesseract_oem --psm tesseract_psm -c tessedit_char_whitelist=0123456789", tesseract_oem=tesseract_oem, tesseract_psm=tesseract_psm)
+            tesseract_config = "--oem " + tesseract_oem +" --psm " + tesseract_psm + " -c tessedit_char_whitelist=0123456789"
+            digit = pytesseract.image_to_string(roi, config=tesseract_config)
             digits += digit.strip()  # Append the digit to the digits value
             # Print the text
             print(digits)
