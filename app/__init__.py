@@ -67,7 +67,9 @@ def run_schedule():
                  picamera_image_denoise_mode,
                  picamera_image_focus_position,
                  picamera_image_focus_manual_enabled,
-                 picamera_buffer_count
+                 picamera_buffer_count,
+                 picamera_photo_width,
+                 picamera_photo_height
                  )
     read_image()
 
