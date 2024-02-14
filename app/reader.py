@@ -7,7 +7,6 @@ from wand.drawing import Drawing
 from wand.color import Color
 from app.camera import take_picture
 import os
-import pytesseract
 
 config = load_config()
 picamera_image_path = config['picamera_image_path']

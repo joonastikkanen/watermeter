@@ -2,10 +2,6 @@ from flask import Flask
 from flask_apscheduler import APScheduler
 from time import sleep
 import yaml
-from picamera2 import Picamera2
-
-# Initialize the camera at the global scope
-#camera = Picamera2()
 
 # LOAD CONFIG FILE
 def load_config():

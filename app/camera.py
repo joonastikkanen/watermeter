@@ -8,8 +8,6 @@ import cv2
 import io
 from PIL import Image
 import libcamera
-from picamera2 import Picamera2
-from picamera2.controls import Controls
 from time import sleep
 from app import load_config
 
@@ -31,10 +29,6 @@ picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enable
 picamera_buffer_count = config['picamera_buffer_count']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 
-# Picamera debugging
-if picamera_debug:
-  Picamera2.set_logging(Picamera2.DEBUG)
-
 # LED ON
 def led_on(picamera_led_brightness):
     blinkt.set_clear_on_exit(False)
@@ -49,6 +43,11 @@ def led_off():
 
 # TAKE PICTURE
 def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count, picamera_photo_width, picamera_photo_height):
+    from picamera2 import Picamera2
+    from picamera2.controls import Controls
+    # Picamera debugging
+    if picamera_debug:
+      Picamera2.set_logging(Picamera2.DEBUG)
     camera = Picamera2()
     try:
         picamera_led_enabled = bool(picamera_led_enabled)
