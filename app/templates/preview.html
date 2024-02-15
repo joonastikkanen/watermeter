@@ -87,9 +87,9 @@
             Image Binary Mode<br>
             <label for="picamera_image_binary_mode">Binary Mode:</label><br>
             <select name="picamera_image_binary_mode" id="picamera_image_binary_mode">
-                <option value="simple" {% if picamera_image_binary_mode == "Simple Thresholding" %}selected="selected"{% endif %}>Simple Thresholding</option>
-                <option value="adaptive" {% if picamera_image_binary_mode == "Adaptive Thresholding" %}selected="selected"{% endif %}>Adaptive Thresholding</option>
-                <option value="otsu" {% if picamera_image_binary_mode == "Otsu's Binarization" %}selected="selected"{% endif %}>Otsu's Binarization</option>
+                <option value="simple" {% if picamera_image_binary_mode == "simple" %}selected="selected"{% endif %}>Simple Thresholding</option>
+                <option value="adaptive" {% if picamera_image_binary_mode == "adaptive" %}selected="selected"{% endif %}>Adaptive Thresholding</option>
+                <option value="otsu" {% if picamera_image_binary_mode == "otsu" %}selected="selected"{% endif %}>Otsu's Binarization</option>
             </select><br>
         </fieldset>
         <fieldset>
