@@ -109,14 +109,13 @@ def take_picture(picamera_led_enabled,
           rotated_image = cv2.rotate(gray_image, cv2.ROTATE_180)
         elif picamera_image_rotate == 270:
           rotated_image = cv2.rotate(gray_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
-        if picamera_image_binary_mode == "simple":
-          rotated_image = cv2.medianBlur(rotated_image,5)
-          binary = cv2.threshold(rotated_image, 100, 255, cv2.THRESH_BINARY)
+        if picamera_image_binary_mode == "off":
+          binary = cv2.medianBlur(rotated_image,5)
         elif picamera_image_binary_mode == "adaptive":
           rotated_image = cv2.medianBlur(rotated_image,5)
           binary = cv2.adaptiveThreshold(rotated_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
         elif picamera_image_binary_mode == "otsu":
-          rotated_image = cv2.GaussianBlur(rotated_image,(5,5),0)
+          rotated_image = cv2.medianBlur(rotated_image,(5,5),0)
           binary = cv2.threshold(rotated_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         # Save the image
         cv2.imwrite(picamera_image_path, binary)
