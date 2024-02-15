@@ -30,14 +30,14 @@ def read_image(picamera_binary_mode):
     image = cv2.imread(picamera_image_path, cv2.IMREAD_GRAYSCALE)
 
     # Apply a binary threshold
-    if picamera_binary_mode == 'simple':
+    if picamera_binary_mode == "simple":
         image = cv2.medianBlur(image,5)
         binary = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY)
-    elif picamera_binary_mode == 'adaptive':
+    elif picamera_binary_mode == "adaptive":
         image = cv2.medianBlur(image,5)
         binary = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-    elif picamera_binary_mode == 'otsu':
-        image = cv.GaussianBlur(image,(5,5),0)
+    elif picamera_binary_mode == "otsu":
+        image = cv2.GaussianBlur(image,(5,5),0)
         binary = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     # Save the preprocessed image
     cv2.imwrite(picamera_image_path, binary)
