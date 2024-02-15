@@ -25,6 +25,7 @@ picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_image_focus_position = config['picamera_image_focus_position']
 picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
 picamera_buffer_count = config['picamera_buffer_count']
+picamera_binary_mode = config['picamera_binary_mode']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -67,7 +68,7 @@ def run_schedule():
                  picamera_photo_width,
                  picamera_photo_height
                  )
-    read_image()
+    read_image(picamera_binary_mode)
 
 scheduler = APScheduler()
 scheduler.init_app(app)
