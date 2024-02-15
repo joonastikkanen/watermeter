@@ -39,9 +39,9 @@ def update_config():
             if key.startswith('picamera_buffer_count'):
                 picamera_buffer_count = request.form['picamera_buffer_count']
                 config['picamera_buffer_count'] = picamera_buffer_count
-            if key.startswith('picamera_binary_mode'):
-                picamera_binary_mode = request.form['picamera_binary_mode']
-                config['picamera_binary_mode'] = picamera_binary_mode
+            if key.startswith('picamera_image_binary_mode'):
+                picamera_image_binary_mode = request.form['picamera_image_binary_mode']
+                config['picamera_image_binary_mode'] = picamera_image_binary_mode
             if key.startswith('watermeter_job_schedule'):
                 watermeter_job_schedule = request.form['watermeter_job_schedule']
                 config['watermeter_job_schedule'] = watermeter_job_schedule
