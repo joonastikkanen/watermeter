@@ -121,8 +121,8 @@ def read_image_route_post():
 
 def read_image_route():
     try:
-        picamera_binary_mode = config['picamera_binary_mode']
-        read_image(picamera_binary_mode)
+        picamera_image_binary_mode = config['picamera_image_binary_mode']
+        read_image(picamera_image_binary_mode)
     except FileNotFoundError:
         return "Failed to read data from image", 404
 
@@ -171,7 +171,7 @@ def preview():
         picamera_photo_height = config['picamera_photo_height']
         picamera_photo_width = config['picamera_photo_width']
         picamera_buffer_count = config['picamera_buffer_count']
-        picamera_binary_mode = config['picamera_binary_mode']
+        picamera_image_binary_mode = config['picamera_image_binary_mode']
         tesseract_oem = config['tesseract_oem']
         tesseract_psm = config['tesseract_psm']
         sensor_data = load_sensor_data()
@@ -196,7 +196,7 @@ def preview():
                                picamera_image_sharpness=picamera_image_sharpness,
                                picamera_image_denoise_mode=picamera_image_denoise_mode,
                                picamera_buffer_count=picamera_buffer_count,
-                               picamera_binary_mode=picamera_binary_mode,
+                               picamera_image_binary_mode=picamera_image_binary_mode,
                                picamera_photo_height=picamera_photo_height,
                                picamera_photo_width=picamera_photo_width,
                                tesseract_oem=tesseract_oem,

@@ -22,21 +22,22 @@ watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
-def read_image(picamera_binary_mode):
+def read_image(picamera_image_binary_mode):
     # Set the path to the tesseract executable
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
     # Load the image from file
     image = cv2.imread(picamera_image_path, cv2.IMREAD_GRAYSCALE)
-
+    print(picamera_image_binary_mode)
+    picamera_image_binary_mode = str(picamera_image_binary_mode)
     # Apply a binary threshold
-    if picamera_binary_mode == "simple":
+    if picamera_image_binary_mode == "simple":
         image = cv2.medianBlur(image,5)
         binary = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY)
-    elif picamera_binary_mode == "adaptive":
+    elif picamera_image_binary_mode == "adaptive":
         image = cv2.medianBlur(image,5)
         binary = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-    elif picamera_binary_mode == "otsu":
+    elif picamera_image_binary_mode == "otsu":
         image = cv2.GaussianBlur(image,(5,5),0)
         binary = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     # Save the preprocessed image
