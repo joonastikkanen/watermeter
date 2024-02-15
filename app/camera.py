@@ -42,7 +42,20 @@ def led_off():
 
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count, picamera_photo_width, picamera_photo_height):
+def take_picture(picamera_led_enabled, 
+                 picamera_led_brightness, 
+                 picamera_image_rotate,
+                 picamera_image_brightness,
+                 picamera_image_contrast,
+                 picamera_image_sharpness,
+                 picamera_image_denoise_mode,
+                 picamera_image_focus_position,
+                 picamera_image_focus_manual_enabled,
+                 picamera_buffer_count,
+                 picamera_photo_width,
+                 picamera_photo_height,
+                 picamera_image_binary_mode
+                 ):
     from picamera2 import Picamera2
     from picamera2.controls import Controls
     # Picamera debugging
@@ -96,8 +109,17 @@ def take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_r
           rotated_image = cv2.rotate(gray_image, cv2.ROTATE_180)
         elif picamera_image_rotate == 270:
           rotated_image = cv2.rotate(gray_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        if picamera_image_binary_mode == "simple":
+          rotated_image = cv2.medianBlur(rotated_image,5)
+          binary = cv2.threshold(rotated_image, 100, 255, cv2.THRESH_BINARY)
+        elif picamera_image_binary_mode == "adaptive":
+          rotated_image = cv2.medianBlur(rotated_image,5)
+          binary = cv2.adaptiveThreshold(rotated_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        elif picamera_image_binary_mode == "otsu":
+          rotated_image = cv2.GaussianBlur(rotated_image,(5,5),0)
+          binary = cv2.threshold(rotated_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         # Save the image
-        cv2.imwrite(picamera_image_path, rotated_image)
+        cv2.imwrite(picamera_image_path, binary)
         # Get the process ID of the current process
         pid = os.getpid()
         # Create a Process object

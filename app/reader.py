@@ -22,35 +22,19 @@ watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
-def read_image(picamera_image_binary_mode):
+def read_image():
     # Set the path to the tesseract executable
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
-
-    # Load the image from file
-    image = cv2.imread(picamera_image_path, cv2.IMREAD_GRAYSCALE)
-    print(picamera_image_binary_mode)
-    picamera_image_binary_mode = str(picamera_image_binary_mode)
-    # Apply a binary threshold
-    if picamera_image_binary_mode == "simple":
-        image = cv2.medianBlur(image,5)
-        _, binary = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY)
-    elif picamera_image_binary_mode == "adaptive":
-        image = cv2.medianBlur(image,5)
-        _, binary = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-    elif picamera_image_binary_mode == "otsu":
-        image = cv2.GaussianBlur(image,(5,5),0)
-        _, binary = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    # Save the preprocessed image
-    cv2.imwrite(picamera_image_path, binary)
-    preprocessed_image = cv2.imread(picamera_image_path)
-    def read_digits(rois, preprocessed_image):
+    # Load the image
+    image = cv2.imread(picamera_image_path)
+    def read_digits(rois, image):
         digits = ''  # Initialize digits as an empty string
         print(tesseract_oem)
         print(tesseract_psm)
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
-            roi = preprocessed_image[y:y+h, x:x+w]
+            roi = image[y:y+h, x:x+w]
             # Use Tesseract to do OCR on the ROI
             tesseract_config = "--oem " + tesseract_oem +" --psm " + tesseract_psm + " -c tessedit_char_whitelist=0123456789"
             digit = pytesseract.image_to_string(roi, config=tesseract_config)
@@ -60,13 +44,13 @@ def read_image(picamera_image_binary_mode):
         return digits
 
 
-    def read_gauges(gaugerois, preprocessed_image):
+    def read_gauges(gaugerois, image):
         total_gauges = 0  # Initialize total_digits as 0
         total_gauges_str = ''
         # Process each ROI
         for x, y, w, h in gaugerois:
             # Crop the image to the ROI
-            gauge_roi = preprocessed_image[y:y+h, x:x+w]
+            gauge_roi = image[y:y+h, x:x+w]
 
             # Use edge detection and Hough line transformation to find the pointer
             edges = cv2.Canny(gauge_roi, 150, 250, apertureSize=3)
@@ -97,13 +81,13 @@ def read_image(picamera_image_binary_mode):
             print(total_gauges_str)
         return total_gauges_str
 
-    preroisdigits = read_digits(prerois, preprocessed_image)
-    pregaugeroisdigits = read_gauges(pregaugerois, preprocessed_image)
+    preroisdigits = read_digits(prerois, image)
+    pregaugeroisdigits = read_gauges(pregaugerois, image)
     pre_digits = preroisdigits + pregaugeroisdigits
     print(f"pre_digits: ", pre_digits)
 
-    postroisdigits = read_digits(postrois, preprocessed_image)
-#    postgaugeroisdigits = read_gauges(postgaugerois, preprocessed_image)
+    postroisdigits = read_digits(postrois, image)
+#    postgaugeroisdigits = read_gauges(postgaugerois, image)
 #    post_digits = postroisdigits + postgaugeroisdigits
     post_digits = postroisdigits
     print(f"postroi_digits: ", post_digits)

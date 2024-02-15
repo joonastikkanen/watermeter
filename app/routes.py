@@ -50,7 +50,21 @@ def take_new_picture_route():
         picamera_buffer_count = config['picamera_buffer_count']
         picamera_photo_width = config['picamera_photo_width']
         picamera_photo_height = config['picamera_photo_height']
-        take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count, picamera_photo_width, picamera_photo_height)
+        picamera_image_binary_mode = config['picamera_image_binary_mode']
+        take_picture(picamera_led_enabled, 
+                     picamera_led_brightness,
+                     picamera_image_rotate,
+                     picamera_image_brightness,
+                     picamera_image_contrast,
+                     picamera_image_sharpness,
+                     picamera_image_denoise_mode,
+                     picamera_image_focus_position,
+                     picamera_image_focus_manual_enabled,
+                     picamera_buffer_count,
+                     picamera_photo_width,
+                     picamera_photo_height,
+                     picamera_image_binary_mode
+                     )
     except FileNotFoundError:
         return "Failed to take new picture", 404
 
@@ -121,8 +135,7 @@ def read_image_route_post():
 
 def read_image_route():
     try:
-        picamera_image_binary_mode = config['picamera_image_binary_mode']
-        read_image(picamera_image_binary_mode)
+        read_image()
     except FileNotFoundError:
         return "Failed to read data from image", 404
 
