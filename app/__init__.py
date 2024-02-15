@@ -66,9 +66,10 @@ def run_schedule():
                  picamera_image_focus_manual_enabled,
                  picamera_buffer_count,
                  picamera_photo_width,
-                 picamera_photo_height
+                 picamera_photo_height,
+                 picamera_image_binary_mode
                  )
-    read_image(picamera_image_binary_mode)
+    read_image()
 
 scheduler = APScheduler()
 scheduler.init_app(app)

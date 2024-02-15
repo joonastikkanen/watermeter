@@ -43,9 +43,9 @@
         <fieldset>
             <legend>Picture Configuration</legend>
             <label for="picamera_photo_width">Picture Width:</label>
-            <input type="number" id="picamera_photo_width" name="picamera_photo_width" value="{{ picamera_photo_width }}" placeholder="Width"><div class="tooltip">?<span class="tooltiptext">Max widths: Camera Module v1: 1944px, Camera Module v2: 2464px, Camera Module 3 & 3 Wide: 2592, HQ Camera: 3040px, GS Camera: 1088px</span><br>
+            <input type="number" id="picamera_photo_width" name="picamera_photo_width" value="{{ picamera_photo_width }}" placeholder="Width" title="Max widths: Camera Module v1: 1944px, Camera Module v2: 2464px, Camera Module 3 & 3 Wide: 2592, HQ Camera: 3040px, GS Camera: 1088px"><br>
             <label for="picamera_photo_height">Picture Height:</label>
-            <input type="number" id="picamera_photo_height" name="picamera_photo_height" value="{{ picamera_photo_height }}" placeholder="Height"><div class="tooltip">?<span class="tooltiptext">Max heights: Camera Module v1: 2592px, Camera Module v2: 3280px, Camera Module 3 & 3 Wide: 4608px, HQ Camera: 4056px, GS Camera: 1456px</span><br>
+            <input type="number" id="picamera_photo_height" name="picamera_photo_height" value="{{ picamera_photo_height }}" placeholder="Height" title="Max heights: Camera Module v1: 2592px, Camera Module v2: 3280px, Camera Module 3 & 3 Wide: 4608px, HQ Camera: 4056px, GS Camera: 1456px"><br>
             <label for="picamera_buffer_count">Buffer Count:</label>
             <input type="number" id="picamera_buffer_count" name="picamera_buffer_count" value="{{ picamera_buffer_count }}" placeholder="Buffer Count"><br>
             Brightness Configuration<br>
@@ -67,8 +67,8 @@
             <input type="radio" id="picamera_image_focus_manual_enabled_false" name="picamera_image_focus_manual_enabled" value="False" {% if picamera_image_focus_manual_enabled == False %}checked{% endif %}>
             <br>
             Focus Position Configuration<br>
-            <label for="picamera_image_focus_position">Focus (0=infifity, 3=nearest):</label>
-            <input type="range" id="picamera_image_focus_position" name="picamera_image_focus_position" min="0" max="3" value="{{ picamera_image_focus_position }}" step="0.1"><br>
+            <label for="picamera_image_focus_position">Focus (0=infifity, 10=nearest):</label>
+            <input type="range" id="picamera_image_focus_position" name="picamera_image_focus_position" min="0" max="10" value="{{ picamera_image_focus_position }}" step="0.1"><br>
             Value: <output id="picamera_image_focus_position_value"></output><br>
             Image Rotation<br>
             <label for="picamera_image_rotate">Angle:</label><br>

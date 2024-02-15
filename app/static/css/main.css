@@ -93,7 +93,7 @@ input {
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 250px;
   background-color: #555;
   color: #fff;
   text-align: center;
@@ -103,7 +103,7 @@ input {
   /* Position the tooltip text */
   position: absolute;
   z-index: 1;
-  bottom: 125%;
+  bottom: 100%;
   left: 50%;
   margin-left: -60px;
 

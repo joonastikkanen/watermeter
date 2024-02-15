@@ -58,6 +58,7 @@ def take_picture(picamera_led_enabled,
                  ):
     from picamera2 import Picamera2
     from picamera2.controls import Controls
+    from libcamera import controls
     # Picamera debugging
     if picamera_debug:
       Picamera2.set_logging(Picamera2.DEBUG)
@@ -94,7 +95,7 @@ def take_picture(picamera_led_enabled,
         ctrls = Controls(camera)
         camera.set_controls(ctrls)
         if picamera_image_focus_manual_enabled:
-          camera.set_controls({"AfMode": Controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
+          camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": picamera_image_focus_position})
         if not picamera_image_focus_manual_enabled:
           success = camera.autofocus_cycle()
           job = camera.autofocus_cycle(wait=False)
@@ -110,13 +111,13 @@ def take_picture(picamera_led_enabled,
         elif picamera_image_rotate == 270:
           rotated_image = cv2.rotate(gray_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
         if picamera_image_binary_mode == "off":
-          binary = cv2.medianBlur(rotated_image,5)
+          binary = rotated_image
         elif picamera_image_binary_mode == "adaptive":
           rotated_image = cv2.medianBlur(rotated_image,5)
           binary = cv2.adaptiveThreshold(rotated_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
         elif picamera_image_binary_mode == "otsu":
-          rotated_image = cv2.medianBlur(rotated_image,(5,5),0)
-          binary = cv2.threshold(rotated_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+          rotated_image = cv2.GaussianBlur(rotated_image,(5,5),0)
+          _, binary = cv2.threshold(rotated_image, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         # Save the image
         cv2.imwrite(picamera_image_path, binary)
         # Get the process ID of the current process
