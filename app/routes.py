@@ -48,7 +48,7 @@ def take_new_picture_route():
         picamera_image_sharpness = config['picamera_image_sharpness']
         picamera_image_denoise_mode = config['picamera_image_denoise_mode']
         picamera_buffer_count = config['picamera_buffer_count']
-        picamera_photo_widtht = config['picamera_photo_width']
+        picamera_photo_width = config['picamera_photo_width']
         picamera_photo_height = config['picamera_photo_height']
         take_picture(picamera_led_enabled, picamera_led_brightness, picamera_image_rotate, picamera_image_brightness, picamera_image_contrast, picamera_image_sharpness, picamera_image_denoise_mode, picamera_image_focus_position, picamera_image_focus_manual_enabled, picamera_buffer_count, picamera_photo_width, picamera_photo_height)
     except FileNotFoundError:
@@ -121,7 +121,8 @@ def read_image_route_post():
 
 def read_image_route():
     try:
-        read_image()
+        picamera_binary_mode = config['picamera_binary_mode']
+        read_image(picamera_binary_mode)
     except FileNotFoundError:
         return "Failed to read data from image", 404
 
@@ -170,6 +171,7 @@ def preview():
         picamera_photo_height = config['picamera_photo_height']
         picamera_photo_width = config['picamera_photo_width']
         picamera_buffer_count = config['picamera_buffer_count']
+        picamera_binary_mode = config['picamera_binary_mode']
         tesseract_oem = config['tesseract_oem']
         tesseract_psm = config['tesseract_psm']
         sensor_data = load_sensor_data()
@@ -194,6 +196,7 @@ def preview():
                                picamera_image_sharpness=picamera_image_sharpness,
                                picamera_image_denoise_mode=picamera_image_denoise_mode,
                                picamera_buffer_count=picamera_buffer_count,
+                               picamera_binary_mode=picamera_binary_mode,
                                picamera_photo_height=picamera_photo_height,
                                picamera_photo_width=picamera_photo_width,
                                tesseract_oem=tesseract_oem,

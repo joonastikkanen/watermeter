@@ -71,19 +71,26 @@
             <input type="range" id="picamera_image_focus_position" name="picamera_image_focus_position" min="0" max="3" value="{{ picamera_image_focus_position }}" step="0.1"><br>
             Value: <output id="picamera_image_focus_position_value"></output><br>
             Image Rotation<br>
-            <label for="picamera_image_rotate">Angle:</label>
+            <label for="picamera_image_rotate">Angle:</label><br>
             <select name="picamera_image_rotate" id="picamera_image_rotate">
                 <option value="90" {% if picamera_image_rotate == "90" %}selected="selected"{% endif %}>90</option>
                 <option value="180" {% if picamera_image_rotate == "180" %}selected="selected"{% endif %}>180</option>
                 <option value="270" {% if picamera_image_rotate == "270" %}selected="selected"{% endif %}>270</option>
             </select><br>
             Image Noise Reduction Mode<br>
-            <label for="picamera_image_denoise_mode">Angle:</label>
+            <label for="picamera_image_denoise_mode">Denoise Mode:</label><br>
             <select name="picamera_image_denoise_mode" id="picamera_image_denoise_mode">
                 <option value="Off" {% if picamera_image_denoise_mode == "Off" %}selected="selected"{% endif %}>Off</option>
                 <option value="Fast" {% if picamera_image_denoise_mode == "Fast" %}selected="selected"{% endif %}>Fast</option>
                 <option value="HighQuality" {% if picamera_image_denoise_mode == "HighQuality" %}selected="selected"{% endif %}>HighQuality</option>
-            </select><br><br>
+            </select><br>
+            Image Binary Mode<br>
+            <label for="picamera_image_binary_mode">Binary Mode:</label><br>
+            <select name="picamera_image_binary_mode" id="picamera_image_binary_mode">
+                <option value="simple" {% if picamera_image_binary_mode == "Simple Thresholding" %}selected="selected"{% endif %}>Simple Thresholding</option>
+                <option value="adaptive" {% if picamera_image_binary_mode == "Adaptive Thresholding" %}selected="selected"{% endif %}>Adaptive Thresholding</option>
+                <option value="otsu" {% if picamera_image_binary_mode == "Otsu's Binarization" %}selected="selected"{% endif %}>Otsu's Binarization</option>
+            </select><br>
         </fieldset>
         <fieldset>
             <legend>Background jobs runs interval (in minutes)</legend>
