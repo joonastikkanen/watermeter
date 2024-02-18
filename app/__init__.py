@@ -50,8 +50,7 @@ def create_app():
     return app
 
 app = create_app()
-
-from app.camera import take_picture
+from app.routes import take_picture
 from app.reader import read_image
 
 def run_schedule():

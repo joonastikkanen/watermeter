@@ -5,7 +5,6 @@ import numpy as np
 from wand.image import Image
 from wand.drawing import Drawing
 from wand.color import Color
-from app.camera import take_picture
 import os
 
 config = load_config()
