@@ -1,4 +1,5 @@
 from flask import send_file, redirect, url_for, render_template, request, Flask, jsonify
+from flask_apscheduler import APScheduler
 from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois_and_gauges
 from app.config_update import update_config, update_roi_editor_config
@@ -30,6 +31,10 @@ picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_image_rotate = config['picamera_image_rotate']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
+picamera_image_focus_position = config['picamera_image_focus_position']
+picamera_image_focus_manual_enabled = config['picamera_image_focus_position']
+picamera_buffer_count = config['picamera_buffer_count']
+picamera_image_binary_mode = config['picamera_image_binary_mode']
 picamera_debug = config['picamera_debug']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
@@ -366,3 +371,43 @@ def update_config_route():
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to update config", 404
+
+
+def run_schedule():
+    picamera_led_enabled = config['picamera_led_enabled']
+    picamera_led_brightness = config['picamera_led_brightness']
+    picamera_image_rotate = config['picamera_image_rotate']
+    picamera_image_brightness = config['picamera_image_brightness']
+    picamera_image_contrast = config['picamera_image_contrast']
+    picamera_image_focus_position = config['picamera_image_focus_position']
+    picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
+    picamera_image_sharpness = config['picamera_image_sharpness']
+    picamera_image_denoise_mode = config['picamera_image_denoise_mode']
+    picamera_buffer_count = config['picamera_buffer_count']
+    picamera_photo_width = config['picamera_photo_width']
+    picamera_photo_height = config['picamera_photo_height']
+    picamera_image_binary_mode = config['picamera_image_binary_mode']
+    take_picture(picamera_led_enabled,
+                 picamera_led_brightness,
+                 picamera_image_rotate,
+                 picamera_image_brightness,
+                 picamera_image_contrast,
+                 picamera_image_sharpness,
+                 picamera_image_denoise_mode,
+                 picamera_image_focus_position,
+                 picamera_image_focus_manual_enabled,
+                 picamera_buffer_count,
+                 picamera_photo_width,
+                 picamera_photo_height,
+                 picamera_image_binary_mode
+                 )
+    read_image()
+
+scheduler = APScheduler()
+#scheduler.init_app(app)
+scheduler.start()
+
+watermeter_job_schedule = int(watermeter_job_schedule)
+
+# Schedule the job to run every day at 10:30am
+scheduler.add_job(id='run_schedule', func=run_schedule, trigger='interval', minutes=watermeter_job_schedule)

@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_apscheduler import APScheduler
 from time import sleep
 import yaml
 
@@ -50,33 +49,5 @@ def create_app():
     return app
 
 app = create_app()
-from app.routes import take_picture
-from app.reader import read_image
-
-def run_schedule():
-    take_picture(picamera_led_enabled,
-                 picamera_led_brightness,
-                 picamera_image_rotate,
-                 picamera_image_brightness,
-                 picamera_image_contrast,
-                 picamera_image_sharpness,
-                 picamera_image_denoise_mode,
-                 picamera_image_focus_position,
-                 picamera_image_focus_manual_enabled,
-                 picamera_buffer_count,
-                 picamera_photo_width,
-                 picamera_photo_height,
-                 picamera_image_binary_mode
-                 )
-    read_image()
-
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
-
-watermeter_job_schedule = int(watermeter_job_schedule)
-
-# Schedule the job to run every day at 10:30am
-scheduler.add_job(id='run_schedule', func=run_schedule, trigger='interval', minutes=watermeter_job_schedule)
 
 from app import routes
