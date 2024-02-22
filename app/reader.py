@@ -6,6 +6,7 @@ from wand.image import Image
 from wand.drawing import Drawing
 from wand.color import Color
 import os
+import time
 
 config = load_config()
 picamera_image_path = config['picamera_image_path']
@@ -174,3 +175,11 @@ def load_sensor_data():
         with open(watermeter_last_value_file, 'r') as f:
             sensor_data = f.read()
     return sensor_data
+
+def get_picamera_image_timestamp(picamera_image_path):
+    if not os.path.isfile(picamera_image_path):
+        picamera_image_time = "No picture yet taken"
+    else:
+        picamera_image_timestamp = os.path.getctime(picamera_image_path)
+        picamera_image_time = time.ctime(picamera_image_timestamp)
+    return picamera_image_time

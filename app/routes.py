@@ -1,25 +1,14 @@
-from flask import send_file, redirect, url_for, render_template, request, Flask, jsonify
-from app import app, load_config, take_picture, get_picamera_image_timestamp
-from app.reader import load_sensor_data, read_image, draw_rois_and_gauges
+from flask import send_file, redirect, url_for, render_template, request, jsonify
+import subprocess
+from app import app, load_config
+from app.reader import load_sensor_data, read_image, draw_rois_and_gauges, get_picamera_image_timestamp
 from app.config_update import update_config, update_roi_editor_config
 
 config = load_config()
 # Convert the lists to tuples
 picamera_image_path = config['picamera_image_path']
-picamera_led_enabled = config['picamera_led_enabled']
-picamera_led_brightness = config['picamera_led_brightness']
-picamera_image_brightness = config['picamera_image_brightness']
-picamera_image_contrast = config['picamera_image_contrast']
-picamera_image_sharpness = config['picamera_image_sharpness']
-picamera_image_denoise_mode = config['picamera_image_denoise_mode']
-picamera_image_rotate = config['picamera_image_rotate']
 picamera_photo_height = config['picamera_photo_height']
 picamera_photo_width = config['picamera_photo_width']
-picamera_image_focus_position = config['picamera_image_focus_position']
-picamera_image_focus_manual_enabled = config['picamera_image_focus_position']
-picamera_buffer_count = config['picamera_buffer_count']
-picamera_image_binary_mode = config['picamera_image_binary_mode']
-picamera_debug = config['picamera_debug']
 prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
@@ -31,34 +20,11 @@ watermeter_job_schedule = config['watermeter_job_schedule']
 @app.route('/take_new_picture', methods=['POST'])
 def take_new_picture_route():
     try:
-        config = load_config()
-        picamera_led_enabled = config['picamera_led_enabled']
-        picamera_led_brightness = config['picamera_led_brightness']
-        picamera_image_rotate = config['picamera_image_rotate']
-        picamera_image_brightness = config['picamera_image_brightness']
-        picamera_image_contrast = config['picamera_image_contrast']
-        picamera_image_focus_position = config['picamera_image_focus_position']
-        picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
-        picamera_image_sharpness = config['picamera_image_sharpness']
-        picamera_image_denoise_mode = config['picamera_image_denoise_mode']
-        picamera_buffer_count = config['picamera_buffer_count']
-        picamera_photo_width = config['picamera_photo_width']
-        picamera_photo_height = config['picamera_photo_height']
-        picamera_image_binary_mode = config['picamera_image_binary_mode']
-        take_picture(picamera_led_enabled, 
-                     picamera_led_brightness,
-                     picamera_image_rotate,
-                     picamera_image_brightness,
-                     picamera_image_contrast,
-                     picamera_image_sharpness,
-                     picamera_image_denoise_mode,
-                     picamera_image_focus_position,
-                     picamera_image_focus_manual_enabled,
-                     picamera_buffer_count,
-                     picamera_photo_width,
-                     picamera_photo_height,
-                     picamera_image_binary_mode
-                     )
+        # Define the command to run the Python script
+        command = ["python3.11", "./app/camera.py"]
+        # Run the command
+        subprocess.run(command, check=True)
+        return True
     except FileNotFoundError:
         return "Failed to take new picture", 404
 
@@ -76,10 +42,6 @@ def roi_editor_route():
         roi_id = None
         roi_name = None
         roi_rgb_colors = None
-        preroi_rgb_colors = None
-        pregaugeroi_rgb_colors = None
-        postroi_rgb_colors = None
-        postgaugeroi_rgb_colors = None
         roi_colors_codes = {
           "preroi_rgb_colors": "255, 0, 0",
           "pregaugeroi_rgb_colors": "255, 140, 0",
