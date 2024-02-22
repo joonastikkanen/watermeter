@@ -1,4 +1,5 @@
 from flask import send_file, redirect, url_for, render_template, request, jsonify
+from flask_apscheduler import APScheduler
 import subprocess
 from app import app, load_config
 from app.reader import load_sensor_data, read_image, draw_rois_and_gauges, get_picamera_image_timestamp
@@ -16,6 +17,13 @@ postgaugerois = config['postgaugerois'] = [tuple(roi) for roi in config['postgau
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_job_schedule = config['watermeter_job_schedule']
 
+@app.route('/')
+def home():
+    try:
+        sensor_data = load_sensor_data()
+        return sensor_data
+    except FileNotFoundError:
+        return "Failed to load sensor data", 404
 
 @app.route('/take_new_picture', methods=['POST'])
 def take_new_picture_route():
@@ -196,3 +204,16 @@ def update_config_route():
         return redirect(url_for('preview'))
     except FileNotFoundError:
         return "Failed to update config", 404
+
+
+def run_schedule():
+    take_new_picture_route()
+    read_image()
+
+scheduler = APScheduler()
+scheduler.start()
+
+watermeter_job_schedule = int(watermeter_job_schedule)
+
+# Schedule the job to run every day at 10:30am
+scheduler.add_job(id='run_schedule', func=run_schedule, trigger='interval', minutes=watermeter_job_schedule)

@@ -1,7 +1,7 @@
 from app import load_config
 import yaml
 import json
-from flask import request, jsonify
+from flask import request
 
 config = load_config()
 

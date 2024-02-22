@@ -1,6 +1,5 @@
 from flask import Flask
 from time import sleep
-from flask_apscheduler import APScheduler
 import yaml
 
 # LOAD CONFIG FILE
@@ -35,27 +34,5 @@ def create_app():
     return app
 
 app = create_app()
-
-# ROUTES
-@app.route('/')
-def home():
-    try:
-        sensor_data = load_sensor_data()
-        return sensor_data
-    except FileNotFoundError:
-        return "Failed to load sensor data", 404
-
-def run_schedule():
-    take_new_picture_route()
-    read_image()
-
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
-
-watermeter_job_schedule = int(watermeter_job_schedule)
-
-# Schedule the job to run every day at 10:30am
-scheduler.add_job(id='run_schedule', func=run_schedule, trigger='interval', minutes=watermeter_job_schedule)
 
 from app import routes
