@@ -1,7 +1,6 @@
 from flask import Flask
 from time import sleep
 from flask_apscheduler import APScheduler
-from app.routes import load_sensor_data, read_image, take_new_picture_route
 import yaml
 
 # LOAD CONFIG FILE
