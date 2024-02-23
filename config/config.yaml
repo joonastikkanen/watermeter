@@ -3,7 +3,7 @@ picamera_debug: true
 picamera_image_binary_mode: otsu
 picamera_image_brightness: '0.6'
 picamera_image_contrast: '4.1'
-picamera_image_denoise_mode: HighQuality
+picamera_image_denoise_mode: Fast
 picamera_image_focus_manual_enabled: false
 picamera_image_focus_position: '3'
 picamera_image_path: /run/shm/watermeter_last.jpg
@@ -11,22 +11,24 @@ picamera_image_rotate: '270'
 picamera_image_sharpness: '7.7'
 picamera_led_brightness: '1'
 picamera_led_enabled: true
-picamera_photo_height: '2000'
-picamera_photo_width: '2000'
+picamera_photo_height: '2500'
+picamera_photo_width: '2500'
 postgaugerois: []
 postrois:
-- [1226, 705, 73, 107]
-- [1330, 688, 72, 122]
-- [1437, 721, 74, 118]
+- [1531, 852, 113, 163]
+- [1669, 861, 107, 150]
+- [1801, 846, 108, 203]
 pregaugerois: []
 prerois:
-- [809, 702, 89, 114]
-- [926, 689, 70, 117]
-- [1028, 690, 67, 112]
-- [1130, 709, 66, 106]
+- [901, 864, 109, 160]
+- [1043, 889, 90, 137]
+- [1156, 861, 108, 161]
+- [1297, 870, 89, 149]
+- [1418, 865, 98, 154]
 tesseract_oem: '1'
 tesseract_path: /usr/bin/tesseract
-tesseract_psm: '10'
+tesseract_psm: '4'
+tesseract_validation_counter: 3
 watermeter_init_value: 1
 watermeter_job_schedule: '5'
 watermeter_last_value_file: ./config/watermeter_last_value.txt

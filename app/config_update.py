@@ -53,6 +53,7 @@ def update_config():
                 config['tesseract_psm'] = tesseract_psm
             if key.startswith('tesseract_validation_counter'):
                 tesseract_validation_counter = request.form['tesseract_validation_counter']
+                tesseract_validation_counter = int(tesseract_validation_counter)
                 config['tesseract_validation_counter'] = tesseract_validation_counter
             if key.startswith('picamera_image_focus_manual_enabled'):
                 picamera_image_focus_manual_enabled = request.form['picamera_image_focus_manual_enabled']

@@ -48,6 +48,9 @@ def picamera_image():
 @app.route('/preview/roi_editor')
 def roi_editor_route():
     try:
+        config = load_config()
+        picamera_photo_height = config['picamera_photo_height']
+        picamera_photo_width = config['picamera_photo_width']
         roi_id = None
         roi_name = None
         roi_rgb_colors = None
