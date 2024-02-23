@@ -7,6 +7,7 @@ from wand.drawing import Drawing
 from wand.color import Color
 import os
 import time
+from collections import Counter
 
 config = load_config()
 picamera_image_path = config['picamera_image_path']
@@ -17,6 +18,7 @@ postgaugerois = config['postgaugerois'] = [tuple(roi) for roi in config['postgau
 tesseract_path = config['tesseract_path']
 tesseract_oem = config['tesseract_oem']
 tesseract_psm = config['tesseract_psm']
+tesseract_validation_counter = config['tesseract_validation_counter']
 watermeter_last_value_file = config['watermeter_last_value_file']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
@@ -81,25 +83,36 @@ def read_image():
             print(total_gauges_str)
         return total_gauges_str
 
-    preroisdigits = read_digits(prerois, image)
-    pregaugeroisdigits = read_gauges(pregaugerois, image)
-    pre_digits = preroisdigits + pregaugeroisdigits
-    print(f"pre_digits: ", pre_digits)
+    def get_most_common_total_digits():
+        total_digits_counter = Counter()
 
-    postroisdigits = read_digits(postrois, image)
-#    postgaugeroisdigits = read_gauges(postgaugerois, image)
-#    post_digits = postroisdigits + postgaugeroisdigits
-    post_digits = postroisdigits
-    print(f"postroi_digits: ", post_digits)
+        for _ in range(tesseract_validation_counter):
+            preroisdigits = read_digits(prerois, image)
+            pregaugeroisdigits = read_gauges(pregaugerois, image)
+            pre_digits = preroisdigits + pregaugeroisdigits
+            print(f"pre_digits: ", pre_digits)
 
-    total_digits = pre_digits + "." + post_digits
-    print(f"total_digits: ", total_digits)
+            postroisdigits = read_digits(postrois, image)
+            # postgaugeroisdigits = read_gauges(postgaugerois, image)
+            # post_digits = postroisdigits + postgaugeroisdigits
+            post_digits = postroisdigits
+            print(f"postroi_digits: ", post_digits)
+
+            total_digits = pre_digits + "." + post_digits
+            print(f"total_digits: ", total_digits)
+
+            total_digits_counter[total_digits] += 1
+
+        most_common_total_digits = total_digits_counter.most_common(1)[0][0]
+        return most_common_total_digits
+    
+    final_digits = get_most_common_total_digits()
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
-        f.write(total_digits)
+        f.write(final_digits)
 
     # Return the value
-    return total_digits
+    return final_digits
 
 # Draw the ROIs on the image
 def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgaugerois, output_path):

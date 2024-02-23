@@ -124,6 +124,9 @@
                 <option value="11" {% if tesseract_psm == "11" %}selected="selected"{% endif %}>11: Sparse text. Find as much text as possible in no particular order.</option>
                 <option value="12" {% if tesseract_psm == "12" %}selected="selected"{% endif %}>12: Sparse text with OSD.</option>
                 <option value="13" {% if tesseract_psm == "13" %}selected="selected"{% endif %}>13: Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.</option>
+            Tesseract Validation Count:<br>
+            <label for="tesseract_validation_counter">Count:</label>
+            <input type="number" id="tesseract_validation_counter" name="tesseract_validation_counter" value="{{ tesseract_validation_counter }}" placeholder="5" title="Counts how many time tesseract analyzes the images"><br>               
         </fieldset>
             <input type="submit" value="UPDATE CONFIGS">
             </form>

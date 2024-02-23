@@ -16,6 +16,7 @@ postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
 postgaugerois = config['postgaugerois'] = [tuple(roi) for roi in config['postgaugerois']]
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_job_schedule = config['watermeter_job_schedule']
+tesseract_validation_counter = config['tesseract_validation_counter']
 
 @app.route('/')
 def home():
@@ -151,6 +152,7 @@ def preview():
         picamera_image_binary_mode = config['picamera_image_binary_mode']
         tesseract_oem = config['tesseract_oem']
         tesseract_psm = config['tesseract_psm']
+        tesseract_validation_counter = config['tesseract_validation_counter']
         sensor_data = load_sensor_data()
         print(sensor_data)
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
@@ -177,7 +179,8 @@ def preview():
                                picamera_photo_height=picamera_photo_height,
                                picamera_photo_width=picamera_photo_width,
                                tesseract_oem=tesseract_oem,
-                               tesseract_psm=tesseract_psm
+                               tesseract_psm=tesseract_psm,
+                               tesseract_validation_counter=tesseract_validation_counter
                                )
     except FileNotFoundError:
         return "Failed to render preview page", 404
