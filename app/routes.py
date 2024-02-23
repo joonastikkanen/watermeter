@@ -36,10 +36,10 @@ def take_new_picture_route():
     except FileNotFoundError:
         return "Failed to take new picture", 404
 
-@app.route('/preview/picamera_image')
+@app.route('/preview/picamera_image/watermeter_last.jpg')
 def picamera_image():
     try:
-        return send_file(picamera_image_path, mimetype='image/jpeg')
+        return send_file(picamera_image_path)
     except FileNotFoundError:
         return "No image found", 404
 
@@ -118,10 +118,10 @@ def draw_rois_route():
     except FileNotFoundError:
         return "Failed to draw ROI areas to image", 404
 
-@app.route('/preview/image')
+@app.route('/preview/image/watermeter_preview.jpg')
 def preview_image():
     try:
-        return send_file(watermeter_preview_image_path, mimetype='image/jpeg')
+        return send_file(watermeter_preview_image_path)
     except FileNotFoundError:
         return "No image found", 404
 

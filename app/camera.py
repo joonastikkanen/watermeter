@@ -135,9 +135,9 @@ def take_picture(picamera_led_enabled,
         print(f"Memory usage: {memory_info.rss / 1024 / 1024} MB")
         pass
     finally:
-        #camera.stop()
-        #camera.close()
-        return True
+        camera.stop()
+        camera.close()
+    return True
 
 picamera_led_enabled = config['picamera_led_enabled']
 picamera_led_brightness = config['picamera_led_brightness']
