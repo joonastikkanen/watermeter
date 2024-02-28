@@ -1,6 +1,5 @@
 picamera_buffer_count: '2'
 picamera_debug: true
-picamera_image_binary_mode: otsu
 picamera_image_brightness: '0.6'
 picamera_image_contrast: '4.1'
 picamera_image_denoise_mode: Fast

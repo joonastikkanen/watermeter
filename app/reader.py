@@ -1,5 +1,7 @@
 import cv2
-import pytesseract
+import tensorflow as tf
+from tensorflow.keras.preprocessing import image as image_utils
+from tensorflow.keras.applications.imagenet_utils import preprocess_input
 from app import load_config
 import numpy as np
 from wand.image import Image
@@ -25,26 +27,42 @@ watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
 def read_image():
-    # Set the path to the tesseract executable
-    pytesseract.pytesseract.tesseract_cmd = tesseract_path
     # Load the image
     image = cv2.imread(picamera_image_path)
+    def preprocess_for_model(roi):
+        # Resize the image to the size expected by your model
+        roi = cv2.resize(roi, (224, 224))
+
+        # Convert the image to the RGB color space
+        roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+
+        # Convert the image to a numpy array
+        roi = image_utils.img_to_array(roi)
+
+        # Expand the dimensions of the image
+        roi = np.expand_dims(roi, axis=0)
+
+        # Preprocess the image for your model
+        roi = preprocess_input(roi)
+        
+        return roi
+
     def read_digits(rois, image):
         digits = ''  # Initialize digits as an empty string
-        print(tesseract_oem)
-        print(tesseract_psm)
+        # Load your trained TensorFlow model
+        model = tf.keras.models.load_model('neuralnets/Train_CNN_Digital-Readout_Version_6.0.0.h5')
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
             roi = image[y:y+h, x:x+w]
-            # Use Tesseract to do OCR on the ROI
-            tesseract_config = "--oem " + tesseract_oem +" --psm " + tesseract_psm + " -c tessedit_char_whitelist=0123456789"
-            digit = pytesseract.image_to_string(roi, config=tesseract_config)
+            roi = preprocess_for_model(roi)
+            # Use your TensorFlow model to predict the digit
+            digit = model.predict(roi)
+            digits += str(digit)
             digits += digit.strip()  # Append the digit to the digits value
             # Print the text
             print(digits)
         return digits
-
 
     def read_gauges(gaugerois, image):
         total_gauges = 0  # Initialize total_digits as 0

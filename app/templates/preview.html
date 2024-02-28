@@ -84,13 +84,6 @@
                 <option value="Fast" {% if picamera_image_denoise_mode == "Fast" %}selected="selected"{% endif %}>Fast</option>
                 <option value="HighQuality" {% if picamera_image_denoise_mode == "HighQuality" %}selected="selected"{% endif %}>HighQuality</option>
             </select><br>
-            Image Binary Mode<br>
-            <label for="picamera_image_binary_mode">Binary Mode:</label><br>
-            <select name="picamera_image_binary_mode" id="picamera_image_binary_mode">
-                <option value="off" {% if picamera_image_binary_mode == "off" %}selected="selected"{% endif %}>Off</option>
-                <option value="adaptive" {% if picamera_image_binary_mode == "adaptive" %}selected="selected"{% endif %}>Adaptive Thresholding</option>
-                <option value="otsu" {% if picamera_image_binary_mode == "otsu" %}selected="selected"{% endif %}>Otsu's Binarization</option>
-            </select><br>
         </fieldset>
         <fieldset>
             <legend>Background jobs runs interval (in minutes)</legend>

@@ -152,7 +152,6 @@ def preview():
         picamera_photo_height = config['picamera_photo_height']
         picamera_photo_width = config['picamera_photo_width']
         picamera_buffer_count = config['picamera_buffer_count']
-        picamera_image_binary_mode = config['picamera_image_binary_mode']
         tesseract_oem = config['tesseract_oem']
         tesseract_psm = config['tesseract_psm']
         tesseract_validation_counter = config['tesseract_validation_counter']
@@ -178,7 +177,6 @@ def preview():
                                picamera_image_sharpness=picamera_image_sharpness,
                                picamera_image_denoise_mode=picamera_image_denoise_mode,
                                picamera_buffer_count=picamera_buffer_count,
-                               picamera_image_binary_mode=picamera_image_binary_mode,
                                picamera_photo_height=picamera_photo_height,
                                picamera_photo_width=picamera_photo_width,
                                tesseract_oem=tesseract_oem,
