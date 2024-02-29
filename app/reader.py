@@ -1,4 +1,5 @@
 import cv2
+import tensorflow.keras.backend as K
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image as image_utils
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
@@ -31,26 +32,27 @@ def read_image():
     image = cv2.imread(picamera_image_path)
     def preprocess_for_model(roi):
         # Resize the image to the size expected by your model
-        roi = cv2.resize(roi, (224, 224))
+        roi = cv2.resize(roi, (20,32))
 
         # Convert the image to the RGB color space
         roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+        #roi = cv2.cvtColor(roi, cv2.COLOR_RGB2GRAY)
 
         # Convert the image to a numpy array
-        roi = image_utils.img_to_array(roi)
+        roi = image_utils.img_to_array(roi, dtype="float32")
 
         # Expand the dimensions of the image
         roi = np.expand_dims(roi, axis=0)
 
         # Preprocess the image for your model
         roi = preprocess_input(roi)
-        
+
         return roi
 
     def read_digits(rois, image):
         digits = ''  # Initialize digits as an empty string
         # Load your trained TensorFlow model
-        model = tf.keras.models.load_model('neuralnets/Train_CNN_Digital-Readout_Version_6.0.0.h5')
+        model = tf.keras.models.load_model('app/neuralnets/Train_CNN_Digital-Readout_Version_6.0.0.h5')
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
@@ -58,8 +60,11 @@ def read_image():
             roi = preprocess_for_model(roi)
             # Use your TensorFlow model to predict the digit
             digit = model.predict(roi)
+            #K.clear_session()
+            digit = np.argmax(digit)
+            #digit = digit[0]
             digits += str(digit)
-            digits += digit.strip()  # Append the digit to the digits value
+            #digits += digit.strip()  # Append the digit to the digits value
             # Print the text
             print(digits)
         return digits

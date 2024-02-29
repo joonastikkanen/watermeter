@@ -34,7 +34,6 @@ picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_image_focus_position = config['picamera_image_focus_position']
 picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
 picamera_buffer_count = config['picamera_buffer_count']
-picamera_image_binary_mode = config['picamera_image_binary_mode']
 
 # Picamera debugging
 if picamera_debug:
@@ -54,8 +53,8 @@ def led_off():
 
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, 
-                 picamera_led_brightness, 
+def take_picture(picamera_led_enabled,
+                 picamera_led_brightness,
                  picamera_image_rotate,
                  picamera_image_brightness,
                  picamera_image_contrast,
