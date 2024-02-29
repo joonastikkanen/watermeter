@@ -13,7 +13,7 @@ User=$USER
 WorkingDirectory=<DIR TO APP>/app
 Environment="USER=<USER>"
 Environment="PATH=<DIR TO APP>/venv/bin"
-ExecStart=<DIR TO APP>/venv/bin/gunicorn -w 4 -b 0.0.0.0:8000 run:app
+ExecStart=<DIR TO APP>/venv/bin/gunicorn -w 2 -b 0.0.0.0:8000 run:app
 
 [Install]
 WantedBy=multi-user.target

@@ -34,7 +34,6 @@ picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_image_focus_position = config['picamera_image_focus_position']
 picamera_image_focus_manual_enabled = config['picamera_image_focus_manual_enabled']
 picamera_buffer_count = config['picamera_buffer_count']
-picamera_image_binary_mode = config['picamera_image_binary_mode']
 
 # Picamera debugging
 if picamera_debug:
@@ -54,8 +53,8 @@ def led_off():
 
 
 # TAKE PICTURE
-def take_picture(picamera_led_enabled, 
-                 picamera_led_brightness, 
+def take_picture(picamera_led_enabled,
+                 picamera_led_brightness,
                  picamera_image_rotate,
                  picamera_image_brightness,
                  picamera_image_contrast,
@@ -66,7 +65,6 @@ def take_picture(picamera_led_enabled,
                  picamera_buffer_count,
                  picamera_photo_width,
                  picamera_photo_height,
-                 picamera_image_binary_mode
                  ):
     try:
         picamera_led_enabled = bool(picamera_led_enabled)
@@ -107,24 +105,14 @@ def take_picture(picamera_led_enabled,
           success = camera.wait(job)
         sleep(1)
         image = camera.switch_mode_and_capture_array(config, "main")
-        # Convert the image to grayscale
-        gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
         if picamera_image_rotate == 90:
-          rotated_image = cv2.rotate(gray_image, cv2.ROTATE_90_CLOCKWISE)
+          rotated_image = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
         elif picamera_image_rotate == 180:
-          rotated_image = cv2.rotate(gray_image, cv2.ROTATE_180)
+          rotated_image = cv2.rotate(image, cv2.ROTATE_180)
         elif picamera_image_rotate == 270:
-          rotated_image = cv2.rotate(gray_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
-        if picamera_image_binary_mode == "off":
-          binary = rotated_image
-        elif picamera_image_binary_mode == "adaptive":
-          rotated_image = cv2.medianBlur(rotated_image,5)
-          binary = cv2.adaptiveThreshold(rotated_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-        elif picamera_image_binary_mode == "otsu":
-          rotated_image = cv2.GaussianBlur(rotated_image,(5,5),0)
-          _, binary = cv2.threshold(rotated_image, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+          rotated_image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
         # Save the image
-        cv2.imwrite(picamera_image_path, binary)
+        cv2.imwrite(picamera_image_path, rotated_image)
         # Get the process ID of the current process
         pid = os.getpid()
         # Create a Process object
@@ -151,7 +139,6 @@ picamera_image_denoise_mode = config['picamera_image_denoise_mode']
 picamera_buffer_count = config['picamera_buffer_count']
 picamera_photo_width = config['picamera_photo_width']
 picamera_photo_height = config['picamera_photo_height']
-picamera_image_binary_mode = config['picamera_image_binary_mode']
 take_picture(picamera_led_enabled,
                 picamera_led_brightness,
                 picamera_image_rotate,
@@ -164,5 +151,4 @@ take_picture(picamera_led_enabled,
                 picamera_buffer_count,
                 picamera_photo_width,
                 picamera_photo_height,
-                picamera_image_binary_mode
                 )

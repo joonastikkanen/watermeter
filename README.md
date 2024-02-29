@@ -2,19 +2,11 @@
 
 NOT FULLY TESTED YEAT!!
 
-I was inspired by old project nohn's project about using raspberry PI camera as to bring smartness to old school watermeter. 
+I was inspired by old project nohn's project about using raspberry PI camera as to bring smartness to old school watermeter. I also added tensorflow to analyze the images from jomjols's project.
 
 Links:
 * The nohn's project: https://github.com/nohn/watermeter/tree/main
-
-## Build dockerimage
-
-```bash
-export DOCKER_CLI_EXPERIMENTAL=enabled
-sudo docker buildx create --name watermeter --use
-sudo docker buildx inspect --bootstrap
-sudo docker buildx build --platform linux/arm64 -t watermeter:latest .
-```
+* The jomjols project: https://github.com/jomjol/water-meter-system-complete
 
 ## HomeAssistant sensor
 
