@@ -18,10 +18,6 @@ prerois = config['prerois'] = [tuple(roi) for roi in config['prerois']]
 pregaugerois = config['pregaugerois'] = [tuple(roi) for roi in config['pregaugerois']]
 postrois = config['postrois'] = [tuple(roi) for roi in config['postrois']]
 postgaugerois = config['postgaugerois'] = [tuple(roi) for roi in config['postgaugerois']]
-tesseract_path = config['tesseract_path']
-tesseract_oem = config['tesseract_oem']
-tesseract_psm = config['tesseract_psm']
-tesseract_validation_counter = int(config['tesseract_validation_counter'])
 watermeter_last_value_file = config['watermeter_last_value_file']
 watermeter_preview_image_path = config['watermeter_preview_image_path']
 watermeter_init_value = config['watermeter_init_value']
@@ -30,9 +26,9 @@ watermeter_init_value = config['watermeter_init_value']
 def read_image():
     # Load the image
     image = cv2.imread(picamera_image_path)
-    def preprocess_for_model(roi):
+    def preprocess_for_model(roi, roi_resize_h, roi_resize_w):
         # Resize the image to the size expected by your model
-        roi = cv2.resize(roi, (20,32))
+        roi = cv2.resize(roi, (roi_resize_h,roi_resize_w))
 
         # Convert the image to the RGB color space
         roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
@@ -57,14 +53,13 @@ def read_image():
         for x, y, w, h in rois:
             # Crop the image
             roi = image[y:y+h, x:x+w]
-            roi = preprocess_for_model(roi)
+            roi = preprocess_for_model(roi, roi_resize_h=20, roi_resize_w=32)
             # Use your TensorFlow model to predict the digit
             digit = model.predict(roi)
             #K.clear_session()
             digit = np.argmax(digit)
             #digit = digit[0]
             digits += str(digit)
-            #digits += digit.strip()  # Append the digit to the digits value
             # Print the text
             print(digits)
         return digits
@@ -77,18 +72,19 @@ def read_image():
         for x, y, w, h in gaugerois:
             # Crop the image
             roi = image[y:y+h, x:x+w]
-            roi = preprocess_for_model(roi)
+            roi = preprocess_for_model(roi, roi_resize_h=32, roi_resize_w=32)
             # Use your TensorFlow model to predict the digit
             gauge = model.predict(roi)
             out_sin = gauge[0][0]
             out_cos = gauge[0][1]
             #K.clear_session()
-            gauge_result =  np.arctan2(out_sin, out_cos)/(2*math.pi) % 1
-            gauge_result = gauge_result * 10
+            result_gauge = np.arctan2(out_sin, out_cos)/(2*math.pi) % 1
+            result_gauge = result_gauge * 10
+            total_gauges += str(result_gauge).split('.', 1)[0]
             # Print the text
-            print(gauge_result)
-        return gauge_result
-    
+            print(total_gauges)
+        return total_gauges
+
     preroisdigits = read_digits(prerois, image)
     pregaugeroisdigits = read_gauges(pregaugerois, image)
     pre_digits = preroisdigits + pregaugeroisdigits
@@ -128,47 +124,29 @@ def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgauger
         # Draw the text on the image
         cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
 
-    if 'value' in locals():
-        print("The value variable is defined.")
-        # Draw each gauge
-        for x, y, w, h, value in pregaugerois:
-            text = "pregaugerois"
-            # Calculate the angle and position of the line
-            angle = (value / 10) * 180  # Assuming the gauge range is 10
-            line_length = h / 2
-            line_x = x + w / 2 + line_length * np.cos(angle)
-            line_y = y + h / 2 - line_length * np.sin(angle)
+    for x, y, w, h in pregaugerois:
+        text = "pregaugerois"
+        d = 2
+        d_eclipse = 1
+        cv2.rectangle(image,(x-d,y-d),(x+w+2*d,y+h+2*d),(0,255,0),d)
+        xct = int(x+w/2)+1
+        yct = int(y+h/2)+1
+        cv2.line(image,(x,yct),(x+w+5,yct),(0,140,255),2)
+        cv2.line(image,(xct,y),(xct,y+h),(0,140,255),2)
+        cv2.ellipse(image, (xct, yct), (int(w/2)+2*d_eclipse, int(h/2)+2*d_eclipse), 0, 0, 360, (0,140,255), d_eclipse)
+        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 140, 255), 2)
 
-            # Draw the line
-            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (0, 140, 255), 2)
-            # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 140, 255), 2)
-
-        for x, y, w, h, value in postgaugerois:
-            text = "postgaugerois"
-            # Calculate the angle and position of the line
-            angle = (value / 10) * 180  # Assuming the gauge range is 10
-            line_length = h / 2
-            line_x = x + w / 2 + line_length * np.cos(angle)
-            line_y = y + h / 2 - line_length * np.sin(angle)
-
-            # Draw the line
-            cv2.line(image, (x + w // 2, y + h // 2), (int(line_x), int(line_y)), (255, 140, 0), 2)
-            # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 140, 0), 2)
-    else:
-        print("The value variable is not defined.")
-        for x, y, w, h in pregaugerois:
-            text = "pregaugerois"
-            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 140, 255), 2)
-            # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 140, 255), 2)
-
-        for x, y, w, h in postgaugerois:
-            text = "postgaugerois"
-            cv2.rectangle(image, (x, y), (x+w, y+h), (255, 140, 0), 2)
-            # Draw the text on the image
-            cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 140, 0), 2)
+    for x, y, w, h in postgaugerois:
+        text = "postgaugerois"
+        d = 2
+        d_eclipse = 1
+        cv2.rectangle(image,(x-d,y-d),(x+w+2*d,y+h+2*d),(255,140,0),d)
+        xct = int(x+w/2)+1
+        yct = int(y+h/2)+1
+        cv2.line(image,(x,yct),(x+w+5,yct),(255,140,0),2)
+        cv2.line(image,(xct,y),(xct,y+h),(255,140,0),2)
+        cv2.ellipse(image, (xct, yct), (int(w/2)+2*d_eclipse, int(h/2)+2*d_eclipse), 0, 0, 360, (255,140,0), d_eclipse)
+        cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 140, 0), 2)
 
     # Save the image
     cv2.imwrite(output_path, image)
