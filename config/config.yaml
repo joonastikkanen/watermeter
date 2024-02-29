@@ -23,10 +23,6 @@ prerois:
 - [1179, 881, 81, 123]
 - [1311, 881, 74, 113]
 - [1439, 892, 68, 115]
-tesseract_oem: '1'
-tesseract_path: /usr/bin/tesseract
-tesseract_psm: '4'
-tesseract_validation_counter: 1
 watermeter_init_value: 1
 watermeter_job_schedule: '5'
 watermeter_last_value_file: ./config/watermeter_last_value.txt

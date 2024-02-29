@@ -42,16 +42,6 @@ def update_config():
             if key.startswith('watermeter_job_schedule'):
                 watermeter_job_schedule = request.form['watermeter_job_schedule']
                 config['watermeter_job_schedule'] = watermeter_job_schedule
-            if key.startswith('tesseract_oem'):
-                tesseract_oem = request.form['tesseract_oem']
-                config['tesseract_oem'] = tesseract_oem
-            if key.startswith('tesseract_psm'):
-                tesseract_psm = request.form['tesseract_psm']
-                config['tesseract_psm'] = tesseract_psm
-            if key.startswith('tesseract_validation_counter'):
-                tesseract_validation_counter = request.form['tesseract_validation_counter']
-                tesseract_validation_counter = int(tesseract_validation_counter)
-                config['tesseract_validation_counter'] = tesseract_validation_counter
             if key.startswith('picamera_image_focus_manual_enabled'):
                 picamera_image_focus_manual_enabled = request.form['picamera_image_focus_manual_enabled']
                 if picamera_image_focus_manual_enabled == 'True':

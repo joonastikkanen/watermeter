@@ -10,7 +10,7 @@ from wand.drawing import Drawing
 from wand.color import Color
 import os
 import time
-from collections import Counter
+import math
 
 config = load_config()
 picamera_image_path = config['picamera_image_path']
@@ -70,72 +70,44 @@ def read_image():
         return digits
 
     def read_gauges(gaugerois, image):
-        total_gauges = 0  # Initialize total_digits as 0
-        total_gauges_str = ''
+        total_gauges = ''
+        # Load your trained TensorFlow model
+        model = tf.keras.models.load_model('app/neuralnets/CNN_Analog-Readout_Version-6.0.1.h5')
         # Process each ROI
         for x, y, w, h in gaugerois:
-            # Crop the image to the ROI
-            gauge_roi = image[y:y+h, x:x+w]
+            # Crop the image
+            roi = image[y:y+h, x:x+w]
+            roi = preprocess_for_model(roi)
+            # Use your TensorFlow model to predict the digit
+            gauge = model.predict(roi)
+            out_sin = gauge[0][0]
+            out_cos = gauge[0][1]
+            #K.clear_session()
+            gauge_result =  np.arctan2(out_sin, out_cos)/(2*math.pi) % 1
+            gauge_result = gauge_result * 10
+            # Print the text
+            print(gauge_result)
+        return gauge_result
+    
+    preroisdigits = read_digits(prerois, image)
+    pregaugeroisdigits = read_gauges(pregaugerois, image)
+    pre_digits = preroisdigits + pregaugeroisdigits
+    print(f"pre_digits: ", pre_digits)
 
-            # Use edge detection and Hough line transformation to find the pointer
-            edges = cv2.Canny(gauge_roi, 150, 250, apertureSize=3)
-            lines = cv2.HoughLines(edges, 1, np.pi / 180, 200)
+    postroisdigits = read_digits(postrois, image)
+    postgaugeroisdigits = read_gauges(postgaugerois, image)
+    post_digits = postroisdigits + postgaugeroisdigits
+    print(f"postroi_digits: ", post_digits)
 
-            # Find the line with the maximum y value, which should be the pointer
-            max_y = -np.inf
-            pointer_angle = 0
-            if lines is not None:
-                for rho, theta in lines[0]:
-                    a = np.cos(theta)
-                    b = np.sin(theta)
-                    x0 = a * rho
-                    y0 = b * rho
-                    x1 = int(x0 + 1000 * (-b))
-                    y1 = int(y0 + 1000 * (a))
+    total_digits = pre_digits + "." + post_digits
+    print(f"total_digits: ", total_digits)
 
-                    if y1 > max_y:
-                        max_y = y1
-                        pointer_angle = np.arctan2(y2 - y1, x2 - x1)
-
-            # Calculate the value indicated by the pointer
-            value_range = 10  # The range of values on the gauge
-            angle_range = np.pi  # The range of angles on the gauge (180 degrees)
-            value = (pointer_angle / angle_range) * value_range
-            total_gauges += int(value)
-            total_gauges_str = str(total_gauges).strip()
-            print(total_gauges_str)
-        return total_gauges_str
-
-    def get_most_common_total_digits():
-        total_digits_counter = Counter()
-
-        for _ in range(tesseract_validation_counter):
-            preroisdigits = read_digits(prerois, image)
-            pregaugeroisdigits = read_gauges(pregaugerois, image)
-            pre_digits = preroisdigits + pregaugeroisdigits
-            print(f"pre_digits: ", pre_digits)
-
-            postroisdigits = read_digits(postrois, image)
-            # postgaugeroisdigits = read_gauges(postgaugerois, image)
-            # post_digits = postroisdigits + postgaugeroisdigits
-            post_digits = postroisdigits
-            print(f"postroi_digits: ", post_digits)
-
-            total_digits = pre_digits + "." + post_digits
-            print(f"total_digits: ", total_digits)
-
-            total_digits_counter[total_digits] += 1
-
-        most_common_total_digits = total_digits_counter.most_common(1)[0][0]
-        return most_common_total_digits
-
-    final_digits = get_most_common_total_digits()
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
-        f.write(final_digits)
+        f.write(total_digits)
 
     # Return the value
-    return final_digits
+    return total_digits
 
 # Draw the ROIs on the image
 def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgaugerois, output_path):
