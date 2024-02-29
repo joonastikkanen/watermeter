@@ -30,13 +30,15 @@
   width: 1000px;
 }
 
-.preroi-button-editor,  .postroi-button-editor {
-  align-items: left;
+.button-editor-container {
+    display: flex;
+    justify-content: space-between;
 }
 
-.pregaugeroi-button-editor, .postgaugeroi-button-editor {
-  align-items: right;
+.preroi-button-editor, .pregaugeroi-button-editor {
+    flex: 1;
 }
+
 #watermeter_job_schedule {
   width: 4em;
 }

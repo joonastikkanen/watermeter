@@ -6,25 +6,37 @@
     <div class="controls">
             <fieldset>
                     <legend>Pre Decimal Areas [<b>00</b>.00]</legend>
-                    <span class="material-symbols-outlined">pin</span>Numbers<br>
-                    <a class="preroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form', roi_rgb_colors='preroi_rgb_colors') }}">
-                        <button>OPEN EDITOR</button><br>
-                    </a>
-                    <span class="material-symbols-outlined">speed</span>Gauges<br>
-                    <a class="pregaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form', roi_rgb_colors='pregaugeroi_rgb_colors') }}">
-                        <button>OPEN EDITOR</button><br>
-                    </a>
+                    <div class="button-editor-container">
+                      <div class="preroi-button-editor">
+                        <span class="material-symbols-outlined">pin</span>Numbers<br>
+                        <a class="preroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form', roi_rgb_colors='preroi_rgb_colors') }}">
+                          <button>OPEN EDITOR</button><br>
+                        </a>
+		      </div>
+		      <div class="pregaugeroi-button-editor">
+                      <span class="material-symbols-outlined">speed</span>Gauges<br>
+                      <a class="pregaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form', roi_rgb_colors='pregaugeroi_rgb_colors') }}">
+                          <button>OPEN EDITOR</button><br>
+                      </a>
+		      </div>
+		    </div>
             </fieldset>
             <fieldset>
                     <legend>Post decimal Areas [00.<b>00</b>]</legend>
-                    <span class="material-symbols-outlined">pin</span>Numbers<br>
-                    <a class="postroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form', roi_rgb_colors='postroi_rgb_colors') }}">
-                        <button>OPEN EDITOR</button><br>
-                    </a>
+
+                    <div class="button-editor-container">
+                      <div class="preroi-button-editor">
+                        <span class="material-symbols-outlined">pin</span>Numbers<br>
+                        <a class="postroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form', roi_rgb_colors='postroi_rgb_colors') }}">
+                            <button>OPEN EDITOR</button><br>
+                        </a>
+                      </div>
+                      <div class="pregaugeroi-button-editor">
                         <span class="material-symbols-outlined">speed</span>Gauges<br>
                         <a class="postgaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postgaugeroi', roi_name='post-gauge-roi-form', roi_rgb_colors='postgaugeroi_rgb_colors') }}">
                             <button>OPEN EDITOR</button><br>
                         </a>
+                      </div>
             </fieldset>
             <fieldset>
                	    <legend>Picamera Configuration</legend>            
