@@ -46,7 +46,8 @@ def read_image():
         return roi
 
     def read_digits(rois, image):
-        global last_value  # Use the global last value
+        last_value = None;
+        #global last_value  # Use the global last value
         digits = ''  # Initialize digits as an empty string
         # Load your trained TensorFlow model
         interpreter = tf.lite.Interpreter(model_path='app/neuralnets/dig1410s3.tflite')
@@ -82,15 +83,16 @@ def read_image():
         value = int(digits)
 
         # Check if the value has changed drastically
-        if last_value is not None and abs(value - last_value) > 10:
+        if last_value is not None and abs(int(value) - last_value) > 10:
             # If the value has changed drastically, return the last value
             return last_value
 
         # Update the last value
-        last_value = value
-
+        last_value = int(value)
+        
+        #value = str(value)
         # Return the value
-        return value
+        return digits
 
     def read_gauges(gaugerois, image):
         total_gauges = ''
@@ -113,13 +115,13 @@ def read_image():
             print(total_gauges)
         return total_gauges
 
-    preroisdigits = read_digits(prerois, image)
-    pregaugeroisdigits = read_gauges(pregaugerois, image)
+    preroisdigits = str(read_digits(prerois, image))
+    pregaugeroisdigits = str(read_gauges(pregaugerois, image))
     pre_digits = preroisdigits + pregaugeroisdigits
     print(f"pre_digits: ", pre_digits)
 
-    postroisdigits = read_digits(postrois, image)
-    postgaugeroisdigits = read_gauges(postgaugerois, image)
+    postroisdigits = str(read_digits(postrois, image))
+    postgaugeroisdigits = str(read_gauges(postgaugerois, image))
     post_digits = postroisdigits + postgaugeroisdigits
     print(f"postroi_digits: ", post_digits)
 
