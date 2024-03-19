@@ -46,10 +46,9 @@ def read_image():
         return roi
 
     def read_digits(rois, image):
+        global last_value  # Use the global last value
         digits = ''  # Initialize digits as an empty string
         # Load your trained TensorFlow model
-        #model = tf.keras.models.load_model('app/neuralnets/Train_CNN_Digital-Readout_Version_6.0.0.h5')
-        #model = tf.keras.models.load_model('app/neuralnets/dig1410s3.tflite')
         interpreter = tf.lite.Interpreter(model_path='app/neuralnets/dig1410s3.tflite')
         interpreter.allocate_tensors()
 
@@ -65,10 +64,7 @@ def read_image():
             #save_roi = cv2.imwrite('/home/joonas/rois/digit-' + date + '.jpg', roi)
             roi = preprocess_for_model(roi, roi_resize_h=20, roi_resize_w=32)
             # Use your TensorFlow model to predict the digit
-            #digit = model.predict(roi)
-            #K.clear_session()
-            #digit = np.argmax(digit)
-            #digits += str(digit)
+            K.clear_session()
             # Print the text
             # Set the value of the input tensor
             interpreter.set_tensor(input_details[0]['index'], roi)
@@ -82,7 +78,19 @@ def read_image():
             # Add the predicted digit to the string of digits
             digits += str(np.argmax(digit))
             print(digits)
-        return digits
+        # Convert the string of digits to an integer
+        value = int(digits)
+
+        # Check if the value has changed drastically
+        if last_value is not None and abs(value - last_value) > 10:
+            # If the value has changed drastically, return the last value
+            return last_value
+
+        # Update the last value
+        last_value = value
+
+        # Return the value
+        return value
 
     def read_gauges(gaugerois, image):
         total_gauges = ''
