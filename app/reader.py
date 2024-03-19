@@ -25,8 +25,15 @@ watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
 def read_image():
+    """
+    Reads an image, processes it, and returns the total digits read from the image.
+
+    Returns:
+        str: The total digits read from the image.
+    """
     # Load the image
     image = cv2.imread(picamera_image_path)
+
     def preprocess_for_model(roi, roi_resize_h, roi_resize_w):
         # Resize the image to the size expected by your model
         roi = cv2.resize(roi, (roi_resize_h,roi_resize_w))
@@ -137,6 +144,20 @@ def read_image():
 
 # Draw the ROIs on the image
 def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgaugerois, output_path):
+    """
+    Draw regions of interest (ROIs) and gauges on an image.
+
+    Args:
+        image_path (str): The path to the input image.
+        prerois (list): A list of tuples representing the pre-ROIs. Each tuple contains the (x, y, width, height) coordinates of a ROI.
+        pregaugerois (list): A list of tuples representing the pre-gauge ROIs. Each tuple contains the (x, y, width, height) coordinates of a gauge ROI.
+        postrois (list): A list of tuples representing the post-ROIs. Each tuple contains the (x, y, width, height) coordinates of a ROI.
+        postgaugerois (list): A list of tuples representing the post-gauge ROIs. Each tuple contains the (x, y, width, height) coordinates of a gauge ROI.
+        output_path (str): The path to save the output image.
+
+    Returns:
+        bool: True if the image was successfully saved, False otherwise.
+    """
     # Load the image
     image = cv2.imread(image_path)
 
@@ -193,6 +214,16 @@ def load_sensor_data():
     return sensor_data
 
 def get_picamera_image_timestamp(picamera_image_path):
+    """
+    Get the timestamp of a PiCamera image.
+
+    Args:
+        picamera_image_path (str): The path to the PiCamera image file.
+
+    Returns:
+        str: The timestamp of the PiCamera image in a human-readable format.
+
+    """
     if not os.path.isfile(picamera_image_path):
         picamera_image_time = "No picture yet taken"
     else:

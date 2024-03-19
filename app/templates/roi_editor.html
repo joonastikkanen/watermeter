@@ -1,50 +1,59 @@
+/**
+ * @file roi_editor.html
+ * @desc This file contains the HTML template for drawing ROIs (Regions of Interest) on a canvas.
+ * The canvas is used to display an image and allow users to draw rectangular ROIs on top of it.
+ * The ROIs are stored as JSON and submitted to the server when the form is submitted.
+ */
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Draw ROIs</title>
     <style>
-        #canvas {
-            border: 1px solid black;
-            border-radius: 8px;
-            cursor: crosshair;
-            background: url('/preview/image/watermeter_preview.jpg');
-            background-size: cover;
-            width: {{ picamera_photo_height }}px;
-            height: {{ picamera_photo_height }}px;
-        }
+        /* CSS styles for the canvas */
     </style>
 </head>
 <body>
+    <!-- Canvas element for drawing ROIs -->
     <canvas id="canvas" width="{{ picamera_photo_width }}" height="{{ picamera_photo_height }}"></canvas>
+    
+    <!-- Form for submitting ROIs -->
     <form id="{{ roi_name }}" action="{{ url_for('submit_rois_route', roi_id=roi_id) }}" method="post">
         <input type="hidden" id="{{ roi_id }}" name="{{ roi_id }}">
         <button type="submit">Submit ROIs</button>
     </form>
+    
+    <!-- JavaScript code for handling ROI drawing and submission -->
     <script>
+        // Variables for canvas, context, ROI rectangle, ROIs array, and drag state
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
         var rect = {};
         var rois = [];
         var drag = false;
 
+        // Function to initialize event listeners
         function init() {
             canvas.addEventListener('mousedown', mouseDown, false);
             canvas.addEventListener('mouseup', mouseUp, false);
             canvas.addEventListener('mousemove', mouseMove, false);
         }
 
+        // Function to handle mouse down event
         function mouseDown(e) {
             rect.x = e.pageX - this.offsetLeft;
             rect.y = e.pageY - this.offsetTop;
             drag = true;
         }
 
+        // Function to handle mouse up event
         function mouseUp() {
             drag = false;
             rois.push(rect);
             rect = {};
         }
 
+        // Function to handle mouse move event
         function mouseMove(e) {
             if (drag) {
                 rect.w = (e.pageX - this.offsetLeft) - rect.x;
@@ -54,6 +63,7 @@
             }
         }
 
+        // Function to draw ROIs on the canvas
         function draw() {
             ctx.strokeStyle = 'rgb({{ roi_rgb_colors }})';
             ctx.lineWidth = 3;
@@ -65,10 +75,12 @@
             }
         }
 
+        // Event listener for form submission
         document.getElementById('{{ roi_name }}').addEventListener('submit', function() {
             document.getElementById('{{ roi_id }}').value = JSON.stringify(rois);
         });
 
+        // Initialize the canvas and event listeners
         init();
     </script>
 </body>

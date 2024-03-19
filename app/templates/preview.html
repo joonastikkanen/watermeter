@@ -1,56 +1,71 @@
+<!-- 
+This HTML template is used for displaying a preview of the water meter application. It contains various form fields and buttons for configuring the application settings and displaying sensor data.
+
+The template structure is as follows:
+
+- The template starts with the DOCTYPE declaration and the opening <html> tag.
+- The <body> tag contains the main content of the template.
+- The <link> tags are used to include external CSS stylesheets.
+- Inside the <div class="container"> element, there are two main sections: "controls" and "image".
+<!DOCTYPE html>
+<html>
+<body>
+<!-- Template content goes here -->
+</body>
+</html>
 <!DOCTYPE html>
 <body data-prerois="{{ prerois|length }}" data-pregaugerois="{{ pregaugerois|length }}" data-postrois="{{ postrois|length }}" data-postrois="{{ postgaugerois|length }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100" rel="stylesheet" />
 <div class="container">
     <div class="controls">
-            <fieldset>
-                    <legend>Pre Decimal Areas [<b>00</b>.00]</legend>
-                    <div class="button-editor-container">
-                      <div class="preroi-button-editor">
-                        <span class="material-symbols-outlined">pin</span>Numbers<br>
-                        <a class="preroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form', roi_rgb_colors='preroi_rgb_colors') }}">
-                          <button>OPEN EDITOR</button><br>
-                        </a>
-		      </div>
-		      <div class="pregaugeroi-button-editor">
-                      <span class="material-symbols-outlined">speed</span>Gauges<br>
-                      <a class="pregaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form', roi_rgb_colors='pregaugeroi_rgb_colors') }}">
-                          <button>OPEN EDITOR</button><br>
-                      </a>
-		      </div>
-		    </div>
-            </fieldset>
-            <fieldset>
-                    <legend>Post decimal Areas [00.<b>00</b>]</legend>
-
-                    <div class="button-editor-container">
-                      <div class="preroi-button-editor">
-                        <span class="material-symbols-outlined">pin</span>Numbers<br>
-                        <a class="postroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form', roi_rgb_colors='postroi_rgb_colors') }}">
-                            <button>OPEN EDITOR</button><br>
-                        </a>
-                      </div>
-                      <div class="pregaugeroi-button-editor">
-                        <span class="material-symbols-outlined">speed</span>Gauges<br>
-                        <a class="postgaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postgaugeroi', roi_name='post-gauge-roi-form', roi_rgb_colors='postgaugeroi_rgb_colors') }}">
-                            <button>OPEN EDITOR</button><br>
-                        </a>
-                      </div>
-            </fieldset>
-            <fieldset>
-               	    <legend>Picamera Configuration</legend>            
-                    <form action="{{ url_for('update_config_route') }}" method="post" id="roi-form">
-	            LED Enabled<br>
-        	    <label for="picamera_led_enabled_true">Enabled</label>
-	            <input type="radio" id="picamera_led_enabled_true" name="picamera_led_enabled" value="True" {% if picamera_led_enabled == True %}checked{% endif %}>
-        	    <label for="picamera_led_enabled_false">Disabled</label>
-	            <input type="radio" id="picamera_led_enabled_false" name="picamera_led_enabled" value="False" {% if picamera_led_enabled == False %}checked{% endif %}>
-	            <br>
-	            LED Brightness Configuration<br>
-	            <label for="picamera_led_brightness">Brightness:</label>
-	            <input type="range" id="picamera_led_brightness" name="picamera_led_brightness" min="0" max="1.0" value="{{ picamera_led_brightness }}" step="0.01"><br>
-	            Value: <output id="picamera_led_brightness_value"></output>
+        <fieldset>
+            <legend>Pre Decimal Areas [<b>00</b>.00]</legend>
+            <div class="button-editor-container">
+                <div class="preroi-button-editor">
+                    <span class="material-symbols-outlined">pin</span>Numbers<br>
+                    <a class="preroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='preroi', roi_name='pre-roi-form', roi_rgb_colors='preroi_rgb_colors') }}">
+                        <button>OPEN EDITOR</button><br>
+                    </a>
+                </div>
+                <div class="pregaugeroi-button-editor">
+                    <span class="material-symbols-outlined">speed</span>Gauges<br>
+                    <a class="pregaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='pregaugeroi', roi_name='pre-gauge-roi-form', roi_rgb_colors='pregaugeroi_rgb_colors') }}">
+                        <button>OPEN EDITOR</button><br>
+                    </a>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Post decimal Areas [00.<b>00</b>]</legend>
+            <div class="button-editor-container">
+                <div class="preroi-button-editor">
+                    <span class="material-symbols-outlined">pin</span>Numbers<br>
+                    <a class="postroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postroi', roi_name='post-roi-form', roi_rgb_colors='postroi_rgb_colors') }}">
+                        <button>OPEN EDITOR</button><br>
+                    </a>
+                </div>
+                <div class="pregaugeroi-button-editor">
+                    <span class="material-symbols-outlined">speed</span>Gauges<br>
+                    <a class="postgaugeroi-button-editor" href="{{ url_for('roi_editor_route', roi_id='postgaugeroi', roi_name='post-gauge-roi-form', roi_rgb_colors='postgaugeroi_rgb_colors') }}">
+                        <button>OPEN EDITOR</button><br>
+                    </a>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Picamera Configuration</legend>
+            <form action="{{ url_for('update_config_route') }}" method="post" id="roi-form">
+                LED Enabled<br>
+                <label for="picamera_led_enabled_true">Enabled</label>
+                <input type="radio" id="picamera_led_enabled_true" name="picamera_led_enabled" value="True" {% if picamera_led_enabled == True %}checked{% endif %}>
+                <label for="picamera_led_enabled_false">Disabled</label>
+                <input type="radio" id="picamera_led_enabled_false" name="picamera_led_enabled" value="False" {% if picamera_led_enabled == False %}checked{% endif %}>
+                <br>
+                LED Brightness Configuration<br>
+                <label for="picamera_led_brightness">Brightness:</label>
+                <input type="range" id="picamera_led_brightness" name="picamera_led_brightness" min="0" max="1.0" value="{{ picamera_led_brightness }}" step="0.01"><br>
+                Value: <output id="picamera_led_brightness_value"></output>
         </fieldset>
         <fieldset>
             <legend>Picture Configuration</legend>
@@ -102,17 +117,18 @@
             <label for="watermeter_job_schedule">Schedule Time:</label>
             <input type="number" id="watermeter_job_schedule" name="watermeter_job_schedule" value="{{ watermeter_job_schedule }}" placeholder="Value in minutes"><br>
         </fieldset>
-            <input type="submit" value="UPDATE CONFIGS">
-            </form>
-            <form action="{{ url_for('read_image_route_post') }}" method="post">
-                <input type="submit" value="READ ROIS">
-            </form>
+        <input type="submit" value="UPDATE CONFIGS">
+        </form>
+        <form action="{{ url_for('read_image_route_post') }}" method="post">
+            <input type="submit" value="READ ROIS">
+        </form>
     </div>
     <div class="image">
         <img src="{{ url_for('preview_image') }}" alt="Preview image"><br>
         <b>Sensor data: {{ sensor_data }} m&#179;</b><br>
-        <b>Picture timestamp: {{ capture_timestamp }}</b><br>
     </div>
+</div>
+<b>Picture timestamp: {{ capture_timestamp }}</b><br>
 </div>
 <script src="{{url_for('static', filename='javascript/preview.js')}}"></script>
 </body>
