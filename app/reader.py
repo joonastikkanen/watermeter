@@ -10,6 +10,7 @@ from wand.drawing import Drawing
 from wand.color import Color
 import os
 import time
+import datetime
 import math
 
 config = load_config()
@@ -32,7 +33,6 @@ def read_image():
 
         # Convert the image to the RGB color space
         roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
-        #roi = cv2.cvtColor(roi, cv2.COLOR_RGB2GRAY)
 
         # Convert the image to a numpy array
         roi = image_utils.img_to_array(roi, dtype="float32")
@@ -48,19 +48,39 @@ def read_image():
     def read_digits(rois, image):
         digits = ''  # Initialize digits as an empty string
         # Load your trained TensorFlow model
-        model = tf.keras.models.load_model('app/neuralnets/Train_CNN_Digital-Readout_Version_6.0.0.h5')
+        #model = tf.keras.models.load_model('app/neuralnets/Train_CNN_Digital-Readout_Version_6.0.0.h5')
+        #model = tf.keras.models.load_model('app/neuralnets/dig1410s3.tflite')
+        interpreter = tf.lite.Interpreter(model_path='app/neuralnets/dig1410s3.tflite')
+        interpreter.allocate_tensors()
+
+        # Get input and output tensors.
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
         # Process each ROI
         for x, y, w, h in rois:
             # Crop the image
             roi = image[y:y+h, x:x+w]
+            # Save the image for future neural networks
+            date = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
+            #save_roi = cv2.imwrite('/home/joonas/rois/digit-' + date + '.jpg', roi)
             roi = preprocess_for_model(roi, roi_resize_h=20, roi_resize_w=32)
             # Use your TensorFlow model to predict the digit
-            digit = model.predict(roi)
+            #digit = model.predict(roi)
             #K.clear_session()
-            digit = np.argmax(digit)
-            #digit = digit[0]
-            digits += str(digit)
+            #digit = np.argmax(digit)
+            #digits += str(digit)
             # Print the text
+            # Set the value of the input tensor
+            interpreter.set_tensor(input_details[0]['index'], roi)
+
+            # Run the computation
+            interpreter.invoke()
+
+            # Get the output tensor
+            digit = interpreter.get_tensor(output_details[0]['index'])
+
+            # Add the predicted digit to the string of digits
+            digits += str(np.argmax(digit))
             print(digits)
         return digits
 
@@ -77,7 +97,7 @@ def read_image():
             gauge = model.predict(roi)
             out_sin = gauge[0][0]
             out_cos = gauge[0][1]
-            #K.clear_session()
+            K.clear_session()
             result_gauge = np.arctan2(out_sin, out_cos)/(2*math.pi) % 1
             result_gauge = result_gauge * 10
             total_gauges += str(result_gauge).split('.', 1)[0]
