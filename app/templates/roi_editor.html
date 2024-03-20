@@ -1,16 +1,18 @@
-/**
- * @file roi_editor.html
- * @desc This file contains the HTML template for drawing ROIs (Regions of Interest) on a canvas.
- * The canvas is used to display an image and allow users to draw rectangular ROIs on top of it.
- * The ROIs are stored as JSON and submitted to the server when the form is submitted.
- */
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Draw ROIs</title>
     <style>
         /* CSS styles for the canvas */
+        #canvas {
+            border: 1px solid black;
+            border-radius: 8px;
+            cursor: crosshair;
+            background: url('/preview/image/watermeter_preview.jpg');
+            background-size: cover;
+            width: {{ picamera_photo_height }}px;
+            height: {{ picamera_photo_height }}px;
+        }
     </style>
 </head>
 <body>

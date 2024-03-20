@@ -126,9 +126,9 @@ The template structure is as follows:
     <div class="image">
         <img src="{{ url_for('preview_image') }}" alt="Preview image"><br>
         <b>Sensor data: {{ sensor_data }} m&#179;</b><br>
+        <b>Picture timestamp: {{ capture_timestamp }}</b><br>
     </div>
 </div>
-<b>Picture timestamp: {{ capture_timestamp }}</b><br>
 </div>
 <script src="{{url_for('static', filename='javascript/preview.js')}}"></script>
 </body>

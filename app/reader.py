@@ -65,6 +65,7 @@ def read_image():
         output_details = interpreter.get_output_details()
         # Process each ROI
         for x, y, w, h in rois:
+            last_digit = None;
             # Crop the image
             roi = image[y:y+h, x:x+w]
             # Save the image for future neural networks
@@ -83,8 +84,18 @@ def read_image():
             # Get the output tensor
             digit = interpreter.get_tensor(output_details[0]['index'])
 
+            # Check if the digit is 10
+            if last_digit is not None and digit == 10:
+                # If the digit is 10
+                print("digit read as 10, the last_value will be set as digit")
+                digit = last_value
+
+            # Update the last value
+            last_digit = digit
+
             # Add the predicted digit to the string of digits
             digits += str(np.argmax(digit))
+
             print(digits)
         # Convert the string of digits to an integer
         value = int(digits)
@@ -96,8 +107,7 @@ def read_image():
 
         # Update the last value
         last_value = int(value)
-        
-        #value = str(value)
+
         # Return the value
         return digits
 
