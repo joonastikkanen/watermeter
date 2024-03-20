@@ -25,8 +25,15 @@ watermeter_init_value = config['watermeter_init_value']
 
 # READ IMAGE
 def read_image():
+    """
+    Reads an image, processes it, and returns the total digits read from the image.
+
+    Returns:
+        str: The total digits read from the image.
+    """
     # Load the image
     image = cv2.imread(picamera_image_path)
+
     def preprocess_for_model(roi, roi_resize_h, roi_resize_w):
         # Resize the image to the size expected by your model
         roi = cv2.resize(roi, (roi_resize_h,roi_resize_w))
@@ -58,6 +65,7 @@ def read_image():
         output_details = interpreter.get_output_details()
         # Process each ROI
         for x, y, w, h in rois:
+            last_digit = None;
             # Crop the image
             roi = image[y:y+h, x:x+w]
             # Save the image for future neural networks
@@ -76,8 +84,18 @@ def read_image():
             # Get the output tensor
             digit = interpreter.get_tensor(output_details[0]['index'])
 
+            # Check if the digit is 10
+            if last_digit is not None and digit == 10:
+                # If the digit is 10
+                print("digit read as 10, the last_value will be set as digit")
+                digit = last_value
+
+            # Update the last value
+            last_digit = digit
+
             # Add the predicted digit to the string of digits
             digits += str(np.argmax(digit))
+
             print(digits)
         # Convert the string of digits to an integer
         value = int(digits)
@@ -89,8 +107,7 @@ def read_image():
 
         # Update the last value
         last_value = int(value)
-        
-        #value = str(value)
+
         # Return the value
         return digits
 
@@ -137,6 +154,20 @@ def read_image():
 
 # Draw the ROIs on the image
 def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgaugerois, output_path):
+    """
+    Draw regions of interest (ROIs) and gauges on an image.
+
+    Args:
+        image_path (str): The path to the input image.
+        prerois (list): A list of tuples representing the pre-ROIs. Each tuple contains the (x, y, width, height) coordinates of a ROI.
+        pregaugerois (list): A list of tuples representing the pre-gauge ROIs. Each tuple contains the (x, y, width, height) coordinates of a gauge ROI.
+        postrois (list): A list of tuples representing the post-ROIs. Each tuple contains the (x, y, width, height) coordinates of a ROI.
+        postgaugerois (list): A list of tuples representing the post-gauge ROIs. Each tuple contains the (x, y, width, height) coordinates of a gauge ROI.
+        output_path (str): The path to save the output image.
+
+    Returns:
+        bool: True if the image was successfully saved, False otherwise.
+    """
     # Load the image
     image = cv2.imread(image_path)
 
@@ -193,6 +224,16 @@ def load_sensor_data():
     return sensor_data
 
 def get_picamera_image_timestamp(picamera_image_path):
+    """
+    Get the timestamp of a PiCamera image.
+
+    Args:
+        picamera_image_path (str): The path to the PiCamera image file.
+
+    Returns:
+        str: The timestamp of the PiCamera image in a human-readable format.
+
+    """
     if not os.path.isfile(picamera_image_path):
         picamera_image_time = "No picture yet taken"
     else:

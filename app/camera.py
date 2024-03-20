@@ -1,9 +1,7 @@
 import os
 import yaml
 import psutil
-import cv2
 import blinkt
-import time
 import numpy as np
 import cv2
 from PIL import Image
@@ -66,6 +64,26 @@ def take_picture(picamera_led_enabled,
                  picamera_photo_width,
                  picamera_photo_height,
                  ):
+    """
+    Takes a picture using the camera module.
+
+    Args:
+        picamera_led_enabled (bool): Whether the LED should be enabled.
+        picamera_led_brightness (float): The brightness level of the LED.
+        picamera_image_rotate (int): The rotation angle of the captured image.
+        picamera_image_brightness (float): The brightness level of the captured image.
+        picamera_image_contrast (float): The contrast level of the captured image.
+        picamera_image_sharpness (float): The sharpness level of the captured image.
+        picamera_image_denoise_mode (str): The denoise mode of the captured image.
+        picamera_image_focus_position (float): The focus position of the captured image.
+        picamera_image_focus_manual_enabled (bool): Whether manual focus is enabled.
+        picamera_buffer_count (int): The buffer count for the camera.
+        picamera_photo_width (int): The width of the captured photo.
+        picamera_photo_height (int): The height of the captured photo.
+
+    Returns:
+        bool: True if the picture was taken successfully, False otherwise.
+    """
     try:
         picamera_led_enabled = bool(picamera_led_enabled)
         picamera_led_brightness = float(picamera_led_brightness)

@@ -6,55 +6,24 @@ from flask import request
 config = load_config()
 
 def update_config():
+    """
+    Update the configuration settings based on the values received from the request form.
+
+    Returns:
+        bool or tuple: True if the configuration was successfully updated, or a tuple containing
+                      an error message and status code if there was an invalid input.
+    """
     try:
         print(request.form)
-        for key in request.form:
-            if key.startswith('picamera_image_brightness'):
-                picamera_image_brightness = request.form['picamera_image_brightness']
-                config['picamera_image_brightness'] = picamera_image_brightness
-            if key.startswith('picamera_image_contrast'):
-                picamera_image_contrast = request.form['picamera_image_contrast']
-                config['picamera_image_contrast'] = picamera_image_contrast
-            if key.startswith('picamera_led_brightness'):
-                picamera_led_brightness = request.form['picamera_led_brightness']
-                config['picamera_led_brightness'] = picamera_led_brightness
-            if key.startswith('picamera_image_focus_position'):
-                picamera_image_focus_position = request.form['picamera_image_focus_position']
-                config['picamera_image_focus_position'] = picamera_image_focus_position
-            if key.startswith('picamera_image_rotate'):
-                picamera_image_rotate = request.form['picamera_image_rotate']
-                config['picamera_image_rotate'] = picamera_image_rotate
-            if key.startswith('picamera_image_sharpness'):
-                picamera_image_sharpness = request.form['picamera_image_sharpness']
-                config['picamera_image_sharpness'] = picamera_image_sharpness
-            if key.startswith('picamera_image_denoise_mode'):
-                picamera_image_denoise_mode = request.form['picamera_image_denoise_mode']
-                config['picamera_image_denoise_mode'] = picamera_image_denoise_mode
-            if key.startswith('picamera_photo_height'):
-                picamera_photo_height = request.form['picamera_photo_height']
-                config['picamera_photo_height'] = picamera_photo_height
-            if key.startswith('picamera_photo_width'):
-                picamera_photo_width = request.form['picamera_photo_width']
-                config['picamera_photo_width'] = picamera_photo_width
-            if key.startswith('picamera_buffer_count'):
-                picamera_buffer_count = request.form['picamera_buffer_count']
-                config['picamera_buffer_count'] = picamera_buffer_count
+        for key, value in request.form.items():
+            if key.startswith('picamera_'):
+                config[key] = value
             if key.startswith('watermeter_job_schedule'):
-                watermeter_job_schedule = request.form['watermeter_job_schedule']
-                config['watermeter_job_schedule'] = watermeter_job_schedule
+                config[key] = value
             if key.startswith('picamera_image_focus_manual_enabled'):
-                picamera_image_focus_manual_enabled = request.form['picamera_image_focus_manual_enabled']
-                if picamera_image_focus_manual_enabled == 'True':
-                    config['picamera_image_focus_manual_enabled'] = True
-                if picamera_image_focus_manual_enabled == 'False':
-                    config['picamera_image_focus_manual_enabled'] = False
+                config[key] = value == 'True'
             if key.startswith('picamera_led_enabled'):
-                picamera_led_enabled = request.form['picamera_led_enabled']
-                if picamera_led_enabled == 'True':
-                    config['picamera_led_enabled'] = True
-                if picamera_led_enabled == 'False':
-                    config['picamera_led_enabled'] = False
-
+                config[key] = value == 'True'
         # Write the updated configuration to the YAML file
         with open('config/config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
@@ -63,6 +32,17 @@ def update_config():
         return "Invalid input: could not convert data to an integer", 400
 
 def update_roi_editor_config():
+    """
+    Update the ROI editor configuration based on the form data.
+
+    This function iterates over the form data and updates the configuration file with the ROI values.
+    The form data should contain keys starting with 'preroi', 'pregaugeroi', 'postroi', or 'postgaugeroi',
+    followed by a JSON string representing the ROI coordinates.
+
+    Returns:
+        - True if the configuration was successfully updated.
+        - An error message and status code (400) if the input data is invalid.
+    """
     try:
         # Iterate over the form data
         prerois = []

@@ -13,17 +13,17 @@ picamera_led_enabled: true
 picamera_photo_height: '2500'
 picamera_photo_width: '2500'
 postgaugerois:
-- [1667, 1234, 412, 416]
+- [1700, 1235, 413, 408]
 postrois:
-- [1500, 870, 91, 146]
-- [1629, 879, 88, 141]
-- [1745, 923, 109, 135]
+- [1513, 863, 85, 152]
+- [1634, 859, 93, 159]
+- [1759, 862, 103, 195]
 pregaugerois: []
 prerois:
-- [989, 865, 87, 137]
-- [1118, 868, 81, 136]
-- [1245, 869, 87, 137]
-- [1373, 875, 85, 133]
+- [1016, 870, 84, 145]
+- [1139, 872, 86, 136]
+- [1267, 872, 87, 138]
+- [1390, 870, 90, 143]
 watermeter_init_value: 1
 watermeter_job_schedule: '5'
 watermeter_last_value_file: ./config/watermeter_last_value.txt
