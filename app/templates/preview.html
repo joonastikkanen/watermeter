@@ -122,10 +122,10 @@ The template structure is as follows:
             <input type="radio" id="aws_use_rekognition_api_false" name="aws_use_rekognition_api" value="False" {% if aws_use_rekognition_api == False %}checked{% endif %}>
             <br>
             <label for="aws_profile">AWS Profile</label>
-            <input type="text" id="aws_profile" name="aws_profile" required minlength="4" maxlength="20" size="22" />
+            <input type="text" id="aws_profile" name="aws_profile" value="{{ aws_profile }}" required minlength="4" maxlength="20" size="22" />
             <br>
             <label for="aws_region">AWS Region</label>
-            <input type="text" id="aws_region" name="aws_region" required minlength="4" maxlength="20" size="22" />
+            <input type="text" id="aws_region" name="aws_region" value="{{ aws_region }}" required minlength="4" maxlength="20" size="22" />
         </fieldset>
         <fieldset>
             <legend>Background jobs runs interval (in minutes)</legend>

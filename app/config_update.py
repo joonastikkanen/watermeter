@@ -26,6 +26,8 @@ def update_config():
                 config[key] = value == 'True'
             if key.startswith('aws_'):
                 config[key] = value
+            if key.startswith('aws_use_rekognition_api'):
+                config[key] = value == 'True'
         # Write the updated configuration to the YAML file
         with open('config/config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)
