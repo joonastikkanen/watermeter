@@ -224,6 +224,9 @@ def preview():
         - picamera_buffer_count: The buffer count for the PiCamera.
         - picamera_photo_height: The height of the captured photo.
         - picamera_photo_width: The width of the captured photo.
+        - aws_use_rekognition_api: The status of using the AWS Rekognition API.
+        - aws_profile: The AWS profile used for the Rekognition API.
+        - aws_region: The AWS region used for the Rekognition API.
     """
     try:
         # Load the configuration
@@ -246,6 +249,9 @@ def preview():
         picamera_photo_height = config['picamera_photo_height']
         picamera_photo_width = config['picamera_photo_width']
         picamera_buffer_count = config['picamera_buffer_count']
+        aws_use_rekognition_api = config['aws_use_rekognition_api']
+        aws_profile = config['aws_profile']
+        aws_region = config['aws_region']
         sensor_data = load_sensor_data()
         print(sensor_data)
         capture_timestamp = get_picamera_image_timestamp(picamera_image_path)
@@ -270,6 +276,9 @@ def preview():
                                picamera_buffer_count=picamera_buffer_count,
                                picamera_photo_height=picamera_photo_height,
                                picamera_photo_width=picamera_photo_width,
+                               aws_use_rekognition_api=aws_use_rekognition_api,
+                               aws_profile=aws_profile,
+                               aws_region=aws_region
                                )
     except FileNotFoundError:
         return "Failed to render preview page", 404

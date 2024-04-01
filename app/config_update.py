@@ -24,6 +24,8 @@ def update_config():
                 config[key] = value == 'True'
             if key.startswith('picamera_led_enabled'):
                 config[key] = value == 'True'
+            if key.startswith('aws_'):
+                config[key] = value
         # Write the updated configuration to the YAML file
         with open('config/config.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=None)

@@ -28,3 +28,7 @@ watermeter_init_value: 1
 watermeter_job_schedule: '5'
 watermeter_last_value_file: ./config/watermeter_last_value.txt
 watermeter_preview_image_path: /run/shm/watermeter_preview.jpg
+aws_use_rekognition_api: false
+aws_profile: tikimon
+# Check Rekognition regions: https://docs.aws.amazon.com/general/latest/gr/rekognition.html
+aws_region: eu-central-1
