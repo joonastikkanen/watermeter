@@ -43,6 +43,7 @@ def read_image():
 
     def read_digits_using_aws(rois, watermeter_image_path, session):
         regions_of_interest = []
+        rois = prerois + postrois
         with Image.open(watermeter_image_path) as img:
             # Get the width and height
             image_width, image_height = img.size
@@ -81,15 +82,17 @@ def read_image():
         digit_detections = [
             d["DetectedText"]
             for d in text_detections
-            if d["DetectedText"].isdigit() and d["Confidence"] > 0 and d["Type"] == "WORD"
+            if d["DetectedText"].isdigit() and d["Type"] == "WORD"
         ]
 
         digits = ""
+        preroisdigits = ""
+        postroisdigits = ""
 
         for digit in digit_detections:
             digits += str(digit)
 
-        return digits
+        return preroisdigits, postroisdigits
 
     def preprocess_for_model(roi, roi_resize_h, roi_resize_w):
         # Resize the image to the size expected by your model
@@ -189,33 +192,33 @@ def read_image():
             print(total_gauges)
         return total_gauges
 
-    # Read the digits from the image
-    if aws_use_rekognition_api:
-        preroisdigits = str(read_digits_using_aws(prerois, watermeter_preview_image_path, session))
-    else:
-        preroisdigits = str(read_digits(prerois, image))
+    def read_rois(prerois, pregaugerois, postrois, postgaugerois, image):        
+        # Read the digits from the image
+        if aws_use_rekognition_api:
+            preroisdigits, postroisdigits = str(read_digits_using_aws(prerois, postrois, watermeter_preview_image_path, session))
 
-    pregaugeroisdigits = str(read_gauges(pregaugerois, image))
-    pre_digits = preroisdigits + pregaugeroisdigits
-    print(f"pre_digits: ", pre_digits)
+        else:
+            preroisdigits = str(read_digits(prerois, image))
+            postroisdigits = str(read_digits(postrois, image))
 
-    if aws_use_rekognition_api:
-        postroisdigits = str(read_digits_using_aws(prerois, watermeter_preview_image_path, session))
-    else:
-        postroisdigits = str(read_digits(postrois, image))
-    postgaugeroisdigits = str(read_gauges(postgaugerois, image))
-    post_digits = postroisdigits + postgaugeroisdigits
-    print(f"postroi_digits: ", post_digits)
+        pregaugeroisdigits = str(read_gauges(pregaugerois, image))
+        pre_digits = preroisdigits + pregaugeroisdigits
+        print(f"pre_digits: ", pre_digits)
 
-    total_digits = pre_digits + "." + post_digits
-    print(f"total_digits: ", total_digits)
+        postgaugeroisdigits = str(read_gauges(postgaugerois, image))
+        post_digits = postroisdigits + postgaugeroisdigits
+        print(f"postroi_digits: ", post_digits)
 
+        total_digits = pre_digits + "." + post_digits
+        print(f"total_digits: ", total_digits)
+
+        # Return the value
+        return total_digits
+
+    total_digits = read_rois(prerois, pregaugerois, postrois, postgaugerois, image)
     # Wire sensor data to file
     with open(watermeter_last_value_file, 'w') as f:
         f.write(total_digits)
-
-    # Return the value
-    return total_digits
 
 # Draw the ROIs on the image
 def draw_rois_and_gauges(image_path, prerois, pregaugerois, postrois, postgaugerois, output_path):
