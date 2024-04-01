@@ -92,6 +92,11 @@ def read_image():
         for digit in digit_detections:
             digits += str(digit)
 
+        preroisdigits = digits[:len(postrois)]
+        print("preroisdigits: ", preroisdigits)
+        postroisdigits = digits[len(prerois):]
+        print("postroisdigits: ", postroisdigits)
+
         return preroisdigits, postroisdigits
 
     def preprocess_for_model(roi, roi_resize_h, roi_resize_w):
