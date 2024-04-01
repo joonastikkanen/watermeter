@@ -41,7 +41,7 @@ def read_image():
     # Load the image
     image = cv2.imread(picamera_image_path)
 
-    def read_digits_using_aws(rois, watermeter_image_path, session):
+    def read_digits_using_aws(prerois, postrois, watermeter_image_path, session):
         regions_of_interest = []
         rois = prerois + postrois
         with Image.open(watermeter_image_path) as img:
