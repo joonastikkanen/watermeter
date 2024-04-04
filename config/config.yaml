@@ -1,7 +1,10 @@
+aws_profile: tikimon
+aws_region: eu-central-1
+aws_use_rekognition_api: true
 picamera_buffer_count: '2'
 picamera_debug: false
 picamera_image_brightness: '0.6'
-picamera_image_contrast: '2.9'
+picamera_image_contrast: '3.1'
 picamera_image_denoise_mode: HighQuality
 picamera_image_focus_manual_enabled: false
 picamera_image_focus_position: '7.4'
@@ -15,20 +18,16 @@ picamera_photo_width: '2500'
 postgaugerois:
 - [1700, 1235, 413, 408]
 postrois:
-- [1513, 863, 85, 152]
-- [1634, 859, 93, 159]
-- [1759, 862, 103, 195]
+- [1507, 851, 89, 168]
+- [1632, 860, 89, 158]
+- [1755, 867, 92, 192]
 pregaugerois: []
 prerois:
-- [1016, 870, 84, 145]
-- [1139, 872, 86, 136]
-- [1267, 872, 87, 138]
-- [1390, 870, 90, 143]
+- [1002, 874, 84, 135]
+- [1128, 874, 86, 132]
+- [1249, 866, 88, 142]
+- [1381, 876, 82, 138]
 watermeter_init_value: 1
-watermeter_job_schedule: '5'
+watermeter_job_schedule: '15'
 watermeter_last_value_file: ./config/watermeter_last_value.txt
 watermeter_preview_image_path: /run/shm/watermeter_preview.jpg
-aws_use_rekognition_api: false
-aws_profile: tikimon
-# Check Rekognition regions: https://docs.aws.amazon.com/general/latest/gr/rekognition.html
-aws_region: eu-central-1

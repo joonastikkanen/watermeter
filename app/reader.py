@@ -9,6 +9,7 @@ from wand.image import Image
 from wand.drawing import Drawing
 from wand.color import Color
 from PIL import Image
+from decimal import Decimal, getcontext
 import boto3
 import base64
 import os
@@ -41,19 +42,20 @@ def read_image():
     # Load the image
     image = cv2.imread(picamera_image_path)
 
-    def read_digits_using_aws(prerois, postrois, watermeter_image_path, session):
+    def read_digits_using_aws(prerois, postrois, picamera_image_path, session):
+        getcontext().prec = 25
         regions_of_interest = []
         rois = prerois + postrois
-        with Image.open(watermeter_image_path) as img:
+        with Image.open(picamera_image_path) as img:
             # Get the width and height
             image_width, image_height = img.size
         for roi in rois:
             # x, y, w, h
             topleft_col, topleft_row, width, height = roi
-            width_pos = width / image_width
-            height_pos = height / image_height
-            left_pos = topleft_col / image_width
-            top_pos = topleft_row / image_height
+            width_pos = Decimal(width) / Decimal(image_width)
+            height_pos = Decimal(height) / Decimal(image_height)
+            left_pos = Decimal(topleft_col) / Decimal(image_width)
+            top_pos = Decimal(topleft_row) / Decimal(image_height)
             region = {
                 "BoundingBox": {
                     "Width": float(width_pos),
@@ -67,7 +69,7 @@ def read_image():
         client = session.client("rekognition")
 
         # Open the image file in binary mode, encode it to base64
-        with open(watermeter_image_path, "rb") as image_file:
+        with open(picamera_image_path, "rb") as image_file:
             encoded_image = base64.b64encode(image_file.read()).decode("utf-8")
 
         response = client.detect_text(
@@ -82,8 +84,10 @@ def read_image():
         digit_detections = [
             d["DetectedText"]
             for d in text_detections
-            if d["DetectedText"].isdigit() and d["Type"] == "WORD"
+            if d["DetectedText"].isdigit() and d["Type"] == "WORD" and d["Confidence"] > 0
         ]
+ 
+        print(digit_detections)
 
         digits = ""
         preroisdigits = ""
@@ -91,6 +95,7 @@ def read_image():
 
         for digit in digit_detections:
             digits += str(digit)
+            print(digits)
 
         preroisdigits = digits[:len(postrois)]
         print("preroisdigits: ", preroisdigits)
@@ -197,10 +202,11 @@ def read_image():
             print(total_gauges)
         return total_gauges
 
-    def read_rois(prerois, pregaugerois, postrois, postgaugerois, image):        
+    def read_rois(prerois, pregaugerois, postrois, postgaugerois, image):
+        aws_use_rekognition_api = config['aws_use_rekognition_api']
         # Read the digits from the image
         if aws_use_rekognition_api:
-            preroisdigits, postroisdigits = str(read_digits_using_aws(prerois, postrois, watermeter_preview_image_path, session))
+            preroisdigits, postroisdigits = read_digits_using_aws(prerois, postrois, watermeter_preview_image_path, session)
 
         else:
             preroisdigits = str(read_digits(prerois, image))
